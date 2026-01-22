@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Configuration>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %5p [%c] %m%n" />
+        </Console>
+          <RollingFile name="RollingFile">
+            <FileName>D:/eclipse_java/logs/log.log</FileName>
+            <FilePattern>D:/eclipse_java/logs/%d{yyyy-MM-dd}.log</FilePattern>
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %5p [%c] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"></TimeBasedTriggeringPolicy>
+            </Policies>
+            <DefaultRolloverStrategy max="30"></DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="RollingFileError">
+            <FileName>D:/eclipse_java/logs/error.log</FileName>
+            <FilePattern>D:/eclipse_java/logs/%d{yyyy-MM-dd}_error.log</FilePattern>
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %5p [%c] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"></TimeBasedTriggeringPolicy>
+            </Policies>
+            <DefaultRolloverStrategy max="30"></DefaultRolloverStrategy>
+        </RollingFile>
+        
+    </Appenders>
+    <Loggers>
+        <Logger name="java.sql" level="INFO" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+        <Logger name="egovframework" level="INFO" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+        <Logger name="org.egovframe" level="INFO" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+		<!-- log SQL with timing information, post execution -->
+	    <Logger name="jdbc.sqltiming" level="INFO" additivity="false">
+	        <AppenderRef ref="console" />
+	    </Logger>
+	    <Logger name="org.springframework" level="INFO" additivity="false">
+	        <AppenderRef ref="console" />
+	    </Logger>
+	     <Logger name="jdbc.sqlonly" level="INFO" additivity="false">
+             <AppenderRef ref="console" />
+         </Logger>
+         <Logger name="jdbc.resultset" level="INFO" additivity="false">
+             <!-- <AppenderRef ref="console" />  -->
+        </Logger>
+        <Logger name="jdbc.resultsettable" level="INFO" additivity="false">
+             <AppenderRef ref="console" />
+         </Logger>
+         <Logger name="jdbc.audit" level="INFO" additivity="false">
+             <!-- <AppenderRef ref="console" />  -->
+        </Logger>
+        <Logger name="jdbc.connection" level="INFO" additivity="false">
+             <!-- <AppenderRef ref="console" />  -->
+        </Logger>
+        <Root level="INFO">
+            <AppenderRef ref="console" />
+        </Root>
+    </Loggers>
+</Configuration>
