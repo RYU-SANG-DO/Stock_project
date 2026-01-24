@@ -186,7 +186,11 @@ public class EgovComIndexController {
 			for (int i = 0; i < methods.length; i++) {
 				annotation = methods[i].getAnnotation(IncludedInfo.class);
 
+<<<<<<< HEAD
 				if (annotation != null && "Y".equals(annotation.useYn())) {
+=======
+				if (annotation != null) {
+>>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
 					//LOG.debug("Found @IncludedInfo Method : " + methods[i] );
 					zooVO = new IncludedCompInfoVO();
 					zooVO.setName(annotation.name());
@@ -195,7 +199,10 @@ public class EgovComIndexController {
 					zooVO.setKeyL1(annotation.keyL1());
 					zooVO.setKeyL2(annotation.keyL2());
 					zooVO.setLv(annotation.lv());
+<<<<<<< HEAD
 					zooVO.setUseYn(annotation.useYn());
+=======
+>>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
 					/*
 					 * 목록형 조회를 위한 url 매핑은 @IncludedInfo나 @RequestMapping에서 가져온다
 					 */

@@ -392,7 +392,11 @@
 	
 	<!-- 게시물 통계 집계 -->
 	<insert id="summaryBbsStats">
+<<<<<<< HEAD
 		
+=======
+			/*summaryBbsStats*/
+>>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
 			INSERT INTO COMTSBBSSUMMARY (
 				OCCRRNC_DE,
 				STATS_SE,
@@ -404,7 +408,12 @@
 				MUMM_INQIRE_BBSCTT_ID,
 				TOP_NTCR_ID
 			) VALUES (
+<<<<<<< HEAD
 				TO_CHAR(SYSDATE - 1, 'YYYYMMDD'),
+=======
+				/*TO_CHAR(SYSDATE - 1, 'YYYYMMDD'),*/
+				SYSDATE,
+>>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
 				#{statsKind},
 				#{detailStatsKind},
 				#{creatCo},

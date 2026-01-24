@@ -664,9 +664,12 @@
 		    <version>1.8</version>
 		</dependency>
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
     </dependencies>
 
     <build>

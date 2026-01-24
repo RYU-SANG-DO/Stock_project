@@ -38,5 +38,8 @@ public @interface IncludedInfo {
 	int lv() default 0;
 	String keyL1() default "";		// 컴포넌트의 Group ID(대분류 key 1)
 	String keyL2() default "";		// 컴포넌트의 Group ID(대분류 key 2)
+<<<<<<< HEAD
 	String useYn() default "Y";//메뉴 사용유무
+=======
+>>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
 }
