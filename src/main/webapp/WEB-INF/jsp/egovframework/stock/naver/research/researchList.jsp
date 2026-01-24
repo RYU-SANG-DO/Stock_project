@@ -226,7 +226,7 @@ function menuMove(param , name){
 		<input type="hidden" name="searchGubun"	value="${searchGubun}"/>
 		<input type="hidden" name="searchGubunNm" value="${searchGubunNm}"/>
 		
-		<!-- 검색영역111 -->
+		<!-- 검색영역11 -->
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />" style="padding: 10px;">
 			<ul style="margin-bottom: 0px;">
 				<li><div style="line-height:4px;">&nbsp;</div><div>검색구분 : </div></li>
