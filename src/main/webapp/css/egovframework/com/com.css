@@ -28,11 +28,7 @@ body{
 }
 
 div,table,em,h1,h2,h3,h4,h5,h6,form,fieldset,p,th,td,input,textarea,select,button { 
-<<<<<<< HEAD
-	font-family:'돋움', '굴림', 'Arial', 'AppleGothic', 'sans-serif'; font-size:14px; color:#666; }
-=======
 	font-family:'돋움', '굴림', 'Arial', 'AppleGothic', 'sans-serif'; font-size:13px; color:#666; }
->>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
 
 fieldset, img { border:0; }
 textarea { width:100%; resize:none; }

@@ -184,13 +184,8 @@ function fncSelectList(){
 		<ul style="margin-bottom: 0px;">
 			<li><div style="line-height:4px;">&nbsp;</div><div>검색기간 : </div></li>
 			<li>
-<<<<<<< HEAD
-				<input type="text" name="bgn_de" id="bgn_de" size="15" maxlength="10" value="${bgn_de}" style="width: 95px; text-align: center;" title="검색시작일" />  ~
-				<input type="text" name="end_de" id="end_de" size="15" maxlength="10" value="${end_de}" style="width: 95px; text-align: center;" title="검색종료일" >	
-=======
 				<input type="text" name="bgn_de" id="bgn_de" size="15" maxlength="10" value="${bgn_de}" style="width: 80px; text-align: center;" title="검색시작일" />  ~
 				<input type="text" name="end_de" id="end_de" size="15" maxlength="10" value="${end_de}" style="width: 80px; text-align: center;" title="검색종료일" >	
->>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
 			</li>
 			<li><div style="line-height:4px;">&nbsp;</div><div>공시유형 : </div></li>
 			<li>

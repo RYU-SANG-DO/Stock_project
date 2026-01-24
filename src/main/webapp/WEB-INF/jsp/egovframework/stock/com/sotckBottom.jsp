@@ -20,10 +20,6 @@ div.preloader {
    background-position: center;
    opacity: 0.5;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
 </style>
 <script type="text/javaScript" defer="defer">
 $(function(){
