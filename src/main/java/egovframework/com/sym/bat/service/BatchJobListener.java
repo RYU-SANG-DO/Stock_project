@@ -101,10 +101,10 @@ public class BatchJobListener implements JobListener {
 			dataMap.put("batchResultId", batchResult.getBatchResultId());
 		//2017.02.06 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 		} catch (FdlException e) {
-			LOGGER.error("[FdlException] 배치스케줄ID : {}, 배치작업ID : {}, 배치결과저장(insert) 에러 : {}", batchResult.getBatchSchdulId(), batchResult.getBatchOpertId(), e.getMessage());
+			LOGGER.error("[FdlException] 배치스케줄ID : {}, 배치작업ID : {}, 배치결과저장(insert) 에러 : {}", batchResult.getBatchSchdulId(), batchResult.getBatchOpertId());
 		} catch (Exception e) {
-			LOGGER.error("(Ko) 배치스케줄ID : {}, 배치작업ID : {}, 배치결과저장(insert) 에러 : {}", batchResult.getBatchSchdulId(), batchResult.getBatchOpertId(), e.getMessage());
-			LOGGER.error("(En) [" + e.getClass() + "] BatchScheduleID : {}, BatchJobID : {}, BatchResult(insert) Error : {}", batchResult.getBatchSchdulId(), batchResult.getBatchOpertId(), e.getMessage());
+			LOGGER.error("(Ko) 배치스케줄ID : {}, 배치작업ID : {}, 배치결과저장(insert) 에러 : {}", batchResult.getBatchSchdulId(), batchResult.getBatchOpertId());
+			LOGGER.error("(En) [" + e.getClass() + "] BatchScheduleID : {}, BatchJobID : {}, BatchResult(insert) Error : {}", batchResult.getBatchSchdulId(), batchResult.getBatchOpertId());
 		}
 
 	}
@@ -118,7 +118,7 @@ public class BatchJobListener implements JobListener {
 	@Override
 	public void jobWasExecuted(JobExecutionContext jobContext, JobExecutionException jee) {
 		LOGGER.debug("job[{}] jobWasExecuted", jobContext.getJobDetail().getKey().getName());
-		LOGGER.debug("job[{}] 수행시간 : {}, {}", jobContext.getJobDetail().getKey().getName(), jobContext.getFireTime(), jobContext.getJobRunTime());
+		LOGGER.debug("job[{}] 수행시간 : {}, {}", jobContext.getJobDetail().getKey().getName(), jobContext.getFireTime());
 
 		int jobResult = 99;
 		BatchResult batchResult = new BatchResult();
@@ -162,16 +162,12 @@ public class BatchJobListener implements JobListener {
 			// 저장이 이상없이 완료되면  datamap에 배치결과ID를 저장한다.
 			dataMap.put("batchResultId", batchResult.getBatchResultId());
 		} catch (ClassCastException e) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
-			LOGGER.error("[ClassCastException] 배치결과ID : {}, 배치스케줄ID : {}, 배치작업ID : {}, 배치결과저장(update) 에러 : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId(),
-					batchResult.getBatchOpertId(), e.getMessage());
-			LOGGER.error("[ClassCastException] ["+ e.getClass() + "] BatchResultID : {}, BatchScheduleID : {}, BatchJobID : {}, BatchResult(update) Error : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId(),
-					batchResult.getBatchOpertId(), e.getMessage());
+			LOGGER.error("[ClassCastException] 배치결과ID : {}, 배치스케줄ID : {}, 배치작업ID : {}, 배치결과저장(update) 에러 : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId());
+			LOGGER.error("[ClassCastException] ["+ e.getClass() + "] BatchResultID : {}, BatchScheduleID : {}, BatchJobID : {}, BatchResult(update) Error : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId());
 		} catch (Exception e) {
 			//2017.02.06 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			LOGGER.error("(Ko) 배치결과ID : {}, 배치스케줄ID : {}, 배치작업ID : {}, 배치결과저장(update) 에러 : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId(),
-					batchResult.getBatchOpertId(), e.getMessage());
-			LOGGER.error("(En) ["+ e.getClass() + "] BatchResultID : {}, BatchScheduleID : {}, BatchJobID : {}, BatchResult(update) Error : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId(),
-					batchResult.getBatchOpertId(), e.getMessage());
+			LOGGER.error("(Ko) 배치결과ID : {}, 배치스케줄ID : {}, 배치작업ID : {}, 배치결과저장(update) 에러 : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId());
+			LOGGER.error("(En) ["+ e.getClass() + "] BatchResultID : {}, BatchScheduleID : {}, BatchJobID : {}, BatchResult(update) Error : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId());
 		}
 	}
 
@@ -211,16 +207,12 @@ public class BatchJobListener implements JobListener {
 			// 저장이 이상없이 완료되면  datamap에 배치결과ID를 저장한다.
 			dataMap.put("batchResultId", batchResult.getBatchResultId());
 		} catch (ClassCastException e) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
-			LOGGER.error("[ClassCastException] 배치결과ID : {}, 배치스케줄ID : {}, 배치작업ID : {}, 배치결과저장(update) 에러 : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId(),
-					batchResult.getBatchOpertId(), e.getMessage());
-			LOGGER.error("[ClassCastException] ["+ e.getClass() + "] BatchResultID : {}, BatchScheduleID : {}, BatchJobID : {}, BatchResult(update) Error : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId(),
-					batchResult.getBatchOpertId(), e.getMessage());
+			LOGGER.error("[ClassCastException] 배치결과ID : {}, 배치스케줄ID : {}, 배치작업ID : {}, 배치결과저장(update) 에러 : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId());
+			LOGGER.error("[ClassCastException] ["+ e.getClass() + "] BatchResultID : {}, BatchScheduleID : {}, BatchJobID : {}, BatchResult(update) Error : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId());
 		} catch (Exception e) {
 			//2017.02.06 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			LOGGER.error("(Ko) 배치결과ID : {}, 배치스케줄ID : {}, 배치작업ID : {}, 배치결과저장(update) 에러 : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId(),
-					batchResult.getBatchOpertId(), e.getMessage());
-			LOGGER.error("(En) ["+ e.getClass() +"] BachResultID : {}, BatchScheduleID : {}, 배치작업ID : {}, 배치결과저장(update) 에러 : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId(),
-					batchResult.getBatchOpertId(), e.getMessage());
+			LOGGER.error("(Ko) 배치결과ID : {}, 배치스케줄ID : {}, 배치작업ID : {}, 배치결과저장(update) 에러 : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId());
+			LOGGER.error("(En) ["+ e.getClass() +"] BachResultID : {}, BatchScheduleID : {}, 배치작업ID : {}, 배치결과저장(update) 에러 : {}", batchResult.getBatchResultId(), batchResult.getBatchSchdulId());
 		}
 
 	}

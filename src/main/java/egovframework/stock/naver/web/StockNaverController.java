@@ -739,31 +739,25 @@ public class StockNaverController {
 	 * @return
 	 * @throws Exception
 	 */
-<<<<<<< HEAD
 //	@IncludedInfo(name="네이버 리서치",order = 11140 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
 //    @RequestMapping("/stock/naver/selectNaverResearchMain.do")
 //    public String selectNaverResearchMain(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
 //		model.addAllAttributes(commandMap);
 //        return "egovframework/stock/naver/research/researchMain";
 //    }
-=======
 	@IncludedInfo(name="네이버 리서치",order = 11140 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
     @RequestMapping("/stock/naver/selectNaverResearchMain.do")
     public String selectNaverResearchMain(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
 		model.addAllAttributes(commandMap);
         return "egovframework/stock/naver/research/researchMain";
     }
->>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
 	
 	/**
 	 * 네이버 리서치 
 	 * @return
 	 * @throws Exception
 	 */
-<<<<<<< HEAD
 	@IncludedInfo(name="네이버 리서치",order = 11140 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
-=======
->>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
     @RequestMapping("/stock/naver/selectNaverResearchList.do")
     public String selectNaverResearchList(@RequestParam Map<String, Object> commandMap, @ModelAttribute("naverResearchVO") NaverResearchVO naverResearchVO,
     		HttpServletRequest request,ModelMap model) throws Exception {
@@ -773,7 +767,6 @@ public class StockNaverController {
 		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".research.title")));
 		System.out.println(commandMap);
 		naverResearchVO.setPageUnit(30);
-<<<<<<< HEAD
 		String searchGubun = StringUtil.nvl(commandMap.get("searchGubun"),"company");
 		String searchGubunNm = StringUtil.nvl(commandMap.get("searchGubunNm"),"종목분석");
 		String gubun = StringUtil.nvl(commandMap.get("gubun"),"");
@@ -781,13 +774,7 @@ public class StockNaverController {
 		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
 		commandMap.put("searchGubun", searchGubun);
 		commandMap.put("searchGubunNm", searchGubunNm);
-=======
-		String searchGubun = StringUtil.nvl(commandMap.get("searchGubun"),"");
-		String searchGubunNm = StringUtil.nvl(commandMap.get("searchGubunNm"),"");
-		String gubun = StringUtil.nvl(commandMap.get("gubun"),"");
-		String today = ComDateUtil.getToday_v01("yyyy-MM-dd");
-		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
->>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
+
 		commandMap.put("today", today);
 		System.out.println("searchGubun=>"+searchGubun);
 		System.out.println("searchGubunNm=>"+searchGubunNm);

@@ -31,10 +31,7 @@ public class IncludedCompInfoVO {
 	private String keyL1;
 	private String keyL2;
 	private String order_title;
-<<<<<<< HEAD
 	private String useYn = "Y";	//메뉴 사용유무
-=======
->>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
 	
 	public String getName() {
 		return name;
@@ -84,14 +81,11 @@ public class IncludedCompInfoVO {
 	public void setOrder_title(String order_title) {
 		this.order_title = order_title;
 	}
-<<<<<<< HEAD
 	public String isUseYn() {
 		return useYn;
 	}
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
 	}
-=======
->>>>>>> 9e8d188b980609abd0d5b2c40af6feb1d3595fca
 
 }

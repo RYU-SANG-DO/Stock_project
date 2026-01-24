@@ -121,7 +121,7 @@ public class BackupJobListener implements JobListener {
 	 */
 	public void jobWasExecuted(JobExecutionContext jobContext, JobExecutionException jee) {
 		LOGGER.debug("job[{}] jobWasExecuted", jobContext.getJobDetail().getKey().getName());
-		LOGGER.debug("job[{}] 수행시간 : {}, {}", jobContext.getJobDetail().getKey().getName(), jobContext.getFireTime(), jobContext.getJobRunTime());
+		LOGGER.debug("job[{}] 수행시간 : {}, {}", jobContext.getJobDetail().getKey().getName(), jobContext.getFireTime());
 
 		boolean jobResult = false;
 		BackupResult backupResult = new BackupResult();
@@ -166,12 +166,12 @@ public class BackupJobListener implements JobListener {
 			// 저장이 이상없이 완료되면  datamap에 배치결과ID를 저장한다.
 			dataMap.put("backupResultId", backupResult.getBackupResultId());
 		} catch (SQLException e) {
-			LOGGER.error("(Ko)백업결과ID : {}, 백업작업ID : {}, 배치결과저장(update) 에러 : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId(), e.getMessage());
-			LOGGER.error("(En) ["+ e.getClass() + "] BackupResultID : {}, BackupJobID : {}, BatchResult(update) Error : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId(), e.getMessage());
+			LOGGER.error("(Ko)백업결과ID : {}, 백업작업ID : {}, 배치결과저장(update) 에러 : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId());
+			LOGGER.error("(En) ["+ e.getClass() + "] BackupResultID : {}, BackupJobID : {}, BatchResult(update) Error : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId());
 		} catch (Exception e) {
 			//2017.02.13 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			LOGGER.error("(Ko)백업결과ID : {}, 백업작업ID : {}, 배치결과저장(update) 에러 : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId(), e.getMessage());
-			LOGGER.error("(En) ["+ e.getClass() + "] BackupResultID : {}, BackupJobID : {}, BatchResult(update) Error : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId(), e.getMessage());
+			LOGGER.error("(Ko)백업결과ID : {}, 백업작업ID : {}, 배치결과저장(update) 에러 : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId());
+			LOGGER.error("(En) ["+ e.getClass() + "] BackupResultID : {}, BackupJobID : {}, BatchResult(update) Error : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId());
 		}
 	}
 
@@ -209,12 +209,12 @@ public class BackupJobListener implements JobListener {
 			// 저장이 이상없이 완료되면  datamap에 배치결과ID를 저장한다.
 			dataMap.put("backupResultId", backupResult.getBackupResultId());
 		} catch (SQLException e) {
-			LOGGER.error("(Ko) 백업결과ID : {}, 백업작업ID : {}, 배치결과저장(update) 에러 : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId(), e.getMessage());
-			LOGGER.error("(En) ["+ e.getClass() + "] BackupResultID : {}, BackupJobID : {}, BatchResult(update) Error : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId(), e.getMessage());
+			LOGGER.error("(Ko) 백업결과ID : {}, 백업작업ID : {}, 배치결과저장(update) 에러 : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId());
+			LOGGER.error("(En) ["+ e.getClass() + "] BackupResultID : {}, BackupJobID : {}, BatchResult(update) Error : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId());
 		} catch (Exception e) {
 			//2017.02.13 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			LOGGER.error("(Ko) 백업결과ID : {}, 백업작업ID : {}, 배치결과저장(update) 에러 : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId(), e.getMessage());
-			LOGGER.error("(En) ["+ e.getClass() + "] BackupResultID : {}, BackupJobID : {}, BatchResult(update) Error : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId(), e.getMessage());
+			LOGGER.error("(Ko) 백업결과ID : {}, 백업작업ID : {}, 배치결과저장(update) 에러 : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId());
+			LOGGER.error("(En) ["+ e.getClass() + "] BackupResultID : {}, BackupJobID : {}, BatchResult(update) Error : {}", backupResult.getBackupResultId(), backupResult.getBackupOpertId());
 		}
 
 	}
