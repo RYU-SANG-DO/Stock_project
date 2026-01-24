@@ -226,7 +226,7 @@ function menuMove(param , name){
 		<input type="hidden" name="searchGubun"	value="${searchGubun}"/>
 		<input type="hidden" name="searchGubunNm" value="${searchGubunNm}"/>
 		
-		<!-- 검색영역 -->
+		<!-- 검색영역111 -->
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />" style="padding: 10px;">
 			<ul style="margin-bottom: 0px;">
 				<li><div style="line-height:4px;">&nbsp;</div><div>검색구분 : </div></li>
@@ -383,7 +383,7 @@ function menuMove(param , name){
 			<c:if test="${subject.title eq '첨부'}">		<c:set var="col_style" value="10"/></c:if>
 			<c:if test="${subject.title eq '작성일'}">	<c:set var="col_style" value="10"/></c:if>
 			<c:if test="${subject.title eq '조회수'}">	<c:set var="col_style" value="10"/></c:if>
-			<col <c:if test="${not empty col_style}">style="width: ${col_style}%;"</c:if>>
+			<col <c:if test="${not empty col_style}">style="width: ${col_style}%;"</c:if>> 
 		</c:forEach>
 	</colgroup>
 	<thead>
