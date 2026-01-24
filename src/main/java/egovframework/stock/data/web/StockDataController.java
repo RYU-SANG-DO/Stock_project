@@ -1,0 +1,85 @@
+package egovframework.stock.data.web;
+
+import java.util.List;
+import java.util.Map;
+
+import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.web.PagingManageController;
+import egovframework.com.ext.ldapumt.service.EgovOrgManageLdapService;
+import egovframework.com.ext.ldapumt.service.UcorgVO;
+import egovframework.com.ext.ldapumt.service.UserVO;
+import egovframework.stock.com.StringUtil;
+import egovframework.stock.com.dartUtil;
+import egovframework.stock.dart.service.StockDartService;
+import egovframework.stock.data.service.StockDataService;
+import egovframework.stock.data.service.StocksDataVO;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class StockDataController {
+
+	@Autowired
+	private StockDataService stockDataService;
+
+    @Resource(name="egovMessageSource")
+    EgovMessageSource egovMessageSource;
+    
+    /** EgovPropertyService */
+    @Resource(name = "propertiesService")
+    protected EgovPropertyService propertiesService;
+    
+    @Resource(name = "pagingManageController")
+   	private PagingManageController pagingManageController;
+
+	
+
+    /**
+	 * DART 주식 종목 내역
+	 * @return
+	 * @throws Exception
+	 */
+    @RequestMapping("/stock/data/selectStocksList.do")
+    public String selectStocksList(@RequestParam Map<String, Object> commandMap , @ModelAttribute("stocksDataVO") StocksDataVO stocksDataVO,  HttpServletRequest request, ModelMap model) throws Exception {
+		System.out.println(commandMap);
+		String dart_api_url = StringUtil.nvl(egovMessageSource.getMessage("stock.dart.api.url"));
+//		model.addAllAttributes(commandMap);
+//        return "egovframework/stock/data/stocksList";
+        
+    	// 내역 조회
+		stocksDataVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		stocksDataVO.setPageSize(propertiesService.getInt("pageSize"));
+
+    	/** pageing */
+    	PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(stocksDataVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(stocksDataVO.getPageUnit());
+		paginationInfo.setPageSize(stocksDataVO.getPageSize());
+
+		stocksDataVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		stocksDataVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		stocksDataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+		List<Map<String,Object>> resultList = stockDataService.selectStocksList(stocksDataVO);
+        model.addAttribute("resultList", resultList);
+        
+       int totCnt = stockDataService.selectStocksListTotCnt(stocksDataVO);
+       paginationInfo.setTotalRecordCount(totCnt);
+       model.addAttribute("paginationInfo", paginationInfo);
+
+        model.addAllAttributes(commandMap);
+        return "egovframework/stock/data/stocksList";
+    }
+}
