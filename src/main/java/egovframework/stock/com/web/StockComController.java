@@ -1,25 +1,7 @@
 package egovframework.stock.com.web;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import egovframework.com.cmm.EgovMessageSource;
-import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.ext.ldapumt.service.EgovOrgManageLdapService;
-import egovframework.com.ext.ldapumt.service.UcorgVO;
-import egovframework.com.ext.ldapumt.service.UserVO;
-import egovframework.com.sym.ccm.cca.service.CmmnCodeVO;
-import egovframework.com.sym.ccm.cca.service.EgovCcmCmmnCodeManageService;
-import egovframework.stock.com.StringUtil;
-import egovframework.stock.com.dartUtil;
-import egovframework.stock.dart.service.StockDartService;
-import egovframework.stock.vo.dart.CompanyVO;
-import egovframework.stock.vo.dart.FnlttsinglacntallVO;
-import egovframework.stock.vo.dart.ListVO;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -32,13 +14,17 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+
+import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.sym.ccm.cca.service.CmmnCodeVO;
+import egovframework.com.sym.ccm.cca.service.EgovCcmCmmnCodeManageService;
+import egovframework.stock.com.StringUtil;
+import egovframework.stock.com.service.StockComService;
+import egovframework.stock.dart.service.StockDartService;
 
 @Controller
 public class StockComController {
-
-	@Autowired
-	private StockDartService stockDartService;
 
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
@@ -46,6 +32,9 @@ public class StockComController {
     /** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
+	
+	@Resource(name = "StockComService")
+    private StockComService stockComService;
 	
 	@Resource(name = "CmmnCodeManageService")
     private EgovCcmCmmnCodeManageService cmmnCodeManageService;
@@ -63,17 +52,17 @@ public class StockComController {
 		System.out.println(commandMap);
 
 		model.addAllAttributes(commandMap);
-        return "egovframework/stock/com/stockThemeComList";
+        return "forward:/stock/com/selectComThemeCodeList.do";
     }
 	
 	/**
-	 * 주식 공통
+	 * 주식 테마 코드 관리
 	 * @return
 	 * @throws Exception
 	 */
-	@IncludedInfo(name="주식 공통",order = 10010 ,gid = 200 ,keyL1="stock" ,keyL2="com" ,lv=1)
-    @RequestMapping("/stock/com/selectThemeNmgList.do")
-    public String selectThemeNmgList(@ModelAttribute("searchVO") CmmnCodeVO searchVO ,@RequestParam Map<String, Object> commandMap , HttpServletRequest request, ModelMap model) throws Exception {
+	@IncludedInfo(name="주식 테마 코드 관리",order = 10010 ,gid = 200 ,keyL1="stock" ,keyL2="com" ,lv=1)
+    @RequestMapping("/stock/com/selectComThemeCodeList.do")
+    public String selectComThemeCodeList(@ModelAttribute("searchVO") CmmnCodeVO searchVO ,@RequestParam Map<String, Object> commandMap , HttpServletRequest request, ModelMap model) throws Exception {
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -88,13 +77,13 @@ public class StockComController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<CmmnCodeVO> CmmnCodeList = cmmnCodeManageService.selectCmmnCodeList(searchVO);
-		model.addAttribute("resultList", CmmnCodeList);
+		List<Map<String, Object>> resultList = stockComService.selectComThemeCodeList(commandMap);
+        model.addAttribute("resultList", resultList);
 
-		int totCnt = cmmnCodeManageService.selectCmmnCodeListTotCnt(searchVO);
+		int totCnt = stockComService.selectComThemeCodeListTotCnt(commandMap);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-        return "egovframework/stock/com/stockThemeComList";
+        return "egovframework/stock/com/stockComThemeList";
     }
 
 	

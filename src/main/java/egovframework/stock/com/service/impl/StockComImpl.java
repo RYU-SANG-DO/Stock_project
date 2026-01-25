@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
+import egovframework.com.sym.ccm.cca.service.CmmnCodeVO;
 import egovframework.stock.com.service.StockComService;
 import egovframework.stock.dart.service.StockDartService;
 
@@ -21,6 +22,12 @@ public class StockComImpl extends EgovAbstractServiceImpl implements StockComSer
 	@Override
 	public List<Map<String, Object>> selectComThemeCodeList(Map<String, Object> map) throws Exception {
 		return stockComDao.selectComThemeCodeList(map);
+	}
+	
+	//테마 내역 건수 조회
+	@Override
+	public int selectComThemeCodeListTotCnt(Map<String, Object> map) throws Exception {
+		return stockComDao.selectComThemeCodeListTotCnt(map);
 	}
 
 	//테마 상세 조회
@@ -46,6 +53,7 @@ public class StockComImpl extends EgovAbstractServiceImpl implements StockComSer
 	public int deleteComThemeCode(Map<String, Object> map) throws Exception {
 		return stockComDao.deleteComThemeCode(map);
 	}
+
 
 
 

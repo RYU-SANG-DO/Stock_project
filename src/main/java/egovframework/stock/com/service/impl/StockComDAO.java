@@ -14,6 +14,10 @@ public class StockComDAO extends EgovComAbstractDAO {
 	public List<Map<String, Object>> selectComThemeCodeList(Map<String, Object> map) throws Exception{
 		return selectList("StockComDAO.selectComThemeCodeList", map);
 	}
+	//테마 내역 건수 조회
+	public int selectComThemeCodeListTotCnt(Map<String, Object> map) throws Exception{
+		return selectOne("StockComDAO.selectComThemeCodeListTotCnt", map);
+	}
 	//테마 상세 조회
 	public Map<String, Object> selectComThemeCodeDetail(Map<String, Object> map) throws Exception{
 		return selectOne("StockComDAO.selectComThemeCodeDetail", map);

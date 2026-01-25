@@ -33,58 +33,58 @@
  ******************************************************** */
 function fn_egov_init(){
 	// 첫 입력란에 포커스..
-	document.CcmCodeForm.searchCondition.focus();
+	document.stockForm.searchCondition.focus();
 }
 
 /*********************************************************
  * 페이징 처리 함수
  ******************************************************** */
-function fn_egov_select_linkPage(pageNo){
-	document.CcmCodeForm.pageIndex.value = pageNo;
-	document.CcmCodeForm.action = "<c:url value='/sym/ccm/cca/SelectCcmCmmnCodeList.do'/>";
-   	document.CcmCodeForm.submit();
+function fn_linkPage(pageNo){
+	document.stockForm.pageIndex.value = pageNo;
+	document.stockForm.action = "<c:url value='/stock/com/selectComThemeCodeList.do'/>";
+   	document.stockForm.submit();
 }
 /*********************************************************
  * 조회 처리 함수
  ******************************************************** */
-function fn_egov_search_code(){
-	document.CcmCodeForm.pageIndex.value = 1;
-	document.CcmCodeForm.submit();
+function fn_search(){
+	document.stockForm.pageIndex.value = 1;
+	document.stockForm.submit();
 }
 /* ********************************************************
  * 상세회면 처리 함수
  ******************************************************** */
-function fn_egov_inquire_codedetail(codeId) {
+function fn_codedetail(codeId) {
 	// 사이트 키값(siteId) 셋팅.
-	document.CcmCodeForm.codeId.value = codeId;
-  	document.CcmCodeForm.action = "<c:url value='/sym/ccm/cca/SelectCcmCmmnCodeDetail.do'/>";
-  	document.CcmCodeForm.submit();
+	document.stockForm.codeId.value = codeId;
+  	document.stockForm.action = "<c:url value='/stock/com/selectComThemeCodeDetail.do'/>";
+  	document.stockForm.submit();
 }
 </script>
 </head>
 <body onload="fn_egov_init()">
 
-<form name="CcmCodeForm" action="<c:url value='/sym/ccm/cca/SelectCcmCmmnCodeList.do'/>" method="post" onSubmit="fn_egov_search_code(); return false;"> 
+<form name="stockForm" action="<c:url value='/stock/com/selectComThemeCodeList.do'/>" method="post" onSubmit="fn_search(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	
 	<!-- 검색영역 -->
 			<!-- 검색조건선택 -->
-	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
+	<div class="search_box" title="이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다.">
 		<ul>
 			<li>
-				<select name="searchCondition" title="<spring:message code="title.searchCondition" />">
+				<select name="searchCondition" title="검색조건">
 					<%-- <option <c:if test="${searchVO.searchCondition == ''}">selected="selected"</c:if>><spring:message code="input.select" /></option><!-- 선택하세요 --> --%>
-					<option selected value=''><spring:message code="input.select" /></option><!-- 선택하세요 -->
-					<option value="1"  <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if> ><spring:message code="comSymCcmCca.cmmnCodeVO.codeId" /></option><!-- 코드ID -->
-					<option value="2"  <c:if test="${searchVO.searchCondition == '2'}">selected="selected"</c:if> ><spring:message code="comSymCcmCca.cmmnCodeVO.codeIdNm" /></option><!-- 코드ID명 -->
+					<option selected value=''>선택하세요</option><!-- 선택하세요 -->
+					<option value="1"  <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if> >Code ID</option><!-- 코드ID -->
+					<option value="2"  <c:if test="${searchVO.searchCondition == '2'}">selected="selected"</c:if> >Code ID Name</option><!-- 코드ID명 -->
 				</select>
 			</li>
 			<!-- 검색키워드 및 조회버튼 -->
 			<li>
-				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
-				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/sym/ccm/cca/RegistCcmCmmnCodeView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<input class="s_input" name="searchKeyword" type="text"  size="35" title="검색 입력" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
+				<input type="submit" class="s_btn" value="조회" title="조회 버튼" />
+				<span class="btn_b"><a href="<c:url value='/sym/ccm/cca/RegistCcmCmmnCodeView.do' />"  title="등록 버튼">등록</a></span>
 			</li>
 		</ul>
 	</div>
@@ -117,9 +117,9 @@ function fn_egov_inquire_codedetail(codeId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td><c:out value='${resultInfo.clCodeNm}'/></td>
-		<td><a href="<c:url value='/sym/ccm/cca/SelectCcmCmmnCodeDetail.do'/>?codeId=${resultInfo.codeId}" onClick="fn_egov_inquire_codedetail('<c:out value="${resultInfo.codeId}"/>');return false;"><c:out value='${fn:substring(resultInfo.codeId, 0, 40)}'/></a></td>
-		<td><a href="<c:url value='/sym/ccm/cca/SelectCcmCmmnCodeDetail.do'/>?codeId=${resultInfo.codeId}" onClick="fn_egov_inquire_codedetail('<c:out value="${resultInfo.codeId}"/>');return false;"><c:out value='${fn:substring(resultInfo.codeIdNm, 0, 40)}'/></a></td>
+		<td><c:out value='${resultInfo.themeName}'/></td>
+		<td><a href="#none" onClick="fn_codedetail('<c:out value="${resultInfo.themeId}"/>');return false;"><c:out value='${fn:substring(resultInfo.themeId, 0, 40)}'/></a></td>
+		<td><a href="#none" onClick="fn_codedetail('<c:out value="${resultInfo.themeId}"/>');return false;"><c:out value='${fn:substring(resultInfo.themeName, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.useAt}'/></td>
 	</tr>
 	</c:forEach>
@@ -129,7 +129,7 @@ function fn_egov_inquire_codedetail(codeId) {
 	<!-- paging navigation -->
 	<div class="pagination">
 		<ul>
-		<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_linkPage"/>
+		<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_linkPage"/>
 		</ul>
 	</div>
 	 

@@ -3,6 +3,8 @@ package egovframework.stock.com.service;
 import java.util.List;
 import java.util.Map;
 
+import egovframework.com.sym.ccm.cca.service.CmmnCodeVO;
+
 /**
  *  DART
  * <pre>
@@ -18,6 +20,8 @@ public interface StockComService{
 
 	//테마 내역 조회
 	List<Map<String, Object>> selectComThemeCodeList(Map<String, Object> map) throws Exception;
+	//테마 내역 건수 조회
+	int selectComThemeCodeListTotCnt(Map<String, Object> map) throws Exception;
 	//테마 상세 조회
     Map<String, Object> selectComThemeCodeDetail(Map<String, Object> map) throws Exception;
     //테마 등록
