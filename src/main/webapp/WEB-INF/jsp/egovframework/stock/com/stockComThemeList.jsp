@@ -101,11 +101,11 @@ function fn_egov_inquire_codedetail(codeId) {
 	</colgroup>
 	<thead>
 	<tr>
-		<th><spring:message code="table.num" /></th><!-- 번호 -->
-		<th><spring:message code="comSymCcmCca.cmmnCodeVO.clCodeNm" /></th><!-- 분류코드명 -->
-		<th class="board_th_link"><spring:message code="comSymCcmCca.cmmnCodeVO.codeId" /></th><!-- 코드ID -->
-		<th><spring:message code="comSymCcmCca.cmmnCodeVO.codeIdNm"/></th><!-- 코드ID -->
-		<th><spring:message code="comSymCcmCca.cmmnCodeVO.useAt" /></th><!-- 사용여부 -->
+		<th>번호</th><!-- 번호 -->
+		<th>분류코드</th><!-- 분류코드명 -->
+		<th class="board_th_link">코드ID</th><!-- 코드ID -->
+		<th>코드명</th><!-- 코드ID -->
+		<th>사용여부</th><!-- 사용여부 -->
 	</tr>
 	</thead>
 	<tbody class="ov">
