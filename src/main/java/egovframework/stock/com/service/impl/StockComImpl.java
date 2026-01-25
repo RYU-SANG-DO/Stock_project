@@ -17,6 +17,36 @@ public class StockComImpl extends EgovAbstractServiceImpl implements StockComSer
 	@Resource(name = "StockComDAO")
     private StockComDAO stockComDao;
 
+	//테마 내역 조회
+	@Override
+	public List<Map<String, Object>> selectComThemeCodeList(Map<String, Object> map) throws Exception {
+		return stockComDao.selectComThemeCodeList(map);
+	}
+
+	//테마 상세 조회
+	@Override
+	public Map<String, Object> selectComThemeCodeDetail(Map<String, Object> map) throws Exception {
+		return stockComDao.selectComThemeCodeDetail(map);
+	}
+
+	//테마 등록
+	@Override
+	public void insertComThemeCode(Map<String, Object> map) throws Exception {
+		stockComDao.insertComThemeCode(map);
+	}
+
+	//테마 수정
+	@Override
+	public int updateComThemeCode(Map<String, Object> map) throws Exception {
+		return stockComDao.updateComThemeCode(map);
+	}
+
+	//테마 삭제
+	@Override
+	public int deleteComThemeCode(Map<String, Object> map) throws Exception {
+		return stockComDao.deleteComThemeCode(map);
+	}
+
 
 
 }
