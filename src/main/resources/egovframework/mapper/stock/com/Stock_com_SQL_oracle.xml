@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일				수정내용
+  ========= 		=================================================
+  2025.02.27		공통 정보
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StockComDAO">
+
+	<!-- 테마 내역 조회 -->
+	<select id="selectComThemeCodeList" parameterType="java.util.Map" resultType="egovMap">
+		/*selectComThemeCodeList*/ 
+	    SELECT 
+	        LEVEL,
+	        THEME_ID, 
+	        THEME_NAME, 
+	        THEME_LEVEL,
+	        UP_THEME_ID, 
+	        THEME_DESC,
+	        SYS_CONNECT_BY_PATH(THEME_NAME, ' > ') AS "path"
+	    FROM STOCK_THEME_CODE
+	    WHERE 1=1
+	    <if test="searchKeyword != null and searchKeyword != ''">
+	        AND THEME_NAME LIKE '%' || #{searchKeyword} || '%'
+	    </if>
+	    START WITH UP_THEME_ID IS NULL
+	    CONNECT BY PRIOR THEME_ID = UP_THEME_ID
+	    ORDER SIBLINGS BY THEME_ID
+	</select>
+	
+	<!-- 테마 내역 건수 조회 -->
+	<select id="selectComThemeCodeListTotCnt" parameterType="java.util.Map" resultType="java.lang.Integer">
+		/*selectComThemeCodeListTotCnt*/
+	    SELECT 
+	        COUNT(1)
+	    FROM STOCK_THEME_CODE
+	    WHERE 1=1
+	    <if test="searchKeyword != null and searchKeyword != ''">
+	        AND THEME_NAME LIKE '%' || #{searchKeyword} || '%'
+	    </if>
+	</select>
+	
+	<!-- 테마 상세 조회 -->
+	<select id="selectComThemeCodeDetail" parameterType="java.util.Map" resultType="egovMap">
+		/*selectComThemeCodeDetail*/
+	    SELECT 
+	        THEME_ID, 
+	        THEME_NAME, 
+	        THEME_LEVEL,
+	        UP_THEME_ID, 
+	        THEME_DESC,
+	        REG_DATE
+	    FROM STOCK_THEME_CODE
+	    WHERE THEME_ID = #{themeId}
+	</select>
+	
+	<!-- 테마 등록 -->
+	<insert id="insertComThemeCode" parameterType="java.util.Map">
+		/*insertComThemeCode*/
+	    INSERT INTO STOCK_THEME_CODE (
+	        THEME_ID, THEME_NAME, THEME_LEVEL, UP_THEME_ID, THEME_DESC, REG_DATE
+	    ) VALUES (
+	        #{themeId}, #{themeName}, #{themeLevel}, #{upThemeId}, #{themeDesc} , SYSDATE
+	    )
+	</insert>
+	
+	<!-- 테마 수정 -->
+	<update id="updateComThemeCode" parameterType="java.util.Map">
+		/*updateComThemeCode*/
+	    UPDATE STOCK_THEME_CODE	
+	    SET THEME_NAME = #{themeName},
+	        THEME_LEVEL = #{themeLevel},
+	        UP_THEME_ID = #{upThemeId},
+	        THEME_DESC = #{themeDesc}
+	    WHERE THEME_ID = #{themeId}
+	</update>
+	
+	<!-- 테마 삭제 -->
+	<delete id="deleteComThemeCode" parameterType="java.util.Map">
+		/*deleteComThemeCode*/
+	    DELETE FROM STOCK_THEME_CODE	
+	    WHERE THEME_ID = #{themeId}
+	</delete>
+
+</mapper>
