@@ -45,7 +45,7 @@ public class StockComController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name="주식 공통",order = 10000 ,gid = 200 ,keyL1="stock" ,keyL2="com" ,lv=0)
-    @RequestMapping("/stock/com/theme/selectComList.do")
+    @RequestMapping("/stock/com/selectComList.do")
     public String selectComList(@RequestParam Map<String, Object> commandMap , HttpServletRequest request, ModelMap model) throws Exception {
 		String apiGrpCd = StringUtil.nvl(commandMap.get("apiGrpCd"),"DS001");
 		commandMap.put("apiGrpCd", apiGrpCd);
@@ -60,31 +60,63 @@ public class StockComController {
 	 * @return
 	 * @throws Exception
 	 */
-	@IncludedInfo(name="주식 테마 코드 관리",order = 10010 ,gid = 200 ,keyL1="stock" ,keyL2="com" ,lv=1)
+	@IncludedInfo(name="테마 코드 관리",order = 10010 ,gid = 200 ,keyL1="stock" ,keyL2="com" ,lv=1)
     @RequestMapping("/stock/com/theme/selectComThemeCodeList.do")
     public String selectComThemeCodeList(@ModelAttribute("searchVO") CmmnCodeVO searchVO ,@RequestParam Map<String, Object> commandMap , HttpServletRequest request, ModelMap model) throws Exception {
-		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
-
-		/** pageing */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
-
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+//		/** EgovPropertyService.sample */
+//		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+//		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+//
+//		/** pageing */
+//		PaginationInfo paginationInfo = new PaginationInfo();
+//		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+//		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+//		paginationInfo.setPageSize(searchVO.getPageSize());
+//
+//		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+//		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+//		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		List<Map<String, Object>> resultList = stockComService.selectComThemeCodeList(commandMap);
         model.addAttribute("resultList", resultList);
 
-		int totCnt = stockComService.selectComThemeCodeListTotCnt(commandMap);
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
+//		int totCnt = stockComService.selectComThemeCodeListTotCnt(commandMap);
+//		paginationInfo.setTotalRecordCount(totCnt);
+//		model.addAttribute("paginationInfo", paginationInfo);
         return "egovframework/stock/com/theme/stockComThemeList";
     }
+	
+	@RequestMapping("/stock/com/theme/stockComThemeCodeRegist.do")
+    public String stockComThemeCodeRegist(@ModelAttribute("searchVO") CmmnCodeVO searchVO ,@RequestParam Map<String, Object> commandMap , HttpServletRequest request, ModelMap model) throws Exception {
+		String sCmd = (String) commandMap.get("cmd");
+        String resultMsg = "";
 
+        if ("insert".equals(sCmd)) {
+        	stockComService.insertComThemeCode(commandMap);
+            resultMsg = "등록되었습니다.";
+        } else if ("update".equals(sCmd)) {
+        	stockComService.updateComThemeCode(commandMap);
+            resultMsg = "수정되었습니다.";
+        } else if ("delete".equals(sCmd)) {
+        	stockComService.deleteComThemeCode(commandMap);
+            resultMsg = "삭제되었습니다.";
+        }
+        
+        return "redirect:/stock/com/theme/selectComThemeCodeList.do?resultMsg=" + java.net.URLEncoder.encode(resultMsg, "UTF-8");
+    }
+
+	/**
+	 * 상위 테마 ID 조회 팝업 
+	 * @return
+	 * @throws Exception
+	 */
+    @RequestMapping("/stock/com/theme/selectComThemeCodeListPop.do")
+    public String selectComThemeCodeListPop(@ModelAttribute("searchVO") CmmnCodeVO searchVO ,@RequestParam Map<String, Object> commandMap , HttpServletRequest request, ModelMap model) throws Exception {
+
+		List<Map<String, Object>> resultList = stockComService.selectComThemeCodeList(commandMap);
+        model.addAttribute("resultList", resultList);
+
+        return "egovframework/stock/com/theme/stockComThemeListPop";
+    }
 	
 }
