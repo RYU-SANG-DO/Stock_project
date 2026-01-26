@@ -22,7 +22,7 @@
                 <if test="searchKeyword != null and searchKeyword != ''">
                     AND THEME_NAME LIKE '%' || #{searchKeyword} || '%'
                 </if>
-        		ORDER BY THEME_ID ASC
+        		ORDER BY NVL(THEME_ORDR,1) ASC , THEME_ID ASC
 	</select>
 	
 	<!-- 테마 내역 건수 조회 -->
