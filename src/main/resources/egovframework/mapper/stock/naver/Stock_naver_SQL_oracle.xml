@@ -7,5 +7,23 @@
 <mapper namespace="StockNaverDAO">
 
 		
-	
+	<insert id="insertNaverResearchInfo" parameterType="egovframework.stock.vo.naver.NaverResearchCrawVO">
+        /* 중복 데이터 방지를 위한 MERGE 구문 사용 (제목과 작성일 기준) */
+        MERGE INTO STOCKS_RESEARCH_DATA T
+        USING DUAL
+        ON (T.RP_TITLE = #{title} AND T.RP_DATE = #{regDate})
+        WHEN NOT MATCHED THEN
+            INSERT (
+                RP_ID, RP_TITLE, RP_DATE, RP_LINK, RESEARCH_TYPE, FRST_REGIST_PNTTM
+            ) VALUES (
+                SEQ_STOCK_RESEARCH_ID.NEXTVAL,
+                #{title},
+                #{regDate},
+                #{linkUrl},
+                #{viewCount},
+                #{researchType},
+                SYSDATE
+            )
+    </insert>
+    
 </mapper>

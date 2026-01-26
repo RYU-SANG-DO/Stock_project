@@ -96,6 +96,21 @@ $(function(){
 			$(".stype").hide();
 			$("."+type).show();
 		});
+		
+		    // 1. 전체 선택 / 해제
+		    $('#checkAll').on('change', function() {
+		        // 전체 선택 체크박스의 상태를 개별 체크박스에 일괄 적용
+		        $('.chk').prop('checked', $(this).is(':checked'));
+		    });
+
+		    // 2. 개별 체크박스 클릭 시 '전체 선택' 상태 동기화
+		    $('.chk').on('change', function() {
+		        const total = $('.chk').length;
+		        const checked = $('.chk:checked').length;
+
+		        // 개별 체크박스 전체 개수와 체크된 개수가 같으면 전체 선택 체크
+		        $('#checkAll').prop('checked', total === checked);
+		    });
 });
 //검색
 function fncSelectDataList(pageNo){
@@ -388,7 +403,7 @@ function menuMove(param , name){
 	</colgroup>
 	<thead>
 	<tr class="algin-center">
-		<th></th>
+		<th><input type="checkbox" name="checkAll" id="checkAll" class="check2" title="전체선택"/></th>
 		<th>순번</th>
 		<c:forEach var="subject" items="${titleList}" varStatus="substatus">
 			<th>${subject.title}</th>
@@ -403,7 +418,7 @@ function menuMove(param , name){
 	</c:if>
 	<c:forEach var="item" items="${researchList}" varStatus="status">
 	<tr>
-		<td><input type="checkbox" name="chk_report" value=""/></td>
+		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
 		<td><c:out value="${item.nuidx}"/></td>
 		<c:forEach var="subject" items="${item.detailList}" varStatus="substatus">
 			<td>
