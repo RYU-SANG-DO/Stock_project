@@ -19,12 +19,12 @@
 	</bean>
 
 	<!-- 게시판 통계 스케줄러 정의, 스케줄러 적용시 아래 주석 제거 필요 -->
-	<bean id="bbsStatsSummaryScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<!-- <bean id="bbsStatsSummaryScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="bbsStatsTrigger" />
 			</list>
 		</property>
-	</bean>
+	</bean> -->
 	
 </beans>

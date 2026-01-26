@@ -20,12 +20,12 @@
 
 	
 	<!-- 사용자 로그 생성 스케줄러 -->
-	<bean id="userLogScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<!-- <bean id="userLogScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="userLogTrigger" />				
 			</list>
 		</property>
-	</bean>
+	</bean> -->
 
 </beans>

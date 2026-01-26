@@ -1,16 +1,12 @@
 <%
  /**
-  * @Class Name : EgovCcmCmmnCodeList.jsp
-  * @Description : 공통코드 목록 화면
+  * @Class Name : stockComThemeList.jsp
+  * @Description : 테마 목록 화면
   * @Modification Information
   * @
-  * @  수정일             수정자                   수정내용
-  * @ -------    --------    ---------------------------
-  * @ 2009.02.01   박정규              최초 생성
-  *   2017.08.08   이정은              표준프레임워크 v3.7 개선
-  *  @author 공통서비스팀
-  *  @since 2009.02.01
-  *  @version 1.0
+  * @  수정일			수정내용
+  * @ -----------		---------------------------
+  * @ 2026.01.26		최초 생성
   *  @see
   *
   */
@@ -20,13 +16,9 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<c:set var="pageTitle"><spring:message code="comSymCcmCca.cmmnCodeVO.title"/></c:set>
-<!DOCTYPE html>
-<html>
-<head>
-<title>${pageTitle} <spring:message code="title.list" /></title>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
+<c:set var="pageTitle">테마 <spring:message code="title.list" /></c:set>
+
+<jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
 <script type="text/javascript">
 /*********************************************************
  * 초기화
@@ -101,11 +93,11 @@ function fn_codedetail(codeId) {
 	</colgroup>
 	<thead>
 	<tr>
-		<th>번호</th><!-- 번호 -->
-		<th>분류코드</th><!-- 분류코드명 -->
-		<th class="board_th_link">코드ID</th><!-- 코드ID -->
-		<th>코드명</th><!-- 코드ID -->
-		<th>사용여부</th><!-- 사용여부 -->
+		<th>번호</th>
+		<th>분류코드</th>
+		<th class="board_th_link">코드ID</th>
+		<th>코드명</th>
+		<th>사용여부</th>
 	</tr>
 	</thead>
 	<tbody class="ov">

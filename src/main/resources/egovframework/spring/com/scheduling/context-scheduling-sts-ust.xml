@@ -19,12 +19,12 @@
 	</bean>
 
 	<!-- 사용자 통계 스케줄러 정의, 스케줄러 적용 -->
-	<bean id="userStatsSummaryScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<!-- <bean id="userStatsSummaryScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="userStatsTrigger" />
 			</list>
 		</property>
-	</bean>
+	</bean> -->
 
 </beans>

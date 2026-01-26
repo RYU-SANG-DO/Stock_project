@@ -45,14 +45,14 @@ public class StockComController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name="주식 공통",order = 10000 ,gid = 200 ,keyL1="stock" ,keyL2="com" ,lv=0)
-    @RequestMapping("/stock/com/selectComList.do")
+    @RequestMapping("/stock/com/theme/selectComList.do")
     public String selectComList(@RequestParam Map<String, Object> commandMap , HttpServletRequest request, ModelMap model) throws Exception {
 		String apiGrpCd = StringUtil.nvl(commandMap.get("apiGrpCd"),"DS001");
 		commandMap.put("apiGrpCd", apiGrpCd);
 		System.out.println(commandMap);
 
 		model.addAllAttributes(commandMap);
-        return "forward:/stock/com/selectComThemeCodeList.do";
+        return "forward:/stock/com/theme/selectComThemeCodeList.do";
     }
 	
 	/**
@@ -61,7 +61,7 @@ public class StockComController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name="주식 테마 코드 관리",order = 10010 ,gid = 200 ,keyL1="stock" ,keyL2="com" ,lv=1)
-    @RequestMapping("/stock/com/selectComThemeCodeList.do")
+    @RequestMapping("/stock/com/theme/selectComThemeCodeList.do")
     public String selectComThemeCodeList(@ModelAttribute("searchVO") CmmnCodeVO searchVO ,@RequestParam Map<String, Object> commandMap , HttpServletRequest request, ModelMap model) throws Exception {
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -83,7 +83,7 @@ public class StockComController {
 		int totCnt = stockComService.selectComThemeCodeListTotCnt(commandMap);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-        return "egovframework/stock/com/stockComThemeList";
+        return "egovframework/stock/com/theme/stockComThemeList";
     }
 
 	

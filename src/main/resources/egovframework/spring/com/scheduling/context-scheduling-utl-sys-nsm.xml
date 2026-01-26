@@ -17,6 +17,7 @@
 	</bean>
 	
 	<!-- 모니터링 스케줄러 -->
+	<!-- 
 	<bean id="mntrngScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
@@ -24,5 +25,5 @@
 			</list>
 		</property>
 	</bean>
-
+ -->
 </beans>

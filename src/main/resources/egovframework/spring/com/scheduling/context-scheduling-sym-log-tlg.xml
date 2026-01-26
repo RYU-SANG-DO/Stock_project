@@ -17,6 +17,7 @@
 	</bean>
 
 	<!-- 송수신 로그 스케줄러 -->
+	<!-- 
 	<bean id="trsmrcvScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
@@ -24,5 +25,5 @@
 			</list>
 		</property>
 	</bean>
-
+ -->
 </beans>

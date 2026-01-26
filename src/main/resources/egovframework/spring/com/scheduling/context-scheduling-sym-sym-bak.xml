@@ -7,5 +7,4 @@
         <property name="egovBackupOpertService" ref="egovBackupOpertService"/>
         <property name="idgenService" ref="egovBackupResultIdGnrService"/>
     </bean>
-
 </beans>

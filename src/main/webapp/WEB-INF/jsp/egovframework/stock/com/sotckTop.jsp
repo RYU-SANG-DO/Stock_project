@@ -14,7 +14,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>${pageTitle} <spring:message code="title.list" /></title>
+<title>${pageTitle}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery-3.7.1.min.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery-ui-1.14.0.js'/>" ></script>
@@ -26,3 +26,5 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/util.js'/>" ></script>
+
+<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
