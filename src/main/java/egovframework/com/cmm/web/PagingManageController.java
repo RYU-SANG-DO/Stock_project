@@ -42,12 +42,12 @@ public class PagingManageController {
     	int pageSize;
 
     	try{
-    		currentPageNo 	= Integer.parseInt((String) commandMap.get("pageIndex"));
+    		currentPageNo 	= Integer.parseInt(StringUtil.nvl(commandMap.get("pageIndex"),"1"));
     	} catch (Exception e){
     		currentPageNo 	= 1;
     	}
     	try{
-    		pageUnit 		= Integer.parseInt((String) commandMap.get("pageUnit"));
+    		pageUnit 		= Integer.parseInt(StringUtil.nvl(commandMap.get("pageUnit"),"30"));
     	} catch (Exception e){
     		pageUnit		= propertiesService.getInt("pageUnit");
     		commandMap.put("pageUnit", pageUnit);

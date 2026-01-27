@@ -27,12 +27,16 @@ import egovframework.stock.com.ExcelUtil;
 import egovframework.stock.com.StringUtil;
 import egovframework.stock.com.stockUtil;
 import egovframework.stock.com.naver.naverUtil;
+import egovframework.stock.info.service.StockInfoService;
 import egovframework.stock.vo.naver.NaverResearchVO;
 import egovframework.stock.vo.naver.NaverSearchResponseVO;
 import egovframework.stock.vo.naver.NaverThemeVO;
 
 @Controller
 public class StockInfoController {
+	
+	@Autowired
+	private StockInfoService stockInfoService;
 
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
@@ -60,7 +64,7 @@ public class StockInfoController {
 	 */
 	@IncludedInfo(name="거래내역",order = 15010 ,gid = 200 ,keyL1="stock" ,keyL2="my" ,lv=1)
     @RequestMapping("/stock/info/selectMyStockList.do")
-    public String selectMyStockList(@RequestParam Map<String, Object> reqParamMap, @ModelAttribute("naverThemeVO") NaverThemeVO naverThemeVO,
+    public String selectMyStockList(@RequestParam Map<String, Object> reqParamMap, 
     		HttpServletRequest request,
     		ModelMap model) throws Exception {
 		System.out.println("거래내역 시작");
@@ -71,13 +75,74 @@ public class StockInfoController {
 		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
 		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
 		commandMap.put("today_ko", today_ko);
+		int totCnt = stockInfoService.selectMyStockListTotCnt(commandMap);
+		pagingManageController.PagingManage(commandMap, model, totCnt);
+		List<Map<String, Object>> list = stockInfoService.selectMyStockList(commandMap);
 		
 		model.addAttribute("paramInfo",commandMap);
-		model.addAttribute("naverThemeVO",naverThemeVO);
+		model.addAttribute("list",list);
 		model.addAllAttributes(commandMap);
 		System.out.println("거래내역 종료");
         return "egovframework/stock/info/myStockList";
     }
 	
+	/*
+	 * 거래내역 엑셀 다운로드
+	 * */
+	@RequestMapping("/stock/info/selectMyStockListExclDownAjax.do")
+    public ModelAndView selectMyStockListExclDownAjax(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
+		System.out.println("거래내역 엑셀 다운로드 시작");
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("jsonView");
+		String downGubun = StringUtil.nvl(commandMap.get("downGubun"),"");
+		System.out.println(commandMap);
+		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+		String filePath = egovMessageSource.getMessage("stock.com.filePath");
+		String resultFilePath = egovMessageSource.getMessage("stock.info.filePath");
+		String fileName = "stock_form.xlsx";
+		String fileResultName = "거래내역_"+today+".xlsx";
+		String searchKeyword = StringUtil.nvl(commandMap.get("searchKeyword"),"");
+		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		commandMap.put("today_ko", today_ko);
+		int totCnt = stockInfoService.selectMyStockListTotCnt(commandMap);
+		commandMap.put("pageUnit", totCnt);
+		List<Map<String, Object>> allList = stockInfoService.selectMyStockList(commandMap);
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("filePath", filePath);
+		paramMap.put("fileName", fileName);
+		paramMap.put("fileResultName", fileResultName);
+		paramMap.put("resultFilePath", resultFilePath);
+		ExcelUtil.resultSetMnspXlsxExcelCreateV02(allList , paramMap ,0 , 0);
+		modelAndView.addObject("fileResultName", fileResultName);
+		modelAndView.addObject("checkCount", allList.size());
+		System.out.println("거래내역 엑셀 다운로드 종료");
+		return modelAndView;
+    }
+	
+	
+	/**
+	 * 등록 , 수정 , 삭제
+	 * @return
+	 * @throws Exception
+	 */
+    @RequestMapping("/stock/info/moveMyStock.do")
+    public String moveMyStock(@RequestParam Map<String, Object> reqParamMap, 
+    		HttpServletRequest request,
+    		ModelMap model) throws Exception {
+		System.out.println("등록/수정/삭제 시작");
+		Map<String, Object> commandMap = StringUtil.mapToMap(request);
+		System.out.println(commandMap);
+		String seq = StringUtil.nvl(commandMap.get("seq"),"");
+		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(seq)?"insert":"update"));
+		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		commandMap.put("today_ko", today_ko);
+		
+		model.addAttribute("paramInfo",commandMap);
+		model.addAllAttributes(commandMap);
+		System.out.println("등록/수정/삭제 종료");
+        return "forward:/stock/info/selectMyStockList.do";
+    }
 
 }

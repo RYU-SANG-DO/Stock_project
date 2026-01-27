@@ -15,5 +15,9 @@ import java.util.Map;
  * </pre>
  */
 public interface StockInfoService{
+	
+	List<Map<String, Object>> selectMyStockList(Map<String, Object> commandMap) throws Exception;
+
+	int selectMyStockListTotCnt(Map<String, Object> commandMap) throws Exception;
 
 }

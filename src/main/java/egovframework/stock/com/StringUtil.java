@@ -28,10 +28,8 @@ import org.w3c.dom.NodeList;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import egovframework.com.cmm.EgovMessageSource;
-import egovframework.stock.vo.dart.FnlttsinglacntallVO;
 import egovframework.stock.vo.dart.ListVO;
 import egovframework.stock.vo.naver.NaverSearchResponseVO;
 
