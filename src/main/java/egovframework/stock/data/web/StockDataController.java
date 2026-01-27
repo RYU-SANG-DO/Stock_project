@@ -47,10 +47,11 @@ public class StockDataController {
 	
 
     /**
-	 * DART 주식 종목 내역
+	 * 주식 종목 내역
 	 * @return
 	 * @throws Exception
 	 */
+    @IncludedInfo(name="종목 내역 정보",order = 10200 ,gid = 200 ,keyL1="stock" ,keyL2="data",lv=0)
     @RequestMapping("/stock/data/selectStocksList.do")
     public String selectStocksList(@RequestParam Map<String, Object> commandMap , @ModelAttribute("stocksDataVO") StocksDataVO stocksDataVO,  HttpServletRequest request, ModelMap model) throws Exception {
 		System.out.println(commandMap);
@@ -59,8 +60,9 @@ public class StockDataController {
 //        return "egovframework/stock/data/stocksList";
         
     	// 내역 조회
-		stocksDataVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		//stocksDataVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		stocksDataVO.setPageSize(propertiesService.getInt("pageSize"));
+		stocksDataVO.setPageUnit(30);
 
     	/** pageing */
     	PaginationInfo paginationInfo = new PaginationInfo();

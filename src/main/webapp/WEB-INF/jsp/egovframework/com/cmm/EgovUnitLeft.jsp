@@ -90,12 +90,12 @@ link:hover { color: #000000; text-decoration: none; }
 			</li>
 			<c:set var="isCom" value="true"/>
 		</c:if>
-		<c:if test="${isExt == 'false' && result.gid == '100'}">
+		<%-- <c:if test="${isExt == 'false' && result.gid == '100'}">
 			<li>
 				<strong class="left_title_strong"><strong class="top_title_strong"><spring:message code="comCmm.ext.title"/></strong></strong><!-- 외부 추가 컴포넌트 -->
 			</li>
 			<c:set var="isExt" value="true"/>
-		</c:if>
+		</c:if> --%>
 		<c:if test="${isStock == 'false' && result.gid == '200'}">
 			<li>
 			<c:set var="mess_code" value="comCmm.${result.keyL1}.title"/>

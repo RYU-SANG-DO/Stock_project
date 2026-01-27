@@ -48,7 +48,6 @@ public class StockItemsController {
 	 * @return
 	 * @throws Exception
 	 */
-	@IncludedInfo(name="종목 내역 정보",order = 14000 ,gid = 100 ,keyL1="stock" ,keyL2="items",lv=0)
     @RequestMapping("/stock/items/selectItemsMain.do")
     public String selectItemsMain(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
 		model.addAllAttributes(commandMap);

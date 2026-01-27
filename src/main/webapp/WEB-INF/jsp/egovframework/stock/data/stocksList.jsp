@@ -83,20 +83,27 @@ function choisStocksListSearch(vCode,vName) {
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
-			<col style="width:10%"/>
-			<col style="width:20%" />
+			<col style="width:3%"/>
+			<col style="width:5%"/>
+			<col style="width:10%" />
+			<col/>
 			<col/>
 		</colgroup>
 		<thead>
 			<tr>
+			   <th scope="col">순번</th>
 			   <th scope="col">종목코드</th>
 			   <th scope="col">종목명</th>
+			   <th scope="col">업종</th>
 			   <th scope="col">주요제품</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="result" items="${resultList}" varStatus="status">
 			  <tr>
+			  	<td>
+			    	<c:out value="${result.rn}"/>
+			    </td>
 			    <td>
 			      <span class="link">
 			      	<a href="#LINK" onclick="choisStocksListSearch('<c:out value="${result.stocksCode}"/>','<c:out value="${result.stocksName}"/>'); return false;"><c:out value="${result.stocksCode}"/></a>
@@ -106,6 +113,9 @@ function choisStocksListSearch(vCode,vName) {
 			    	<span class="link">
 			      	<a href="#LINK" onclick="choisStocksListSearch('<c:out value="${result.stocksCode}"/>','<c:out value="${result.stocksName}"/>'); return false;"><c:out value="${result.stocksName}"/></a>
 			      </span>
+			    </td>
+			     <td>
+			    	<c:out value="${result.upjong}"/>
 			    </td>
 			    <td style="text-align: left;">
 			    	<c:out value="${result.mainPrduct}"/>
