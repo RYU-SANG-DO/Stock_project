@@ -418,7 +418,9 @@ function menuMove(param , name){
 	</c:if>
 	<c:forEach var="item" items="${researchList}" varStatus="status">
 	<tr>
-		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
+		<td>
+			<input type="checkbox" name="checkField" value="${item.codeNid}" class="chk" title="선택"/>
+		</td>
 		<td><c:out value="${item.nuidx}"/></td>
 		<c:forEach var="subject" items="${item.detailList}" varStatus="substatus">
 			<td>

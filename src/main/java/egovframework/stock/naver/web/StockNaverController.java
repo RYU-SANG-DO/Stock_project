@@ -767,6 +767,7 @@ public class StockNaverController {
 		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".research.title")));
 		System.out.println(commandMap);
 		naverResearchVO.setPageUnit(30);
+		String searchType = StringUtil.nvl(commandMap.get("searchType"),"");
 		String searchGubun = StringUtil.nvl(commandMap.get("searchGubun"),"company");
 		String searchGubunNm = StringUtil.nvl(commandMap.get("searchGubunNm"),"종목분석");
 		String gubun = StringUtil.nvl(commandMap.get("gubun"),"");
@@ -815,6 +816,7 @@ public class StockNaverController {
 				}				
 			}else {
 				List<Map<String, Object>> detailList = new ArrayList<>();
+				String code_nid ="";
 				for(int j = 0 ; j < columsize ; j++) {
 					Map<String, Object> jmap = new HashMap<>();
 					jmap.put("idx", j);
@@ -823,11 +825,13 @@ public class StockNaverController {
 					jmap.put("dhref", map.get("parameter"+j+"_href"));
 					jmap.put("nid", map.get("nid"));
 					jmap.put("code", map.get("code"));
+					code_nid = map.get("code")+"_"+map.get("nid");
 					detailList.add(jmap);
 				}			
 				
 				map.put("nuidx", (((pgOn-1)*30)+num));
 				map.put("num", (num++));
+				map.put("codeNid", code_nid);
 				map.put("detailList", detailList);
 				researchList.add(map);
 			}

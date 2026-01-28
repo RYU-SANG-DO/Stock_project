@@ -3,6 +3,9 @@ package egovframework.stock.com;
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -348,5 +351,26 @@ public class StringUtil {
 			} 		
 			return resultVo;
 		}
+		
+		public static boolean isValidDate(String dateStr) {
+	        // 1. 형식 지정 (yy.MM.dd)
+	        // ResolverStyle.STRICT를 사용하면 2월 30일 같은 존재하지 않는 날짜를 엄격하게 체크합니다.
+	        // 다만 STRICT 모드에서 yy(2자리 연도)를 쓰려면 uuuu(연대 포함) 등 복잡한 설정이 필요하므로,
+	        // 일반적인 검증에는 기본 파싱을 사용하거나 아래처럼 단순화된 패턴을 씁니다.
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
+
+	        try {
+	            // 2. 날짜 파싱 시도
+	            LocalDate date = LocalDate.parse(dateStr, formatter);
+	            
+	            // 3. 입력한 문자열과 파싱된 날짜가 정확히 일치하는지 재확인 (선택 사항)
+	            // 예: "26.1.11"을 "26.01.11"로 취급하는 것을 막고 싶다면 이 단계가 필요합니다.
+	            return dateStr.equals(date.format(formatter));
+	            
+	        } catch (DateTimeParseException e) {
+	            // 파싱 실패 시 유효하지 않은 날짜
+	            return false;
+	        }
+	    }
 	    
 }

@@ -122,7 +122,7 @@ public class StockInfoController {
 	
 	
 	/**
-	 * 등록 , 수정 , 삭제
+	 * 등록 , 수정
 	 * @return
 	 * @throws Exception
 	 */
@@ -130,7 +130,8 @@ public class StockInfoController {
     public String moveMyStock(@RequestParam Map<String, Object> reqParamMap, 
     		HttpServletRequest request,
     		ModelMap model) throws Exception {
-		System.out.println("등록/수정/삭제 시작");
+		System.out.println("등록/수정 화면 시작");
+		String returnUrl="egovframework/stock/info/myStockUpdt";
 		Map<String, Object> commandMap = StringUtil.mapToMap(request);
 		System.out.println(commandMap);
 		String seq = StringUtil.nvl(commandMap.get("seq"),"");
@@ -139,10 +140,43 @@ public class StockInfoController {
 		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
 		commandMap.put("today_ko", today_ko);
 		
+		if("insert".equals(move)){
+			returnUrl="egovframework/stock/info/myStockRegist";
+		}			
+		
 		model.addAttribute("paramInfo",commandMap);
 		model.addAllAttributes(commandMap);
-		System.out.println("등록/수정/삭제 종료");
-        return "forward:/stock/info/selectMyStockList.do";
+		System.out.println("등록/수정 화면 종료");
+		return returnUrl;
+    }
+    
+    /**
+	 * 등록 , 수정
+	 * @return
+	 * @throws Exception
+	 */
+    @RequestMapping("/stock/info/saveMyStock.do")
+    public String saveMyStock(@RequestParam Map<String, Object> reqParamMap, 
+    		HttpServletRequest request,
+    		ModelMap model) throws Exception {
+		System.out.println("등록/수정 시작");
+
+		Map<String, Object> commandMap = StringUtil.mapToMap(request);
+		System.out.println(commandMap);
+		String seq = StringUtil.nvl(commandMap.get("seq"),"");
+		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(seq)?"insert":"update"));
+		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		commandMap.put("today_ko", today_ko);
+		
+		if("insert".equals(move)){
+			
+		}			
+		
+		model.addAttribute("paramInfo",commandMap);
+		model.addAllAttributes(commandMap);
+		System.out.println("등록/수정 종료");
+		return "forward:/stock/info/selectMyStockList.do";
     }
 
 }

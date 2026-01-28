@@ -1583,6 +1583,15 @@ public class naverUtil extends StockDefaultVO{
 		    String brokerCode = StringUtil.nvl(paramMap.get("brokerCode"), "");
 		    String upjong = StringUtil.nvl(paramMap.get("upjong"), "");
 		    String page = StringUtil.nvl(paramMap.get("pageIndex"), "1");
+		    if("".equals(searchType)) {
+		    	keyword="";
+		    	writeFromDate="";
+		    	writeToDate="";
+		    	itemCode="";
+		    	itemName="";
+		    	brokerCode="";
+		    	upjong="";
+		    }
 
 		    // 2. 한글 파라미터 인코딩 (EUC-KR: 네이버 금융 레거시 페이지 호환)
 		    try {
@@ -1689,6 +1698,10 @@ public class naverUtil extends StockDefaultVO{
 		                        }else  if(aclass.indexOf("code=")>(-1)) {
 		                        	resultMap.put("code", extractNid(aclass , "code="));
 		                        }
+		                    }else {
+		                    	if(StringUtil.isValidDate(jelem.text()) && "date".equals(classnm)) {
+		                    		resultMap.put("date", jelem.text());
+		                    	}
 		                    }
 		                    
 		                    resultMap.put("parameter" + j, jelem.text());
@@ -1743,9 +1756,9 @@ public class naverUtil extends StockDefaultVO{
 		        if (tail.contains("&")) {
 		            //return tail.split("&")[0];
 		            result = tail.split("&")[0];
+		        }else {
+		        	result = tail;
 		        }
-		        //return tail;
-		        result = tail;
 		    }
 		    return result; // nid가 없으면 URL 전체를 ID로 사용 (보험용)
 		}
