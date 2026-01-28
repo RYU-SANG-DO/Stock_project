@@ -21,7 +21,6 @@ link:hover { color: #000000; text-decoration: none; }
 <c:set var="isCop" value="false"/>
 <c:set var="isUss" value="false"/>
 <c:set var="isSym" value="false"/>
-<c:set var="isSsi" value="false"/>
 <c:set var="isDam" value="false"/>
 <c:set var="isCom" value="false"/>
 <c:set var="isExt" value="false"/>
@@ -48,12 +47,6 @@ link:hover { color: #000000; text-decoration: none; }
 			</li>
 			<c:set var="isSec" value="true"/>
 		</c:if>
-		<c:if test="${isSts == 'false' && result.gid == '30'}">
-			<li>
-				<strong class="left_title_strong"><strong class="top_title_strong"><spring:message code="comCmm.sts.title"/></strong></strong><!-- 통계/리포팅 -->
-			</li>
-			<c:set var="isSts" value="true"/>
-		</c:if>
 		<c:if test="${isCop == 'false' && result.gid == '40'}">
 			<li>
 				<strong class="left_title_strong"><strong class="top_title_strong"><spring:message code="comCmm.cop.title"/></strong></strong><!-- 협업 -->
@@ -72,30 +65,6 @@ link:hover { color: #000000; text-decoration: none; }
 			</li>
 			<c:set var="isSym" value="true"/>
 		</c:if>
-		<c:if test="${isSsi == 'false' && result.gid == '70'}">
-			<li>
-				<strong class="left_title_strong"><strong class="top_title_strong"><spring:message code="comCmm.ssi.title"/></strong></strong><!-- 시스템/서비스연계  -->
-			</li>
-			<c:set var="isSsi" value="true"/>
-		</c:if>
-		<c:if test="${isDam == 'false' && result.gid == '80'}">
-			<li>
-				<strong class="left_title_strong"><strong class="top_title_strong"><spring:message code="comCmm.dam.title"/></strong></strong><!-- 디지털 자산 관리 -->
-			</li>
-			<c:set var="isDam" value="true"/>
-		</c:if>
-		<c:if test="${isCom == 'false' && result.gid == '90'}">
-			<li>
-				<strong class="left_title_strong"><strong class="top_title_strong"><spring:message code="comCmm.com.title"/></strong></strong> <!-- 요소기술 -->
-			</li>
-			<c:set var="isCom" value="true"/>
-		</c:if>
-		<%-- <c:if test="${isExt == 'false' && result.gid == '100'}">
-			<li>
-				<strong class="left_title_strong"><strong class="top_title_strong"><spring:message code="comCmm.ext.title"/></strong></strong><!-- 외부 추가 컴포넌트 -->
-			</li>
-			<c:set var="isExt" value="true"/>
-		</c:if> --%>
 		<c:if test="${isStock == 'false' && result.gid == '200'}">
 			<li>
 			<c:set var="mess_code" value="comCmm.${result.keyL1}.title"/>

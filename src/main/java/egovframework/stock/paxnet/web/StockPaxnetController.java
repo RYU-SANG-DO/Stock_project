@@ -18,29 +18,16 @@
  */
 package egovframework.stock.paxnet.web;
 
-import java.util.Map;
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.ext.ldapumt.service.EgovOrgManageLdapService;
-import egovframework.com.ext.ldapumt.service.UcorgVO;
-import egovframework.com.ext.ldapumt.service.UserVO;
-
-import javax.annotation.Resource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class StockPaxnetController {
-
-	@Autowired
-	private EgovOrgManageLdapService orgManageLdapService;
 
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
