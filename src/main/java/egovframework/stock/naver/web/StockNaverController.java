@@ -820,7 +820,8 @@ public class StockNaverController {
 					jmap.put("dhref", map.get("parameter"+j+"_href"));
 					jmap.put("nid", map.get("nid"));
 					jmap.put("code", map.get("code"));
-					code_nid = map.get("code")+"_"+map.get("nid");
+					jmap.put("date", map.get("date"));
+					code_nid = map.get("code")+"_"+map.get("nid")+"_"+map.get("date");
 					detailList.add(jmap);
 				}			
 				
@@ -848,6 +849,48 @@ public class StockNaverController {
 		model.addAllAttributes(commandMap);
 		System.out.println("네이버 리서치 종료");
         return "egovframework/stock/naver/research/researchList";
+    }
+	
+	/*
+	 * 주식 정보 등록
+	 * */
+	@RequestMapping("/stock/naver/insertNaverResearchAjax.do")
+    public ModelAndView insertNaverResearchAjax(
+    			@RequestParam Map<String, Object> commandMap,
+    			@RequestParam(value = "stocks", required = false) List<String> stocks,
+    			@ModelAttribute("naverThemeVO") NaverThemeVO naverThemeVO, 
+    			ModelMap model
+    		) throws Exception {
+		System.out.println("주식 정보 등록 시작");
+		System.out.println(stocks);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("jsonView");
+		String no = StringUtil.nvl(naverThemeVO.getNo(),"");
+		String type = StringUtil.nvl(naverThemeVO.getType(),"");
+		int pageIndex = Integer.parseInt(StringUtil.nvl(naverThemeVO.getPageIndex(),"1"));
+		System.out.println(naverThemeVO.toString());
+		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+		List<Map<String, Object>> allList = new ArrayList<Map<String, Object>>();
+		String filePath = egovMessageSource.getMessage("stock.com.filePath");
+		String resultFilePath = egovMessageSource.getMessage("stock.naver.filePath");
+		String fileName = "stock_form.xlsx";
+		String fileResultName = "업종별상세정보내역_"+today+".xlsx";
+		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		commandMap.put("today_ko", today_ko);
+
+		List<Map<String, Object>> upjongList=stockUtil.getStockUpjongThemeList(no, type, pageIndex);
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("filePath", filePath);
+		paramMap.put("fileName", fileName);
+		paramMap.put("fileResultName", fileResultName);
+		paramMap.put("resultFilePath", resultFilePath);
+		ExcelUtil.resultSetMnspXlsxExcelCreateV02(upjongList , paramMap ,0 , 0);
+		
+		modelAndView.addObject("fileResultName", fileResultName);
+		modelAndView.addObject("checkCount", allList.size());
+		System.out.println("주식 정보 등록 종료");
+		return modelAndView;
     }
 
 }

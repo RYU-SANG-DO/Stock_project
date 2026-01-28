@@ -158,7 +158,7 @@ public class StockInfoController {
 		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
 		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
 		commandMap.put("today_ko", today_ko);
-		
+		 
 		if("insert".equals(move)){
 			
 		}			

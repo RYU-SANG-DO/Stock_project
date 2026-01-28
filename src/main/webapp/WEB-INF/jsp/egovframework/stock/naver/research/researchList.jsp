@@ -192,6 +192,50 @@ function menuMove(param , name){
     document.listForm2.action = "<c:url value='/stock/naver/selectNaverResearchList.do'/>";
     document.listForm2.submit();
 }
+
+function fnInsertStock(){
+	// 1. 체크된 체크박스만 선택하여 값 추출
+    var checkedValues = $("input[name='checkField']:checked").map(function() {
+        return $(this).val();
+    }).get(); // .get()을 사용해야 순수 배열로 변환됩니다.
+
+    // 값이 하나도 선택되지 않았을 때의 처리 (선택 사항)
+    if (checkedValues.length === 0) {
+        alert("최소 하나 이상의 항목을 선택해주세요.");
+        return;
+    }
+
+    console.log("전송할 데이터:", checkedValues);
+	$.ajax({
+		type : "POST",
+		url : "<c:url value='/stock/naver/insertNaverResearchAjax.do'/>",
+		//data : { "knoTypeCd": $("#knoTypeCd").val() },
+		data: { 
+                stocks: checkedValues // 배열 데이터 전송
+            },
+         // 배열을 전송할 때 키 값에 '[]'가 붙는 것을 방지하려면 true 설정 (서버 환경에 따라 다름)
+        traditional: true,    
+		dataType : 'json',
+		success : function(returnData, status) {
+			console.log(status, returnData);
+			if(status == "success") {
+				alert(returnData.fileResultName+"파일로 다운로드가 완료되었습니다.");
+				return;
+			/* 	if(returnData.checkCount > 0 ) {
+					alert("입력하신 지식유형코드는 이미 사용중입니다.");
+					return;
+				} else {
+					alert("입력하신 지식유형코드는 사용하실 수 있습니다.");
+					return;
+				} */
+			} else{
+				alert("ERROR!");
+				return;
+			} 
+		}
+	});
+	
+}
 </script>
 <style>
 .search_box ul li{vertical-align: middle;}
@@ -379,7 +423,7 @@ function menuMove(param , name){
 			<ul style="margin-bottom: 0px;">
 				<!-- 검색키워드 및 조회버튼 -->
 				<li style="border: 0px solid #d2d2d2;">
-					<%-- <input type="button" class="s_btn" onClick="fncSelectList()" value="목록" title="목록 <spring:message code="input.button" />" /> --%>
+					<input type="button" class="s_btn" onClick="fnInsertStock()" value="등록" title="등록 <spring:message code="input.button" />" />
 					<input type="button" class="s_btn" onClick="excelDown('L')" value="<spring:message code="stock.com.excelDown.title" />" title="<spring:message code="stock.com.excelDown.title" /> <spring:message code="input.button" />" />
 				</li>
 			</ul>
