@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일				수정내용
+  ========= 		=================================================
+  2026.01.27		My 정보
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StockInfoDAO">
+
+		<select id="selectMyStockList"  parameterType="egovframework.stock.data.service.StocksDataVO" resultType="egovMap">
+		<![CDATA[
+		 SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT /*selectMyStockList*/
+				 A.SEQ
+				,A.CODE
+				,A.QY
+				,A.GUBUN
+				,A.DELNG_DE
+				,A.FEE
+				,A.TRFTAX
+				,A.INCMTAX
+				,A.UNIT_PRICE
+				,A.PRICE
+				,A.RM
+				,A.REG_DATE
+			FROM STOCKS_TRANSACTION_INFO A
+			WHERE 1=1
+			]]>
+			<if test="gubun != null and gubun != ''">
+				<![CDATA[
+					AND A.GUBUN = #{gubun}
+				]]>
+			</if>
+			<![CDATA[
+			ORDER BY A.DELNG_DE DESC
+			  ) TB )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+			]]> 
+	</select>
+	
+	<select id="selectMyStockListTotCnt" parameterType="java.util.Map" resultType="int">
+		<![CDATA[
+		SELECT COUNT(A.SEQ) AS "totcnt" FROM STOCKS_TRANSACTION_INFO A
+		WHERE 1=1
+		]]>
+		<if test="gubun != null and gubun != ''">
+			<![CDATA[
+				AND A.GUBUN = #{gubun}
+			]]>
+		</if>
+		
+	</select>
+	
+</mapper>
