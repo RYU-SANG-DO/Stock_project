@@ -27,7 +27,6 @@ $(function(){
 	         , showOn: 'button'
 	         , buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>'
 	         , buttonImageOnly: true
-	         
 	         , showMonthAfterYear: true
 	         , showOtherMonths: true
 		     , selectOtherMonths: true
