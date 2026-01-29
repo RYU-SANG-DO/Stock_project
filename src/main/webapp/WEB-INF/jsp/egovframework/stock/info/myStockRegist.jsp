@@ -140,7 +140,7 @@ input[type="number"] {
 			<td class="left">
 				<select name="gubun" id="gubun" title="구분" cssClass="txt">
 					<option value="BUY">매수</option>
-					<option value="SELL">매도</option>
+					<option value="SELL">매도</option> 
 				</select>
 			</td>
 		</tr>
