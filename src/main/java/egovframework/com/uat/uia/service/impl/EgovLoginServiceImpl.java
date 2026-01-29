@@ -5,17 +5,15 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.config.EgovLoginConfig;
-import egovframework.com.cop.ems.service.EgovSndngMailRegistService;
-import egovframework.com.cop.ems.service.SndngMailVO;
 import egovframework.com.uat.uia.service.EgovLoginService;
 import egovframework.com.utl.fcc.service.EgovNumberUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 /**
  * 일반 로그인, 인증서 로그인을 처리하는 비즈니스 구현 클래스
@@ -43,10 +41,6 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
     @Resource(name="loginDAO")
     private LoginDAO loginDAO;
 
-    /** EgovSndngMailRegistService */
-	@Resource(name = "sndngMailRegistService")
-    private EgovSndngMailRegistService sndngMailRegistService;
-	
 	@Resource(name = "egovLoginConfig")
 	EgovLoginConfig egovLoginConfig;
 
@@ -181,15 +175,6 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
     	pwVO.setUserSe(vo.getUserSe());
     	loginDAO.updatePassword(pwVO);
 
-    	// 4. 임시 비밀번호를 이메일 발송한다.(메일연동솔루션 활용)
-    	SndngMailVO sndngMailVO = new SndngMailVO();
-    	sndngMailVO.setDsptchPerson("webmaster");
-    	sndngMailVO.setRecptnPerson(vo.getEmail());
-    	sndngMailVO.setSj("[MOIS] 임시 비밀번호를 발송했습니다.");
-    	sndngMailVO.setEmailCn("고객님의 임시 비밀번호는 " + newpassword + " 입니다.");
-    	sndngMailVO.setAtchFileId("");
-
-    	result = sndngMailRegistService.insertSndngMail(sndngMailVO);
 
     	return result;
     }
