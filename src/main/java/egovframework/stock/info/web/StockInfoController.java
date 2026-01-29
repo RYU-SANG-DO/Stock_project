@@ -132,8 +132,11 @@ public class StockInfoController {
 		
 		if("insert".equals(move)){
 			returnUrl="egovframework/stock/info/myStockRegist";
-		}			
-		
+		}else {
+			Map<String, Object> infoMap = stockInfoService.selectMyStockDetail(commandMap);
+			model.addAttribute("infoMap",infoMap);
+		}
+		System.out.println("returnUrl=>"+returnUrl);
 		model.addAttribute("paramInfo",commandMap);
 		model.addAllAttributes(commandMap);
 		System.out.println("등록/수정 화면 종료");
@@ -158,10 +161,14 @@ public class StockInfoController {
 		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
 		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
 		commandMap.put("today_ko", today_ko);
-		 
+		 int cnt = 0;
 		if("insert".equals(move)){
-			
-		}			
+			 stockInfoService.insertMyStock(commandMap);
+		}else if("update".equals(move)){
+			cnt =stockInfoService.updateMyStock(commandMap);
+		}else if("delete".equals(move)){
+			cnt = stockInfoService.deleteMyStock(commandMap);
+		}
 		
 		model.addAttribute("paramInfo",commandMap);
 		model.addAllAttributes(commandMap);

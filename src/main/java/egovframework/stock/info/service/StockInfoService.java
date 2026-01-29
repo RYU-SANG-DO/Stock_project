@@ -20,4 +20,16 @@ public interface StockInfoService{
 
 	int selectMyStockListTotCnt(Map<String, Object> commandMap) throws Exception;
 
+	//거래내역 등록
+	void insertMyStock(Map<String, Object> commandMap) throws Exception;
+
+	//거래내역 수정
+	int updateMyStock(Map<String, Object> commandMap) throws Exception;
+
+	//거래내역 삭제
+	int deleteMyStock(Map<String, Object> commandMap) throws Exception;
+
+	//거래내역 상세 조회
+	Map<String, Object> selectMyStockDetail(Map<String, Object> commandMap) throws Exception;
+
 }
