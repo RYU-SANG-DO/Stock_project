@@ -22,11 +22,20 @@
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
 <script type="text/javascript">
 $(function(){
+<<<<<<< HEAD
 	$("#delngDe").datepicker( 
 	        {dateFormat:'yy-mm-dd'
 	         , showOn: 'button'
 	         , buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>'
 	         , buttonImageOnly: true
+=======
+	$("#delngDe").datepicker(  
+	        {dateFormat:'yy-mm-dd'
+	         , showOn: 'button'
+	         , buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>'
+	         , buttonImageOnly: true
+	         
+>>>>>>> branch 'main' of https://github.com/RYU-SANG-DO/Stock_project.git
 	         , showMonthAfterYear: true
 	         , showOtherMonths: true
 		     , selectOtherMonths: true
