@@ -21,8 +21,7 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javaScript">
-$(function(){
-	
+$(function(){	
 	 $('#popupStocks').click(function (e) {
      	e.preventDefault();
          //var page = $(this).attr("href");
