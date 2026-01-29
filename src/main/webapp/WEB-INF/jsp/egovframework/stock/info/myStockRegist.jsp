@@ -22,7 +22,7 @@
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
 <script type="text/javascript">
 $(function(){
-	$("#delngDe").datepicker(  
+	$("#delngDe").datepicker( 
 	        {dateFormat:'yy-mm-dd'
 	         , showOn: 'button'
 	         , buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>'
