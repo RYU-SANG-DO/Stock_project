@@ -138,7 +138,7 @@ input[type="number"] {
 			<th>구분 <span class="pilsu">*</span></th>
 			<td class="left">
 				<select name="gubun" id="gubun" title="구분" cssClass="txt">
-					<option value="BUY">매수</option>
+					<option value="BUY">매수</option> 
 					<option value="SELL">매도</option> 
 				</select>
 			</td>
