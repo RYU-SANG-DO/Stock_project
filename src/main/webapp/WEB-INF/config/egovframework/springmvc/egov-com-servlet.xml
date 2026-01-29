@@ -53,13 +53,10 @@
 
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
     
-	<bean id="egovWebLogInterceptor" class="egovframework.com.sym.log.wlg.web.EgovWebLogInterceptor" />
-
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
         <property name="interceptors">
             <list>
                 <ref bean="localeChangeInterceptor"/>
-                <ref bean="egovWebLogInterceptor"/>
             </list>
         </property>
     </bean>
