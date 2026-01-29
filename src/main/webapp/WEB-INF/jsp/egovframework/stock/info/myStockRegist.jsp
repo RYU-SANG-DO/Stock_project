@@ -20,19 +20,63 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
-<validator:javascript formName="cmmnClCodeVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
+$(function(){
+	$("#delngDe").datepicker(  
+	        {dateFormat:'yy-mm-dd'
+	         , showOn: 'button'
+	         , buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>'
+	         , buttonImageOnly: true
+	         
+	         , showMonthAfterYear: true
+	         , showOtherMonths: true
+		     , selectOtherMonths: true
+				
+	         , changeMonth: true // 월선택 select box 표시 (기본은 false)
+	         , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
+	         , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
+	});
+	
+	 $('#popupStocks').click(function (e) {
+	     	e.preventDefault();
+	         //var page = $(this).attr("href");
+	         var pagetitle = $(this).attr("title");
+	         var page = "<c:url value='/stock/data/selectStocksList.do'/>";
+	         var $dialog = $('<div style="overflow:hidden;padding: 0px 0px 0px 0px;"></div>')
+	         .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
+	         .dialog({
+	         	autoOpen: false,
+	             modal: true,
+	             width: 820,
+	             height: 700,
+	             title: pagetitle
+	     	});
+	     	$dialog.dialog('open');
+	     	
+	 	});
+})
 /* ********************************************************
  * 저장처리화면
  ******************************************************** */
 function fn_egov_regist_code(form){
-	if (!validateCmmnClCodeVO(form)) {	
-		return false;
-	} else {
-		if(confirm("<spring:message code="common.regist.msg" />")){	
+  	 if($("#stock_code").val() == ""){
+  		alert("종목은 필수입니다.");
+		return;
+  	 }else if($("#qy").val() == ""){
+  		alert("수량은 필수입니다.");
+		return;
+  	 }else if($("#unitPrice").val() == ""){
+  		alert("단가는 필수입니다.");
+		return;
+  	 }else if($("#delngDe").val() == ""){
+  		alert("거래일자는 필수입니다.");
+		return;
+  	 }else{
+  		if(confirm("<spring:message code="common.regist.msg" />")){	
+  			form.action="/stock/info/saveMyStock.do";	
 			form.submit();	
 		}
-	} 
+  	 }
 }
 
 /* ********************************************************
@@ -45,7 +89,16 @@ function fncShowMessg(){
 }
 
 </script>
-
+<style>
+input[type="number"] {
+	width:15%;
+    border: 1px solid #d2d2d2;
+    color: #727272;
+    }
+.cssright{
+	text-align: right;
+}    
+</style>
 </head>
 <body onLoad="fncShowMessg();">
 
@@ -59,54 +112,77 @@ function fncShowMessg(){
 	<table class="wTable" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle } <spring:message code="title.create" /></caption>
 	<colgroup>
-		<col style="width: 20%;"><col style="width: ;">
+		<col style="width: 20%;">
+		<col style="width: ;">
 	</colgroup>
 	<tbody>
 		<!-- 입력 -->
-		<c:set var="inputTxt"><spring:message code="input.input" /></c:set>
-		<c:set var="inputYes"><spring:message code="input.yes" /></c:set>
-		<c:set var="inputNo"><spring:message code="input.no" /></c:set>
-		
-		<!-- 분류코드 -->
-		<c:set var="title"><spring:message code="comSymCcmCcc.cmmnClCodeVO.clCode"/> </c:set>
 		<tr>
-			<th><label for="clCode">${title} <span class="pilsu">*</span></label></th>
+			<th><label for="code">종목코드 <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:input path="clCode" title="${title} ${inputTxt}" size="70" maxlength="70" />
-   				<div><form:errors path="clCode" cssClass="error" /></div>     
+   				<input type="text" name="code"	id="stock_code"/>
+   				<input type="text" name="codeNm" id="searchKeyword" size="30" maxlength="100" style="width: auto;" readonly="readonly"/>
+   				<a id="popupStocks" href="#none" target="_blank" title="종목 검색" style="selector-dummy:expression(this.hideFocus=false);">
+						<img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />" alt='' width="15" height="15" />(종목검색)
+					</a>
 			</td>
 		</tr>
 		
-		<!-- 분류코드명 -->
-		<c:set var="title"><spring:message code="comSymCcmCcc.cmmnClCodeVO.clCodeNm"/> </c:set>
 		<tr>
-			<th><label for="clCodeNm">${title} <span class="pilsu">*</span></label></th>
+			<th><label for="qy">수량 <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:input path="clCodeNm" title="${title} ${inputTxt}" size="70" maxlength="70" />
-   				<div><form:errors path="clCodeNm" cssClass="error" /></div>     
+   				<input type="number" name="qy"	id="qy" class="cssright" size="10" maxlength="10" style="text-align: right;"/>
 			</td>
 		</tr>
 		
-		<!-- 분류코드설명 -->
-		<c:set var="title"><spring:message code="comSymCcmCcc.cmmnClCodeVO.clCodeDc"/> </c:set>
 		<tr>
-			<th><label for="clCodeDc">${title } <span class="pilsu">*</span></label></th>
+			<th>구분 <span class="pilsu">*</span></th>
+			<td class="left">
+				<select name="gubun" id="gubun" title="구분" cssClass="txt">
+					<option value="BUY">매수</option>
+					<option value="SELL">매도</option>
+					<option value="NEUTRAL">중립</option>
+					<option value="HOLD">보유</option>
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<th><label for="fee">수수료</label></th>
+			<td class="left">
+   				<input type="number" name="fee"	id="fee" size="10" maxlength="5" class="cssright"/>원
+			</td>
+		</tr>
+		
+		<tr>
+			<th><label for="trftax">거래세/농특세</label></th>
+			<td class="left">			
+   				<input type="number" name="trftax"	id="trftax" size="10" maxlength="5" class="cssright"/>원
+			</td>
+		</tr>
+		<tr>
+			<th><label for="incmtax">소득세/주민세</label></th>
+			<td class="left">			
+   				<input type="number" name="incmtax"	id="incmtax" size="10" maxlength="5" class="cssright"/>원
+			</td>
+		</tr>
+		<tr>
+			<th><label for="unitPrice">단가 <span class="pilsu">*</span></label></th>
+			<td class="left">			
+   				<input type="number" name="unitPrice"	id="unitPrice" size="10" maxlength="5" class="cssright"/>원
+			</td>
+		</tr>
+		<tr>
+			<th><label for="delngDe">거래일자 <span class="pilsu">*</span></label></th>
+			<td class="left">
+   				<input type="text" name="delngDe"	id="delngDe" size="10" maxlength="15" readonly="readonly" style="text-align:cneter; width: auto; margin-right:5px;"/>
+			</td>
+		</tr>
+		
+		<tr>
+			<th><label for="rm">비고</label></th>
 			<td class="nopd">
-				<form:textarea path="clCodeDc" title="${title} ${inputTxt}" cols="300" rows="20" />   
-				<div><form:errors path="clCodeDc" cssClass="error" /></div>  
-			</td>
-		</tr>
-		
-		<!-- 사용여부 -->
-		<c:set var="title"><spring:message code="comSymCcmCcc.cmmnClCodeVO.useAt"/> </c:set>
-		<tr>
-			<th>${title } <span class="pilsu">*</span></th>
-			<td class="left">
-				<form:select path="useAt" title="${title} ${inputTxt}" cssClass="txt">
-					<form:option value="Y"  label=" ${inputYes}"/>
-					<form:option value="N" label=" ${inputNo}"/>
-				</form:select>
-				<div><form:errors path="useAt" cssClass="error" /></div>       
+				<textarea name="rm" title="비고" cols="300" rows="10" style="height:auto;"></textarea>   
 			</td>
 		</tr>
 		

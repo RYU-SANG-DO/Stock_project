@@ -49,4 +49,84 @@
 		
 	</select>
 	
+	<select id="selectMyStockDetail"  parameterType="egovframework.stock.data.service.StocksDataVO" resultType="egovMap">
+		<![CDATA[
+			SELECT /*selectMyStockDetail*/
+				 A.SEQ
+				,A.CODE AS STOCKS_CODE
+				,B.STOCKS_NAME
+				,A.QY
+				,A.GUBUN
+				,A.DELNG_DE
+				,A.FEE
+				,A.TRFTAX
+				,A.INCMTAX
+				,A.UNIT_PRICE
+				,A.PRICE
+				,A.RM
+				,A.REG_DATE
+			FROM STOCKS_TRANSACTION_INFO A,
+					STOCKS_LIST B
+			WHERE A.CODE =  B.STOCKS_CODE(+)
+			AND A.SEQ = #{seq}
+			]]> 
+	</select>
+	
+	
+	<!-- 거래내역 등록 -->
+	<insert id="insertMyStock" parameterType="java.util.Map">
+		<![CDATA[/*insertMyStock*/
+			INSRT INTO STOCKS_TRANSACTION_INFO ( 
+				SEQ,
+				CODE,
+				QY,
+				GUBUN,
+				DELNG_DE,
+				FEE,
+				TRFTAX,
+				INCMTAX,
+				UNIT_PRICE,
+				RM,
+				REG_DATE
+			  ) VALUES ( 
+							  SEQ_STOCKS_TRANSACTION_INFO.NEXTVAL , 
+							  #{code}, 
+							  NVL(#{qy},'0'), 
+							  #{gubun}, 
+							  #{delngDe}, 
+							  NVL(#{fee},'0'), 
+							  NVL(#{trftax},'0'), 
+							  NVL(#{incmtax},'0'), 
+							  NVL(#{unitPrice},'0'), 
+							  NVL(#{rm},''), 
+							  SYSDATE 
+							  )			
+		]]>
+	</insert>	
+	
+	<!-- 거래내역 수정 -->
+	<update id="updateMyStock" parameterType="java.util.Map">
+		<![CDATA[/*updateMyStock*/
+			UPDATE STOCKS_TRANSACTION_INFO
+			SET CODE = #{code},
+				QY = NVL(#{qy},'1'),
+				GUBUN = #{gubun},
+				DELNG_DE = #{delngDe},
+				FEE = NVL(#{fee},'0'),
+				TRFTAX = NVL(#{trftax},'0'),
+				INCMTAX = NVL(#{incmtax},'0'),
+				UNIT_PRICE = NVL(#{unitPrice},'0'),
+				RM = #{rm}
+			WHERE SEQ = #{seq}
+		]]>
+	</update>
+	
+	<!-- 거래내역 삭제 -->
+	<delete id="deleteMyStock" parameterType="java.util.Map">
+		<![CDATA[/*deleteMyStock*/
+			DELETE FROM STOCKS_TRANSACTION_INFO
+			WHERESEQ = #{seq}		
+		]]>
+	</delete>
+	
 </mapper>
