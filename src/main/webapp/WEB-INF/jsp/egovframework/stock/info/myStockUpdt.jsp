@@ -1,12 +1,12 @@
 <%
  /**
   * @Class Name :  myStockUpdt.jsp
-  * @Description :  공통분류코드 수정하는 화면
+  * @Description :  My 거래내역 수정하는 화면
   * @Modification Information
   * @
-  * @  수정일             수정자                   수정내용
-  * @ -------    --------    ---------------------------
-  * @ 2009.02.01   박정규              최초 생성
+  * @  수정일				수정내용
+  * @ --------------	---------------------------
+  * @ 2026.01.30			최초 생성
   *  
   */
 %>
@@ -15,96 +15,146 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
-<validator:javascript formName="cmmnClCodeVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
 /* ********************************************************
- * 초기화
+ * 수정처리화면
  ******************************************************** */
-function fn_egov_init(){
-	// 첫 입력란에 포커스..
-	document.getElementById("cmmnClCodeVO").clCodeNm.focus();
+function fn_egov_updt(){
+	let form = document.egovFrm;
+	form.mode.value = "update";	
+	 if($("#stock_code").val() == ""){
+	  		alert("종목은 필수입니다.");
+			return;
+	  	 }else if($("#qy").val() == ""){
+	  		alert("수량은 필수입니다.");
+			return;
+	  	 }else if($("#unitPrice").val() == ""){
+	  		alert("단가는 필수입니다.");
+			return;
+	  	 }else if($("#delngDe").val() == ""){
+	  		alert("거래일자는 필수입니다.");
+			return;
+	  	 }else{
+	  		$('#qy').val($('#qy').val().replace(/,/g, ""));
+	  		$('#fee').val($('#fee').val().replace(/,/g, ""));
+	  		$('#trftax').val($('#trftax').val().replace(/,/g, ""));
+	  		$('#incmtax').val($('#incmtax').val().replace(/,/g, ""));
+	  		$('#unitPrice').val($('#unitPrice').val().replace(/,/g, ""));
+	  		if(confirm("<spring:message code="common.update.msg" />")){	
+	  			form.action="/stock/info/saveMyStock.do";	
+				form.submit();	
+			}
+	  	 }
 }
+
 /* ********************************************************
- * 저장처리화면
+ * 삭제처리
  ******************************************************** */
-function fn_egov_updt_code(form){
-	if (!validateCmmnClCodeVO(form)) {		 			
-		return false;		
-	} else {
-		if(confirm("<spring:message code="common.update.msg" />")){	
-			form.submit();	
-		}					
+ function fn_egov_delete(){
+	if(confirm("<spring:message code="common.delete.msg" />")){	
+		// Delete하기 위한 키값을 셋팅
+		document.egovFrm.mode.value = "delete";	
+		document.egovFrm.action = "<c:url value='/stock/info/saveMyStock.do'/>";
+		document.egovFrm.submit();
 	}	
-}
+}	
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
-function fn_egov_inqire_code() {
-	cmmnClCodeVO.action = "<c:url value='/sym/ccm/ccc/SelectCcmCmmnClCodeList.do'/>";
-	cmmnClCodeVO.submit();	
+function fn_egov_list() {
+	document.egovFrm.action = "<c:url value='/stock/info/selectMyStockList.do'/>";
+	document.egovFrm.mode.value="list";
+	document.egovFrm.seq.value="";
+	document.egovFrm.submit();
 }
 </script>
 </head>
-<body onLoad="fn_egov_init();">
+<body>
 
-<!-- 상단타이틀123 -->
-<form:form modelAttribute="cmmnClCodeVO" action="${pageContext.request.contextPath}/sym/ccm/ccc/UpdateCcmCmmnClCode.do" method="post" onSubmit="fn_egov_updt_code(document.forms[0]); return false;">  
+<!-- 상단타이틀 -->
+<form name="egovFrm" method="post"> 
+<input type="hidden" name="mode" value="update">
+<input type="hidden" name="seq" value="${seq}">
 <div class="wTableFrm">
-	<h2>${pageTitle} <spring:message code="title.update" /></h2>
+	<!-- 타이틀 -->
+	<h2>${pageTitle} <spring:message code="title.create" /></h2>
 
-	<!-- 수정폼 -->
-	<table class="wTable" summary="<spring:message code="common.summary.update" arguments="${pageTitle}" />">
-	<caption>${pageTitle} <spring:message code="title.update" /></caption>
+	<!-- 등록폼 -->
+	<table class="wTable" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
+	<caption>${pageTitle } <spring:message code="title.create" /></caption>
 	<colgroup>
-		<col style="width: 20%;"><col style="width: ;">
+		<col style="width: 20%;">
+		<col style="width: ;">
 	</colgroup>
 	<tbody>
 		<!-- 입력 -->
-		<c:set var="inputTxt"><spring:message code="input.input" /></c:set>
-		<c:set var="inputYes"><spring:message code="input.yes" /></c:set>
-		<c:set var="inputNo"><spring:message code="input.no" /></c:set>
-		
-		<!-- 분류코드 -->
-		<c:set var="title"><spring:message code="comSymCcmCcc.cmmnClCodeVO.clCode"/> </c:set>
 		<tr>
-			<th><label for="clCode">${title} <span class="pilsu">*</span></label></th>
+			<th><label for="code">종목코드 <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:input path="clCode" title="${title} ${inputTxt}" size="70" maxlength="70" readonly="true" />
-   				<div><form:errors path="clCode" cssClass="error" /></div>     
-			</td>
-		</tr>
-		<!-- 분류코드명 -->
-		<c:set var="title"><spring:message code="comSymCcmCcc.cmmnClCodeVO.clCodeNm"/> </c:set>
-		<tr>
-			<th><label for="clCodeNm">${title} <span class="pilsu">*</span></label></th>
-			<td class="left">
-			    <form:input path="clCodeNm" title="${title} ${inputTxt}" size="70" maxlength="70" />
-   				<div><form:errors path="clCodeNm" cssClass="error" /></div>     
+   				<input type="text" name="code"	id="stock_code"/>
+   				<input type="text" name="codeNm" id="searchKeyword" size="30" maxlength="100" style="width: auto;" readonly="readonly"/>
+   				<a id="popupStocks" href="#none" target="_blank" title="종목 검색" style="selector-dummy:expression(this.hideFocus=false);">
+						<img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />" alt='' width="15" height="15" />(종목검색)
+					</a>
 			</td>
 		</tr>
 		
-		<!-- 분류코드설명 -->
-		<c:set var="title"><spring:message code="comSymCcmCcc.cmmnClCodeVO.clCodeDc"/> </c:set>
 		<tr>
-			<th><label for="clCodeDc">${title } <span class="pilsu">*</span></label></th>
+			<th><label for="qy">수량 <span class="pilsu">*</span></label></th>
+			<td class="left">
+   				<input type="number" name="qy"	id="qy" class="cssright" size="10" maxlength="10" style="text-align: right;" value="<c:out value="${infoMap.qy}"/>"/>
+			</td>
+		</tr>
+		
+		<tr>
+			<th>구분 <span class="pilsu">*</span></th>
+			<td class="left">
+				<select name="gubun" id="gubun" title="구분">
+					<option value="BUY" <c:if test="${infoMap.gubun eq 'BUY'}">selected="selected"</c:if>>매수</option> 
+					<option value="SELL" <c:if test="${infoMap.gubun eq 'SELL'}">selected="selected"</c:if>>매도</option> 
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<th><label for="fee">수수료</label></th>
+			<td class="left">
+   				<input type="number" name="fee"	id="fee" size="10" maxlength="5" class="cssright" value="<fmt:formatNumber value="${infoMap.fee}" pattern="#,###" />"/>원
+			</td>
+		</tr>
+		
+		<tr>
+			<th><label for="trftax">거래세/농특세</label></th>
+			<td class="left">			
+   				<input type="number" name="trftax"	id="trftax" size="10" maxlength="5" class="cssright" value="<fmt:formatNumber value="${infoMap.trftax}" pattern="#,###" />"/>원
+			</td>
+		</tr>
+		<tr>
+			<th><label for="incmtax">소득세/주민세</label></th>
+			<td class="left">			
+   				<input type="number" name="incmtax"	id="incmtax" size="10" maxlength="5" class="cssright" value="<fmt:formatNumber value="${infoMap.incmtax}" pattern="#,###" />"/>원
+			</td>
+		</tr>
+		<tr>
+			<th><label for="unitPrice">단가 <span class="pilsu">*</span></label></th>
+			<td class="left">			
+   				<input type="number" name="unitPrice"	id="unitPrice" size="10" maxlength="5" class="cssright" value="<fmt:formatNumber value="${infoMap.unitPrice}" pattern="#,###" />"/>원
+			</td>
+		</tr>
+		<tr>
+			<th><label for="delngDe">거래일자 <span class="pilsu">*</span></label></th>
+			<td class="left">
+   				<input type="text" name="delngDe"	id="delngDe" size="10" maxlength="15" readonly="readonly" style="text-align:cneter; width: auto; margin-right:5px;"/>
+			</td>
+		</tr>
+		
+		<tr>
+			<th><label for="rm">비고</label></th>
 			<td class="nopd">
-				<form:textarea path="clCodeDc" title="${title} ${inputTxt}" cols="300" rows="20" />   
-				<div><form:errors path="clCodeDc" cssClass="error" /></div>  
-			</td>
-		</tr>
-		
-		<!-- 사용여부 -->
-		<c:set var="title"><spring:message code="comSymCcmCcc.cmmnClCodeVO.useAt"/> </c:set>
-		<tr>
-			<th><label for="useAt">${title } <span class="pilsu">*</span></label></th>
-			<td class="left">
-				<form:select path="useAt" title="${title} ${inputTxt }" cssClass="txt">
-	  		   		<form:option value="Y"  label=" ${inputYes}"/>
-					<form:option value="N" label=" ${inputNo}"/>
-				</form:select>
-				<div><form:errors path="useAt" cssClass="error" /></div>       
+				<textarea name="rm" title="비고" cols="300" rows="10" style="height:auto;"></textarea>   
 			</td>
 		</tr>
 		
@@ -113,12 +163,15 @@ function fn_egov_inqire_code() {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="button.update" /> <spring:message code="input.button" />" />
-		<a href="<c:url value='/sym/ccm/ccc/SelectCcmCmmnClCodeList.do' />" class="btn_s" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a>
-	</div><div style="clear:both;"></div>
+		<span class="btn_s"><a href="#none" onClick="fn_egov_regist(); return false;" title="<spring:message code="title.update" /> <spring:message code="input.button" />"><spring:message code="button.update" /></a></span>
+		<span class="btn_s"><a href="#none" onClick="fn_egov_delete(); return false;" title="<spring:message code="title.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
+		<a href="#none" onClick="fn_egov_list();" class="btn_s" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a>
+	</div>
+	<div style="clear:both;"></div>
 	
 </div>
-</form:form>
+
+</form>
 
 </body>
 </html>
