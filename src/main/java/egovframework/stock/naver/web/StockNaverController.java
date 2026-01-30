@@ -876,24 +876,24 @@ public class StockNaverController {
     public ModelAndView insertNaverResearchAjax(
     			@RequestParam Map<String, Object> commandMap,
     			@RequestParam(value = "stocks", required = false) List<String> stocks,
+    			@RequestParam(value = "pageIndex", required = false) String pageIndex,
     			ModelMap model
     		) throws Exception {
 		System.out.println("주식 정보 등록 시작");
-		System.out.println(stocks);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("jsonView");
 		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
 		List<Map<String, Object>> allList = new ArrayList<Map<String, Object>>();
 		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
 		String searchGubun = StringUtil.nvl(commandMap.get("searchGubun"),"company");
-		String pageIndex = StringUtil.nvl(commandMap.get("pageIndex"), "1");
+		pageIndex = StringUtil.nvl(pageIndex, "1");
 		
 		Map<String, Object> pmap = new HashMap<>();
 		pmap.put("searchGubun", searchGubun);
-		pmap.put("page", pageIndex);
+		pmap.put("pageIndex", pageIndex);
 		List<Map<String, Object>> list = naverUtil.getStockResearchList_V01(pmap);
 		List<Map<String, Object>> insertList = new ArrayList<>();
-		int cnt = 0;
+		int totcnt = 0;
 		for(String params : stocks) {
 			Map<String, Object> insertMap = new HashMap<>();
 			String [] keys = params.split("_");
@@ -923,13 +923,6 @@ public class StockNaverController {
 								String dcn = StringUtil.nvl(map.get("parameter"+j),"");
 								String dclass = StringUtil.nvl(map.get("parameter"+j+"_class"),"");
 								String dhref= StringUtil.nvl(map.get("parameter"+j+"_href"),"");
-	//							Map<String, Object> jmap = new HashMap<>();
-	//							jmap.put("dcn", map.get("parameter"+j));
-	//							jmap.put("dclass", map.get("parameter"+j+"_class"));
-	//							jmap.put("dhref", map.get("parameter"+j+"_href"));
-	//							jmap.put("nid", map.get("nid"));
-	//							jmap.put("code", map.get("code"));
-	//							jmap.put("date", map.get("date"));
 								if(j == 0) {//종목
 									insertMap.put("relStockCode", map.get("code"));
 									insertMap.put("relStockLink", "https://finance.naver.com"+dhref);
@@ -949,7 +942,7 @@ public class StockNaverController {
 							
 							insertMap.put("codeNid", code_nid);
 							System.out.println(insertMap);
-							cnt = stockNaverService.insertStockResearchData(insertMap);
+							totcnt += stockNaverService.insertStockResearchData(insertMap);
 							insertList.add(insertMap);
 						}
 					}
@@ -957,7 +950,8 @@ public class StockNaverController {
 				
 			}
 		}
-
+		System.out.println("totcnt=>"+totcnt);
+		modelAndView.addObject("totcnt", totcnt);
 		modelAndView.addObject("stocks", stocks);
 		System.out.println("주식 정보 등록 종료");
 		return modelAndView;

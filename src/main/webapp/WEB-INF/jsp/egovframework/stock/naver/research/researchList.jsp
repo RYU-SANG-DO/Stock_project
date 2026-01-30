@@ -222,15 +222,8 @@ function fnInsertStock(){
 		success : function(returnData, status) {
 			console.log(status, returnData);
 			if(status == "success") {
-				alert("등록완료");
+				alert(returnData.totcnt+"건의 데이터가 등록되었습니다.");
 				return;
-			/* 	if(returnData.checkCount > 0 ) {
-					alert("입력하신 지식유형코드는 이미 사용중입니다.");
-					return;
-				} else {
-					alert("입력하신 지식유형코드는 사용하실 수 있습니다.");
-					return;
-				} */
 			} else{
 				alert("ERROR!");
 				return;
@@ -426,7 +419,9 @@ function fnInsertStock(){
 			<ul style="margin-bottom: 0px;">
 				<!-- 검색키워드 및 조회버튼 -->
 				<li style="border: 0px solid #d2d2d2;">
-					<input type="button" class="s_btn" onClick="fnInsertStock()" value="등록" title="등록 <spring:message code="input.button" />" />
+					<c:if test="${searchGubun eq 'company'}">
+						<input type="button" class="s_btn" onClick="fnInsertStock()" value="종목 리포트 등록" title="종록 리포트 등록 <spring:message code="input.button" />" />
+					</c:if>
 					<input type="button" class="s_btn" onClick="excelDown('L')" value="<spring:message code="stock.com.excelDown.title" />" title="<spring:message code="stock.com.excelDown.title" /> <spring:message code="input.button" />" />
 				</li>
 			</ul>

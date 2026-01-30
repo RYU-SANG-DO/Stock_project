@@ -14,16 +14,16 @@
 				 A.RP_ID,
 				A.ORIGIN_UID,
 				A.RP_TITLE,
-				A.RP_DATE,
+				TO_CHAR(A.RP_DATE , 'YYYY-MM-DD') AS RP_DATE,
 				A.RP_LINK,
 				A.REL_STOCK_CODE,
 				B.STOCKS_NAME,
-				A.THEME_NAME,
 				A.STOCK_RECOMMENDATION,
 				A.DAY_PRICE,
 				A.TARGET_PRICE,
 				A.USER_SUMMARY,
-				A.REG_DATE
+				TO_CHAR(A.UPT_DATE , 'YYYY-MM-DD') AS UPT_DATE,
+				TO_CHAR(A.REG_DATE , 'YYYY-MM-DD') AS REG_DATE
 			FROM STOCK_RESEARCH_DATA A,
 					STOCKS_LIST B
 			WHERE A.REL_STOCK_CODE =  B.STOCKS_CODE(+)
@@ -60,6 +60,7 @@
 				RP_DATE,
 				RP_LINK,
 				REL_STOCK_CODE,
+				UPT_DATE,
 				REG_DATE
             ) VALUES (
                 SEQ_STOCK_RESEARCH_ID.NEXTVAL,
@@ -68,6 +69,7 @@
                 #{rpDate},
                 #{rpLink},
                 #{relStockCode},
+                SYSDATE,
                 SYSDATE
             )
     </insert>
@@ -78,16 +80,16 @@
 				 A.RP_ID,
 				A.ORIGIN_UID,
 				A.RP_TITLE,
-				A.RP_DATE,
+				TO_CHAR(A.RP_DATE , 'YYYY-MM-DD') AS RP_DATE,
 				A.RP_LINK,
 				A.REL_STOCK_CODE,
 				B.STOCKS_NAME,
-				A.THEME_NAME,
 				A.STOCK_RECOMMENDATION,
 				A.DAY_PRICE,
 				A.TARGET_PRICE,
 				A.USER_SUMMARY,
-				A.REG_DATE
+				TO_CHAR(A.UPT_DATE , 'YYYY-MM-DD') AS UPT_DATE,
+				TO_CHAR(A.REG_DATE , 'YYYY-MM-DD') AS REG_DATE
 			FROM STOCK_RESEARCH_DATA A,
 					STOCKS_LIST B
 			WHERE A.REL_STOCK_CODE =  B.STOCKS_CODE(+)
@@ -99,11 +101,11 @@
 	<update id="updateStockResearchData" parameterType="java.util.Map">
 		<![CDATA[/*updateStockResearchData*/
 			UPDATE STOCK_RESEARCH_DATA
-			SET 	THEME_NAME = #{themeName},
-					STOCK_RECOMMENDATION = #{stockRecommendation},
+			SET 	STOCK_RECOMMENDATION = #{stockRecommendation},
 					DAY_PRICE = #{dayPrice},
 					TARGET_PRICE = #{targetPrice},
-					USER_SUMMARY = #{userSummary}
+					USER_SUMMARY = #{userSummary},
+					UPT_DATE = SYSDATE
 			WHERE RP_ID = #{rpId}
 		]]>
 	</update>
