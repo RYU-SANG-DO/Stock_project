@@ -211,6 +211,9 @@ function fnInsertStock(){
 		url : "<c:url value='/stock/naver/insertNaverResearchAjax.do'/>",
 		//data : { "knoTypeCd": $("#knoTypeCd").val() },
 		data: { 
+				pageIndex : document.listForm.pageIndex.value,
+				stockSite : document.listForm.stockSite.value,
+				searchGubun : document.listForm.searchGubun.value,
                 stocks: checkedValues // 배열 데이터 전송
             },
          // 배열을 전송할 때 키 값에 '[]'가 붙는 것을 방지하려면 true 설정 (서버 환경에 따라 다름)
@@ -219,7 +222,7 @@ function fnInsertStock(){
 		success : function(returnData, status) {
 			console.log(status, returnData);
 			if(status == "success") {
-				alert(returnData.fileResultName+"파일로 다운로드가 완료되었습니다.");
+				alert("등록완료");
 				return;
 			/* 	if(returnData.checkCount > 0 ) {
 					alert("입력하신 지식유형코드는 이미 사용중입니다.");
@@ -280,7 +283,7 @@ function fnInsertStock(){
 			</table>
 	</div>
 	<form name="listForm" method="post">
-		<input type="hidden" name="pageIndex"	id="pageIndex"/>
+		<input type="hidden" name="pageIndex"	id="pageIndex" value="${pageIndex}"/>
 		<input type="hidden" name="stockSite"	value="${stockSite}"/>
 		<input type="hidden" name="searchGubun"	value="${searchGubun}"/>
 		<input type="hidden" name="searchGubunNm" value="${searchGubunNm}"/>

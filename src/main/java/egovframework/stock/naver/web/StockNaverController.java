@@ -762,6 +762,7 @@ public class StockNaverController {
 		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".research.title")));
 		System.out.println(commandMap);
 		naverResearchVO.setPageUnit(30);
+		String page = StringUtil.nvl(commandMap.get("pageIndex"), "1");
 		String searchType = StringUtil.nvl(commandMap.get("searchType"),"");
 		String searchGubun = StringUtil.nvl(commandMap.get("searchGubun"),"company");
 		String searchGubunNm = StringUtil.nvl(commandMap.get("searchGubunNm"),"종목분석");
@@ -811,17 +812,21 @@ public class StockNaverController {
 				}				
 			}else {
 				List<Map<String, Object>> detailList = new ArrayList<>();
-				String code_nid ="";
+				String code_nid = map.get("code")+"_"+map.get("nid")+"_"+map.get("date")+"_"+page;
 				for(int j = 0 ; j < columsize ; j++) {
 					Map<String, Object> jmap = new HashMap<>();
+					String dcn = StringUtil.nvl(map.get("parameter"+j),"");
+					String dclass = StringUtil.nvl(map.get("parameter"+j+"_class"),"");
+					String dhref= StringUtil.nvl(map.get("parameter"+j+"_href"),"");
 					jmap.put("idx", j);
-					jmap.put("dcn", map.get("parameter"+j));
-					jmap.put("dclass", map.get("parameter"+j+"_class"));
-					jmap.put("dhref", map.get("parameter"+j+"_href"));
+					jmap.put("dcn", dcn);
+					jmap.put("dclass", dclass);
+					jmap.put("dhref", dhref);
 					jmap.put("nid", map.get("nid"));
 					jmap.put("code", map.get("code"));
 					jmap.put("date", map.get("date"));
-					code_nid = map.get("code")+"_"+map.get("nid")+"_"+map.get("date");
+					jmap.put("page", page);
+					if("file".equals(dclass) )
 					detailList.add(jmap);
 				}			
 				
@@ -845,6 +850,7 @@ public class StockNaverController {
 		model.addAttribute("titleList", titleList);
 		model.addAttribute("researchList", researchList);
 		model.addAttribute("paramInfo",paramInfo);
+		model.addAttribute("pageIndex",page);
 		model.addAttribute("naverResearchVO",naverResearchVO);
 		model.addAllAttributes(commandMap);
 		System.out.println("네이버 리서치 종료");
@@ -858,37 +864,79 @@ public class StockNaverController {
     public ModelAndView insertNaverResearchAjax(
     			@RequestParam Map<String, Object> commandMap,
     			@RequestParam(value = "stocks", required = false) List<String> stocks,
-    			@ModelAttribute("naverThemeVO") NaverThemeVO naverThemeVO, 
     			ModelMap model
     		) throws Exception {
 		System.out.println("주식 정보 등록 시작");
 		System.out.println(stocks);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("jsonView");
-		String no = StringUtil.nvl(naverThemeVO.getNo(),"");
-		String type = StringUtil.nvl(naverThemeVO.getType(),"");
-		int pageIndex = Integer.parseInt(StringUtil.nvl(naverThemeVO.getPageIndex(),"1"));
-		System.out.println(naverThemeVO.toString());
 		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
 		List<Map<String, Object>> allList = new ArrayList<Map<String, Object>>();
-		String filePath = egovMessageSource.getMessage("stock.com.filePath");
-		String resultFilePath = egovMessageSource.getMessage("stock.naver.filePath");
-		String fileName = "stock_form.xlsx";
-		String fileResultName = "업종별상세정보내역_"+today+".xlsx";
 		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
-		commandMap.put("today_ko", today_ko);
+		String searchGubun = StringUtil.nvl(commandMap.get("searchGubun"),"company");
+		String pageIndex = StringUtil.nvl(commandMap.get("pageIndex"), "1");
+		
+		Map<String, Object> pmap = new HashMap<>();
+		pmap.put("searchGubun", searchGubun);
+		pmap.put("page", pageIndex);
+		List<Map<String, Object>> list = naverUtil.getStockResearchList_V01(pmap);
+		List<Map<String, Object>> insertList = new ArrayList<>();
+		
+		for(String params : stocks) {
+			Map<String, Object> insertMap = new HashMap<>();
+			String [] keys = params.split("_");
+			System.out.println(Arrays.toString(keys));
+			pmap = new HashMap<>();
+			pmap.put("searchGubun", searchGubun);
+			if(keys.length == 4) {
+				String code = StringUtil.nvl(keys[0]);
+				String nid = StringUtil.nvl(keys[1]);
+				String date = StringUtil.nvl(keys[2]);
+				String page = StringUtil.nvl(keys[3]);
+				insertMap.put("relStockCode", code);
+				insertMap.put("originUid", nid);
+				insertMap.put("rpDate", date);
+				int columsize = 0;
+				for(int i = 0 ; i < list.size() ; i++) {
+					Map<String, Object> map = list.get(i);
+					String code_nid = map.get("code")+"_"+map.get("nid")+"_"+map.get("date")+"_"+page;
+					if(i > 0 && params.equals(code_nid)) {
+						for(int j = 0 ; j < columsize ; j++) {
+							String dcn = StringUtil.nvl(map.get("parameter"+j),"");
+							String dclass = StringUtil.nvl(map.get("parameter"+j+"_class"),"");
+							String dhref= StringUtil.nvl(map.get("parameter"+j+"_href"),"");
+//							Map<String, Object> jmap = new HashMap<>();
+//							jmap.put("dcn", map.get("parameter"+j));
+//							jmap.put("dclass", map.get("parameter"+j+"_class"));
+//							jmap.put("dhref", map.get("parameter"+j+"_href"));
+//							jmap.put("nid", map.get("nid"));
+//							jmap.put("code", map.get("code"));
+//							jmap.put("date", map.get("date"));
+							if(j == 0) {//종목
+								insertMap.put("relStockCode", map.get("code"));
+							}else if(j == 1) {//제목
+								insertMap.put("rpTitle", dcn);
+							}else if(j == 2) {//증권사
+								
+							}else if(j == 3) {//첨부
+								insertMap.put("rpLink", dhref);
+							}else if(j == 4) {//작성일
+								insertMap.put("rpDate", dcn);
+							}else if(j == 5) {//조회수
+								
+							}
+						}			
+						
+						insertMap.put("code_nid", code_nid);
+						System.out.println(insertMap);
+						insertList.add(insertMap);
+					}
+				}
+				
+			}
+		}
 
-		List<Map<String, Object>> upjongList=stockUtil.getStockUpjongThemeList(no, type, pageIndex);
-		
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("filePath", filePath);
-		paramMap.put("fileName", fileName);
-		paramMap.put("fileResultName", fileResultName);
-		paramMap.put("resultFilePath", resultFilePath);
-		ExcelUtil.resultSetMnspXlsxExcelCreateV02(upjongList , paramMap ,0 , 0);
-		
-		modelAndView.addObject("fileResultName", fileResultName);
-		modelAndView.addObject("checkCount", allList.size());
+		modelAndView.addObject("stocks", stocks);
 		System.out.println("주식 정보 등록 종료");
 		return modelAndView;
     }

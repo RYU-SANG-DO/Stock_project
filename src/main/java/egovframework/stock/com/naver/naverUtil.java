@@ -1604,7 +1604,7 @@ public class naverUtil extends StockDefaultVO{
 
 		    // 3. URL 생성
 		    StringBuilder urlBuilder = new StringBuilder(naver_domain_url + "/research/" + searchGubun + "_list.naver?");
-		    urlBuilder.append("searchType=").append(searchType);
+		    	urlBuilder.append("searchType=").append(searchType);
 
 		    if (!"".equals(keyword)) urlBuilder.append("&keyword=").append(keyword);
 		    if (!"".equals(writeFromDate)) urlBuilder.append("&writeFromDate=").append(writeFromDate);
