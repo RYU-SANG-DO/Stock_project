@@ -813,6 +813,7 @@ public class StockNaverController {
 			}else {
 				List<Map<String, Object>> detailList = new ArrayList<>();
 				String code_nid = map.get("code")+"_"+map.get("nid")+"_"+map.get("date")+"_"+page;
+				String fileYn = "Y";
 				for(int j = 0 ; j < columsize ; j++) {
 					Map<String, Object> jmap = new HashMap<>();
 					String dcn = StringUtil.nvl(map.get("parameter"+j),"");
@@ -826,12 +827,15 @@ public class StockNaverController {
 					jmap.put("code", map.get("code"));
 					jmap.put("date", map.get("date"));
 					jmap.put("page", page);
-					if("file".equals(dclass) )
+					if("file".equals(dclass) && "".equals(dhref)){
+						fileYn = "N";
+					}
 					detailList.add(jmap);
 				}			
 				
 				map.put("nuidx", (((pgOn-1)*30)+num));
 				map.put("num", (num++));
+				map.put("fileYn", fileYn);
 				map.put("codeNid", code_nid);
 				map.put("detailList", detailList);
 				researchList.add(map);

@@ -466,7 +466,9 @@ function fnInsertStock(){
 	<c:forEach var="item" items="${researchList}" varStatus="status">
 	<tr>
 		<td>
-			<input type="checkbox" name="checkField" value="${item.codeNid}" class="chk" title="선택"/>
+			<c:if test="${item.fileYn eq 'Y' }">
+				<input type="checkbox" name="checkField" value="${item.codeNid}" class="chk" title="선택"/>
+			</c:if>
 		</td>
 		<td><c:out value="${item.nuidx}"/></td>
 		<c:forEach var="subject" items="${item.detailList}" varStatus="substatus">
