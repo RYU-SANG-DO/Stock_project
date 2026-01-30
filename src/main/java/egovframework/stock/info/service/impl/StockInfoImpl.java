@@ -49,7 +49,6 @@ public class StockInfoImpl extends EgovAbstractServiceImpl implements StockInfoS
 	public Map<String, Object> selectMyStockDetail(Map<String, Object> commandMap) throws Exception {
 		return stockInfoDao.selectMyStockDetail(commandMap);
 	}
-	
-	
+
 
 }

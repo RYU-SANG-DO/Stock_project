@@ -1,29 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- 
 	수정일				수정내용
   ========= 		=================================================
-  2025.02.27		NAVER 정보
+  2026.01.30		NAVER 정보
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="StockNaverDAO">
 
+	
+	<select id="selectStockResearchDataList"  parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+		 SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT /*selectStockResearchDataList*/
+				 A.RP_ID,
+				A.ORIGIN_UID,
+				A.RP_TITLE,
+				A.RP_DATE,
+				A.RP_LINK,
+				A.REL_STOCK_CODE,
+				B.STOCKS_NAME,
+				A.THEME_NAME,
+				A.STOCK_RECOMMENDATION,
+				A.DAY_PRICE,
+				A.TARGET_PRICE,
+				A.USER_SUMMARY,
+				A.REG_DATE
+			FROM STOCK_RESEARCH_DATA A,
+					STOCKS_LIST B
+			WHERE A.REL_STOCK_CODE =  B.STOCKS_CODE(+)
+			ORDER BY A.RP_DATE DESC
+			  ) TB )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+			]]> 
+	</select>
+	
+	<select id="selectStockResearchDataListTotCnt" parameterType="java.util.Map" resultType="int">
+		<![CDATA[
+		SELECT 
+			COUNT(A.RP_ID) AS CNT
+		FROM STOCK_RESEARCH_DATA A,
+				STOCKS_LIST B
+		WHERE A.REL_STOCK_CODE =  B.STOCKS_CODE(+)
+		]]>
+	</select>
 		
-	<insert id="insertNaverResearchInfo" parameterType="egovframework.stock.vo.naver.NaverResearchCrawVO">
+	<insert id="insertStockResearchData" parameterType="java.util.Map">
         /* 중복 데이터 방지를 위한 MERGE 구문 사용 (제목과 작성일 기준) */
-        MERGE INTO STOCKS_RESEARCH_DATA T
+        MERGE INTO STOCK_RESEARCH_DATA T
         USING DUAL
-        ON (T.RP_TITLE = #{title} AND T.RP_DATE = #{regDate})
+        ON (
+        		T.RP_TITLE = #{rpTitle} 
+        		AND T.RP_DATE = #{rpDate}
+        		AND T.ORIGIN_UID = #{originUid}
+        		AND T.REL_STOCK_CODE = #{relStockCode}
+        		)
         WHEN NOT MATCHED THEN
             INSERT (
-                RP_ID, RP_TITLE, RP_DATE, RP_LINK, RESEARCH_TYPE, FRST_REGIST_PNTTM
+                RP_ID,
+				ORIGIN_UID,
+				RP_TITLE,
+				RP_DATE,
+				RP_LINK,
+				REL_STOCK_CODE,
+				REG_DATE
             ) VALUES (
                 SEQ_STOCK_RESEARCH_ID.NEXTVAL,
-                #{title},
-                #{regDate},
-                #{linkUrl},
-                #{viewCount},
-                #{researchType},
+                #{originUid},
+                #{rpTitle},
+                #{rpDate},
+                #{rpLink},
+                #{relStockCode},
                 SYSDATE
             )
     </insert>
+    
+    <select id="selectStockResearchDataDetail"  parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+			SELECT /*selectMyStockDetail*/
+				 A.RP_ID,
+				A.ORIGIN_UID,
+				A.RP_TITLE,
+				A.RP_DATE,
+				A.RP_LINK,
+				A.REL_STOCK_CODE,
+				B.STOCKS_NAME,
+				A.THEME_NAME,
+				A.STOCK_RECOMMENDATION,
+				A.DAY_PRICE,
+				A.TARGET_PRICE,
+				A.USER_SUMMARY,
+				A.REG_DATE
+			FROM STOCK_RESEARCH_DATA A,
+					STOCKS_LIST B
+			WHERE A.REL_STOCK_CODE =  B.STOCKS_CODE(+)
+			AND A.RP_ID = #{seq}
+			]]> 
+	</select>
+	
+	<!-- 주식 리서치/리포트 내역 수정 -->
+	<update id="updateStockResearchData" parameterType="java.util.Map">
+		<![CDATA[/*updateStockResearchData*/
+			UPDATE STOCK_RESEARCH_DATA
+			SET 	THEME_NAME = #{themeName},
+					STOCK_RECOMMENDATION = #{stockRecommendation},
+					DAY_PRICE = #{dayPrice},
+					TARGET_PRICE = #{targetPrice},
+					USER_SUMMARY = #{userSummary}
+			WHERE RP_ID = #{rpId}
+		]]>
+	</update>
+	
+	<!-- 주식 리서치/리포트 내역 삭제 -->
+	<delete id="deleteStockResearchData" parameterType="java.util.Map">
+		<![CDATA[/*deleteStockResearchData*/
+			DELETE FROM STOCK_RESEARCH_DATA
+			WHERE RP_ID = #{rpId}		
+		]]>
+	</delete>
     
 </mapper>

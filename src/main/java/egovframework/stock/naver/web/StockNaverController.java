@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,6 +25,8 @@ import egovframework.stock.com.ExcelUtil;
 import egovframework.stock.com.StringUtil;
 import egovframework.stock.com.stockUtil;
 import egovframework.stock.com.naver.naverUtil;
+import egovframework.stock.info.service.StockInfoService;
+import egovframework.stock.naver.service.StockNaverService;
 import egovframework.stock.vo.naver.NaverResearchVO;
 import egovframework.stock.vo.naver.NaverSearchResponseVO;
 import egovframework.stock.vo.naver.NaverThemeVO;
@@ -31,6 +34,11 @@ import egovframework.stock.vo.naver.NaverThemeVO;
 @Controller
 public class StockNaverController {
 
+	@Autowired
+	private StockInfoService stockInfoService;
+	
+	@Autowired
+	private StockNaverService stockNaverService;
 
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
@@ -885,7 +893,7 @@ public class StockNaverController {
 		pmap.put("page", pageIndex);
 		List<Map<String, Object>> list = naverUtil.getStockResearchList_V01(pmap);
 		List<Map<String, Object>> insertList = new ArrayList<>();
-		
+		int cnt = 0;
 		for(String params : stocks) {
 			Map<String, Object> insertMap = new HashMap<>();
 			String [] keys = params.split("_");
@@ -899,41 +907,51 @@ public class StockNaverController {
 				String page = StringUtil.nvl(keys[3]);
 				insertMap.put("relStockCode", code);
 				insertMap.put("originUid", nid);
-				insertMap.put("rpDate", date);
+				insertMap.put("rpDate", StringUtil.getFormDate(date, "yy.MM.dd"));
+				insertMap.put("originUid", nid);
+				insertMap.put("page", page);
 				int columsize = 0;
 				for(int i = 0 ; i < list.size() ; i++) {
 					Map<String, Object> map = list.get(i);
-					String code_nid = map.get("code")+"_"+map.get("nid")+"_"+map.get("date")+"_"+page;
-					if(i > 0 && params.equals(code_nid)) {
-						for(int j = 0 ; j < columsize ; j++) {
-							String dcn = StringUtil.nvl(map.get("parameter"+j),"");
-							String dclass = StringUtil.nvl(map.get("parameter"+j+"_class"),"");
-							String dhref= StringUtil.nvl(map.get("parameter"+j+"_href"),"");
-//							Map<String, Object> jmap = new HashMap<>();
-//							jmap.put("dcn", map.get("parameter"+j));
-//							jmap.put("dclass", map.get("parameter"+j+"_class"));
-//							jmap.put("dhref", map.get("parameter"+j+"_href"));
-//							jmap.put("nid", map.get("nid"));
-//							jmap.put("code", map.get("code"));
-//							jmap.put("date", map.get("date"));
-							if(j == 0) {//종목
-								insertMap.put("relStockCode", map.get("code"));
-							}else if(j == 1) {//제목
-								insertMap.put("rpTitle", dcn);
-							}else if(j == 2) {//증권사
-								
-							}else if(j == 3) {//첨부
-								insertMap.put("rpLink", dhref);
-							}else if(j == 4) {//작성일
-								insertMap.put("rpDate", dcn);
-							}else if(j == 5) {//조회수
-								
-							}
-						}			
-						
-						insertMap.put("code_nid", code_nid);
-						System.out.println(insertMap);
-						insertList.add(insertMap);
+					if(i == 0) {
+						columsize = Integer.parseInt(StringUtil.nvl(map.get("columsize"),"0"));
+					}else {
+						String code_nid = map.get("code")+"_"+map.get("nid")+"_"+map.get("date")+"_"+page;
+						if(params.equals(code_nid)) {
+							System.out.println(i+"["+params+"]=["+code_nid+"]");
+							for(int j = 0 ; j < columsize ; j++) {
+								String dcn = StringUtil.nvl(map.get("parameter"+j),"");
+								String dclass = StringUtil.nvl(map.get("parameter"+j+"_class"),"");
+								String dhref= StringUtil.nvl(map.get("parameter"+j+"_href"),"");
+	//							Map<String, Object> jmap = new HashMap<>();
+	//							jmap.put("dcn", map.get("parameter"+j));
+	//							jmap.put("dclass", map.get("parameter"+j+"_class"));
+	//							jmap.put("dhref", map.get("parameter"+j+"_href"));
+	//							jmap.put("nid", map.get("nid"));
+	//							jmap.put("code", map.get("code"));
+	//							jmap.put("date", map.get("date"));
+								if(j == 0) {//종목
+									insertMap.put("relStockCode", map.get("code"));
+									insertMap.put("relStockLink", "https://finance.naver.com"+dhref);
+								}else if(j == 1) {//제목
+									insertMap.put("rpTitle", dcn);
+									insertMap.put("rpTitleLink", "https://finance.naver.com/research/"+dhref);
+								}else if(j == 2) {//증권사
+									insertMap.put("securities", dcn);
+								}else if(j == 3) {//첨부
+									insertMap.put("rpLink", dhref);
+								}else if(j == 4) {//작성일
+									insertMap.put("rpDate", StringUtil.getFormDate(dcn, "yy.MM.dd"));
+								}else if(j == 5) {//조회수
+									
+								}
+							}			
+							
+							insertMap.put("codeNid", code_nid);
+							System.out.println(insertMap);
+							cnt = stockNaverService.insertStockResearchData(insertMap);
+							insertList.add(insertMap);
+						}
 					}
 				}
 				

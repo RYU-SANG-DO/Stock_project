@@ -16,4 +16,12 @@ import java.util.Map;
  */
 public interface StockNaverService{
 
+	//주식 리서치/리포트 등록
+	int insertStockResearchData(Map<String, Object> paramMap) throws Exception;
+	
+	//주식 리서치/리포트 수정
+	int updateStockResearchData(Map<String, Object> paramMap) throws Exception;
+	
+	//주식 리서치/리포트 삭제
+	int deleteStockResearchData(Map<String, Object> paramMap) throws Exception;
 }
