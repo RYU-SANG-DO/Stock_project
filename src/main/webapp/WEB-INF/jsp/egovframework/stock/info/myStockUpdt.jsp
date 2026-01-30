@@ -49,7 +49,7 @@ function fn_egov_inqire_code() {
 </head>
 <body onLoad="fn_egov_init();">
 
-<!-- 상단타이틀1 -->
+<!-- 상단타이틀12 -->
 <form:form modelAttribute="cmmnClCodeVO" action="${pageContext.request.contextPath}/sym/ccm/ccc/UpdateCcmCmmnClCode.do" method="post" onSubmit="fn_egov_updt_code(document.forms[0]); return false;">  
 <div class="wTableFrm">
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>
