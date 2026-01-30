@@ -58,7 +58,7 @@ $(function(){
 /* ********************************************************
  * 저장처리화면
  ******************************************************** */
-function fn_egov_regist_code(form){
+function fn_egov_regist(form){
   	 if($("#stock_code").val() == ""){
   		alert("종목은 필수입니다.");
 		return;
@@ -87,7 +87,14 @@ function fncShowMessg(){
 	alert("<c:out value='${message}'/>");
 	}
 }
-
+/* ********************************************************
+ * 목록 으로 가기
+ ******************************************************** */
+function fn_egov_list() {
+	document.egovFrm.action = "<c:url value='/stock/info/selectMyStockList.do'/>";
+	document.egovFrm.mode.value="list";
+	document.egovFrm.submit();
+}
 </script>
 <style>
 input[type="number"] {
@@ -102,7 +109,7 @@ input[type="number"] {
 </head>
 <body onLoad="fncShowMessg();">
 
-<form name="egovFrm" method="post" onSubmit="fn_egov_regist_code(document.forms[0]); return false;"> 
+<form name="egovFrm" method="post" onSubmit="fn_egov_regist(document.forms[0]); return false;"> 
 <input type="hidden" name="mode" value="insert">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -190,7 +197,7 @@ input[type="number"] {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.create" />" title="<spring:message code="button.create" /> <spring:message code="input.button" />" />
-		<span class="btn_s"><a href="<c:url value='/sym/ccm/ccc/SelectCcmCmmnClCodeList.do' />" title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="#none" onClick="fn_egov_list();" title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div><div style="clear:both;"></div>
 	
 </div>
