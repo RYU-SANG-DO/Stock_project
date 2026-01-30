@@ -956,5 +956,53 @@ public class StockNaverController {
 		System.out.println("주식 정보 등록 종료");
 		return modelAndView;
     }
+	
+	/**
+	 * 네이버 나의 리서치 
+	 * @return
+	 * @throws Exception
+	 */
+	@IncludedInfo(name="네이버 My 리서치",order = 11150 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
+    @RequestMapping("/stock/naver/selectNaverMyResearchList.do")
+    public String selectNaverMyResearchList(@RequestParam Map<String, Object> reqParamMap, @ModelAttribute("naverResearchVO") NaverResearchVO naverResearchVO,
+    		HttpServletRequest request,
+    		ModelMap model) throws Exception {
+		System.out.println("네이버 My 리서치 시작");
+		Map<String, Object> commandMap = StringUtil.mapToMap(request);
+		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".theme.title")));
+		System.out.println(commandMap);
+		String searchKeyword = StringUtil.nvl(commandMap.get("searchKeyword"),"");
+		String listType = StringUtil.nvl(commandMap.get("listType"),"");
+		String gubun = StringUtil.nvl(commandMap.get("gubun"),"");
+		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		commandMap.put("today_ko", today_ko);
+		List<Map<String, Object>> allList = new ArrayList<Map<String, Object>>();
+		System.out.println("listType=>"+listType);
+		System.out.println("gubun=>"+gubun);
+		System.out.println("searchKeyword=>"+searchKeyword);
+		
+		int totCnt = stockNaverService.selectStockResearchDataListTotCnt(commandMap);
+		
+		
+		System.out.println("allList:"+allList.size());
+		
+		naverResearchVO = pagingManageController.PagingManageVo(naverResearchVO, model, totCnt);
+		System.out.println("FirstIndex=>"+naverResearchVO.getFirstIndex());
+		System.out.println("RecordCountPerPage=>"+naverResearchVO.getRecordCountPerPage());
+		
+		int firstIndex = naverResearchVO.getFirstIndex();
+		int recordCountPerPage = naverResearchVO.getRecordCountPerPage();
+		commandMap.put("firstIndex", firstIndex);
+		commandMap.put("recordCountPerPage", recordCountPerPage);
+		List<Map<String, Object>> list = stockNaverService.selectStockResearchDataList(commandMap);
+		
+		model.addAttribute("reserchList", list);
+		model.addAttribute("paramInfo",commandMap);
+		model.addAttribute("naverResearchVO",naverResearchVO);
+		model.addAllAttributes(commandMap);
+		System.out.println("네이버 My 리서치 종료");
+		return "egovframework/stock/naver/research/myReserchList";
+    }
 
 }

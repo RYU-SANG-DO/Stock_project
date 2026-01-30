@@ -1709,7 +1709,7 @@ public class naverUtil extends StockDefaultVO{
 		                    resultMap.put("parameter" + j + "_href", aclass);
 		                }
 		                // System.out.print((num++) + "."); // 로깅 과다 방지
-		                 System.out.println(resultMap);
+		                 //System.out.println(resultMap);
 		                list.add(resultMap);
 		            }
 		        }

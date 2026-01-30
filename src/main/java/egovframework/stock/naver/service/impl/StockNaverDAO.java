@@ -7,28 +7,39 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.stock.vo.naver.NaverResearchCrawVO;
+import egovframework.stock.vo.naver.NaverResearchVO;
 
 @Repository("StockNaverDAO")
 public class StockNaverDAO extends EgovComAbstractDAO {
 
 	//주식 리서치/리포트 상세
-	public Map<String, Object> selectStockResearchDataDetail(Map<String, Object> paramMap) {
+	public Map<String, Object> selectStockResearchDataDetail(Map<String, Object> paramMap) throws Exception{
 		return selectOne("StockNaverDAO.selectStockResearchDataDetail" , paramMap);
 	}
 
 	//주식 리서치/리포트 등록
-	public int insertStockResearchData(Map<String, Object> paramMap) {
+	public int insertStockResearchData(Map<String, Object> paramMap) throws Exception{
 		return update("StockNaverDAO.insertStockResearchData" , paramMap);
 	}
 
 	//주식 리서치/리포트 수정
-	public int updateStockResearchData(Map<String, Object> paramMap) {
+	public int updateStockResearchData(Map<String, Object> paramMap) throws Exception{
 		return update("StockNaverDAO.updateStockResearchData" , paramMap);
 	}
 
 	//주식 리서치/리포트 삭제
-	public int deleteStockResearchData(Map<String, Object> paramMap) {
+	public int deleteStockResearchData(Map<String, Object> paramMap) throws Exception{
 		return delete("StockNaverDAO.deleteStockResearchData" , paramMap);
+	}
+
+	//My resserch List 건수
+	public int selectStockResearchDataListTotCnt(Map<String, Object> commandMap) throws Exception{
+		return selectOne("StockNaverDAO.selectStockResearchDataListTotCnt", commandMap);
+	}
+
+	//My resserch List
+	public List<Map<String, Object>> selectStockResearchDataList(Map<String, Object> commandMap) throws Exception{
+		return selectList("StockNaverDAO.selectStockResearchDataList", commandMap);
 	}
 
 
