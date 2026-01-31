@@ -1645,8 +1645,8 @@ public class naverUtil extends StockDefaultVO{
 		        String pgLL = extractPageNum(pageElem.select(".pgLL a").attr("href"), "0");
 		        String pgL = extractPageNum(pageElem.select(".pgL a").attr("href"), "0");
 		        String pgR = extractPageNum(pageElem.select(".pgR a").attr("href"), "0");
-		        String pgRR = extractPageNum(pageElem.select(".pgRR a").attr("href"), "0");
 		        String pgOn = extractPageNum(pageElem.select(".on a").attr("href"), "1");
+		        String pgRR = extractPageNum(pageElem.select(".pgRR a").attr("href"), pgOn);
 
 		        System.out.println("pgLL:" + pgLL + ", pgL:" + pgL + ", pgR:" + pgR + ", pgRR:" + pgRR+ ", pgOn:" + pgOn);
 
