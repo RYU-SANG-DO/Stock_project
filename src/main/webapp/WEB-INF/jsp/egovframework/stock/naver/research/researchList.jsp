@@ -214,6 +214,8 @@ function fnInsertStock(){
 				pageIndex : document.listForm.pageIndex.value,
 				stockSite : document.listForm.stockSite.value,
 				searchGubun : document.listForm.searchGubun.value,
+				searchType : document.listForm.searchType.value,
+				itemCode : document.listForm.itemCode.value,
                 stocks: checkedValues // 배열 데이터 전송
             },
          // 배열을 전송할 때 키 값에 '[]'가 붙는 것을 방지하려면 true 설정 (서버 환경에 따라 다름)

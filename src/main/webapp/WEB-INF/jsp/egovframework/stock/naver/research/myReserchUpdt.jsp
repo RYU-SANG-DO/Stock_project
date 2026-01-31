@@ -121,7 +121,7 @@ input[type="number"] {
 		</tr>
 		
 		<tr>
-			<th><label for="dayPrice">현재가</label></th>
+			<th><label for="dayPrice">당일가</label></th>
 			<td class="left">
    				<input type="text" name="dayPrice"	id="dayPrice" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.dayPrice}" pattern="#,###" />"/>원
 			</td>

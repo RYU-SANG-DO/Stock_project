@@ -93,6 +93,7 @@
 				RP_DATE,
 				RP_LINK,
 				REL_STOCK_CODE,
+				DAY_PRICE,
 				UPT_DATE,
 				REG_DATE
             ) VALUES (
@@ -102,6 +103,7 @@
                 #{rpDate},
                 #{rpLink},
                 #{relStockCode},
+                #{dayPrice},
                 SYSDATE,
                 SYSDATE
             )

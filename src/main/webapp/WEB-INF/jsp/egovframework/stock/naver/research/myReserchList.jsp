@@ -295,7 +295,14 @@ function fnDetail(rpId){
 		</tr>
 	</c:if>
 	<c:forEach var="item" items="${reserchList}" varStatus="status">
-	<tr>
+		<c:set var="pColor" value="#666"/>
+		<c:if test="${item.dyaNowPrice lt 0}">
+			<c:set var="pColor" value="blue"/>
+		</c:if>
+		<c:if test="${item.dyaNowPrice gt 0}">
+			<c:set var="pColor" value="red"/>
+		</c:if>
+	<tr >
 		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
 		<td><c:out value="${item.rn}"/></td>
 		<td>
@@ -310,7 +317,7 @@ function fnDetail(rpId){
 		<td style="text-align: right;"><fmt:formatNumber value="${item.dayPrice}" pattern="#,###" />원</td>
 		<td style="text-align: right;"><fmt:formatNumber value="${item.targetPrice}" pattern="#,###" />원</td>
 		<td style="text-align: right;"><fmt:formatNumber value="${item.nowPrice}" pattern="#,###" />원</td>
-		<td style="text-align: right;"><fmt:formatNumber value="${item.dyaNowPrice}" pattern="#,###" />원</td>
+		<td style="text-align: right; color:${pColor};"><fmt:formatNumber value="${item.dyaNowPrice}" pattern="#,###" />원</td>
 		<td><c:out value="${item.uptDate}"/></td>
 		<td><c:out value="${item.regDate}"/></td>
 		<td>

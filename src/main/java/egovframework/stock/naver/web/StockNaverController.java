@@ -892,20 +892,16 @@ public class StockNaverController {
 		List<Map<String, Object>> allList = new ArrayList<Map<String, Object>>();
 		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
 		String searchGubun = StringUtil.nvl(commandMap.get("searchGubun"),"company");
+		String searchType = StringUtil.nvl(commandMap.get("searchType"),"");
 		pageIndex = StringUtil.nvl(pageIndex, "1");
 		
-		Map<String, Object> pmap = new HashMap<>();
-		pmap.put("searchGubun", searchGubun);
-		pmap.put("pageIndex", pageIndex);
-		List<Map<String, Object>> list = naverUtil.getStockResearchList_V01(pmap);
+		List<Map<String, Object>> list = naverUtil.getStockResearchList_V01(commandMap);
 		List<Map<String, Object>> insertList = new ArrayList<>();
 		int totcnt = 0;
 		for(String params : stocks) {
 			Map<String, Object> insertMap = new HashMap<>();
 			String [] keys = params.split("_");
 			System.out.println(Arrays.toString(keys));
-			pmap = new HashMap<>();
-			pmap.put("searchGubun", searchGubun);
 			if(keys.length == 4) {
 				String code = StringUtil.nvl(keys[0]);
 				String nid = StringUtil.nvl(keys[1]);
@@ -949,7 +945,8 @@ public class StockNaverController {
 							insertMap.put("codeNid", code_nid);
 							System.out.println(insertMap);
 							Map<String, Object> stockMap = naverUtil.getStockInfo(StringUtil.nvl(map.get("code"),""), 0);
-							insertMap.put("dayPrice", stockMap.get("parameter1"));
+							String dayPrice = StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", "");
+							insertMap.put("dayPrice", dayPrice);
 							totcnt += stockNaverService.insertStockResearchData(insertMap);
 							insertList.add(insertMap);
 						}
