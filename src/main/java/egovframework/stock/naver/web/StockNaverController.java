@@ -948,6 +948,8 @@ public class StockNaverController {
 							
 							insertMap.put("codeNid", code_nid);
 							System.out.println(insertMap);
+							Map<String, Object> stockMap = naverUtil.getStockInfo(StringUtil.nvl(map.get("code"),""), 0);
+							insertMap.put("dayPrice", stockMap.get("parameter1"));
 							totcnt += stockNaverService.insertStockResearchData(insertMap);
 							insertList.add(insertMap);
 						}
