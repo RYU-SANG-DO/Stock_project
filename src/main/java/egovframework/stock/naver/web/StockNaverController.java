@@ -20,6 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.web.PagingManageController;
+import egovframework.com.sym.ccm.ccc.service.CmmnClCodeVO;
+import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
+import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
 import egovframework.stock.com.ComDateUtil;
 import egovframework.stock.com.ExcelUtil;
 import egovframework.stock.com.StringUtil;
@@ -40,6 +43,9 @@ public class StockNaverController {
 	@Autowired
 	private StockNaverService stockNaverService;
 
+	@Resource(name = "CmmnDetailCodeManageService")
+	private EgovCcmCmmnDetailCodeManageService cmmnDetailCodeManageService;
+	
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
     
@@ -962,14 +968,14 @@ public class StockNaverController {
 	 * @return
 	 * @throws Exception
 	 */
-	@IncludedInfo(name="네이버 My 리서치",order = 11150 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
+	@IncludedInfo(name="네이버 My 리서치",order = 11160 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
     @RequestMapping("/stock/naver/selectNaverMyResearchList.do")
     public String selectNaverMyResearchList(@RequestParam Map<String, Object> reqParamMap, @ModelAttribute("naverResearchVO") NaverResearchVO naverResearchVO,
     		HttpServletRequest request,
     		ModelMap model) throws Exception {
 		System.out.println("네이버 My 리서치 시작");
 		Map<String, Object> commandMap = StringUtil.mapToMap(request);
-		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".theme.title")));
+		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".my.research.title")));
 		System.out.println(commandMap);
 		String searchKeyword = StringUtil.nvl(commandMap.get("searchKeyword"),"");
 		String listType = StringUtil.nvl(commandMap.get("listType"),"");
@@ -977,15 +983,12 @@ public class StockNaverController {
 		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
 		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
 		commandMap.put("today_ko", today_ko);
-		List<Map<String, Object>> allList = new ArrayList<Map<String, Object>>();
 		System.out.println("listType=>"+listType);
 		System.out.println("gubun=>"+gubun);
 		System.out.println("searchKeyword=>"+searchKeyword);
 		
 		int totCnt = stockNaverService.selectStockResearchDataListTotCnt(commandMap);
 		
-		
-		System.out.println("allList:"+allList.size());
 		
 		naverResearchVO = pagingManageController.PagingManageVo(naverResearchVO, model, totCnt);
 		System.out.println("FirstIndex=>"+naverResearchVO.getFirstIndex());
@@ -1004,5 +1007,62 @@ public class StockNaverController {
 		System.out.println("네이버 My 리서치 종료");
 		return "egovframework/stock/naver/research/myReserchList";
     }
+	
+	@RequestMapping("/stock/naver/selectNaverMyResearchDetail.do")
+    public String selectNaverMyResearchDetail(
+    		@RequestParam Map<String, Object> reqParamMap, 
+    		HttpServletRequest request,
+    		ModelMap model) throws Exception {
+		System.out.println("네이버 My 리서치 상세 시작");
+		Map<String, Object> commandMap = StringUtil.mapToMap(request);
+		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".my.research.title")));
+		System.out.println(commandMap);
+		String searchKeyword = StringUtil.nvl(commandMap.get("searchKeyword"),"");
+		String listType = StringUtil.nvl(commandMap.get("listType"),"");
+		String gubun = StringUtil.nvl(commandMap.get("gubun"),"");
+		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		commandMap.put("today_ko", today_ko);
+		CmmnDetailCodeVO searchVO = new CmmnDetailCodeVO();
+		searchVO.setFirstIndex(0);
+		searchVO.setSearchCondition("1");
+		searchVO.setSearchKeyword("STRE");
+		List<CmmnDetailCodeVO> clCodeList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("clCodeList", clCodeList);
+		
+		Map<String, Object> infoMap = stockNaverService.selectStockResearchDataDetail(commandMap);
+		
+		model.addAttribute("infoMap", infoMap);
+		model.addAttribute("paramInfo",commandMap);
+		model.addAllAttributes(commandMap);
+		System.out.println("네이버 My 리서치 상세 종료");
+		return "egovframework/stock/naver/research/myReserchUpdt";
+    }
 
+	@RequestMapping("/stock/naver/saveNaverMyResearch.do")
+    public String saveNaverMyResearch(
+    		@RequestParam Map<String, Object> reqParamMap, 
+    		@RequestParam(value = "rpId", required = true) String rpId,
+    		HttpServletRequest request,
+    		ModelMap model) throws Exception {
+		System.out.println("네이버 My 리서치 수정/삭제 시작");
+		Map<String, Object> commandMap = StringUtil.mapToMap(request);
+		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".my.research.title")));
+		System.out.println(commandMap);
+		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(rpId)?"insert":"update"));
+		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		commandMap.put("today_ko", today_ko);
+		 int cnt = 0;
+		if("update".equals(move)){
+			cnt =stockNaverService.updateStockResearchData(commandMap);
+		}else if("delete".equals(move)){
+			cnt = stockNaverService.deleteStockResearchData(commandMap);
+		}
+		
+		model.addAttribute("paramInfo",commandMap);
+		model.addAllAttributes(commandMap);
+		System.out.println("네이버 My 리서치 수정/삭제 종료");
+		return "forward:/stock/naver/selectNaverMyResearchList.do";
+    }
 }

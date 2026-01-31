@@ -33,7 +33,7 @@ $(function(){
      	e.preventDefault();
          //var page = $(this).attr("href");
          var pagetitle = $(this).attr("title");
-         var page = "<c:url value='/stock/data/selectStocksList.do'/>";
+         var page = "<c:url value='/stock/data/selectStocksPopList.do'/>";
          var $dialog = $('<div style="overflow:hidden;padding: 0px 0px 0px 0px;"></div>')
          .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
          .dialog({

@@ -22,17 +22,23 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javaScript">
 $(function(){	
+	$(".stype").hide();
+	if("${searchType}" == ""){
+		$(".keyword").show();		
+	}else{
+		$(".${searchType}").show();
+	}
 	 $('#popupStocks').click(function (e) {
      	e.preventDefault();
          //var page = $(this).attr("href");
          var pagetitle = $(this).attr("title");
-         var page = "<c:url value='/stock/data/selectStocksList.do'/>";
+         var page = "<c:url value='/stock/data/selectStocksPopList.do'/>";
          var $dialog = $('<div style="overflow:hidden;padding: 0px 0px 0px 0px;"></div>')
          .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
          .dialog({
          	autoOpen: false,
              modal: true,
-             width: 620,
+             width: 820,
              height: 700,
              title: pagetitle
      	});
@@ -83,6 +89,13 @@ $(function(){
 		         , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
 		         , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
 		});
+		
+		$("#searchType").on("change",function(){
+			let type = $(this).val();
+			$(".stype").hide();
+			$("."+type).show();
+		});
+		
 	
 		    // 1. 전체 선택 / 해제
 		    $('#checkAll').on('change', function() {
@@ -103,10 +116,7 @@ $(function(){
 function fncSelectList(pageNo){
 	let searchType = $("select[name=searchType]").val();
 	 if(searchType == "keyword" && $("#keyword").val() == ""){
-		alert("제목+내용은 필수입니다.");
-		return;
-	}else if(searchType == "brokerCode" && $("select[name=brokerCode]").val() == ""){	
-		alert("증권사를 선택해 주세요.");
+		alert("제목은 필수입니다.");
 		return;
 	}else if(searchType == "writeDate" && ($("#writeFromDate").val() == "" || $("#writeToDate").val() == "")){	
 		alert("기간을 선택해 주세요.");
@@ -114,20 +124,17 @@ function fncSelectList(pageNo){
 	}else if(searchType == "itemCode" && $("input[name=itemCode]").val() == ""){	
 		alert("종목을 선택해 주세요.");
 		return;
-	}else if(searchType == "upjong" && $("select[name=upjong]").val() == ""){	
-		alert("업종을 선택해 주세요.");
-		return;	
 	}
 		Loading();
 	    document.listForm.pageIndex.value = pageNo;
-	    document.listForm.action = "<c:url value='/stock/info/selectMyStockList.do'/>";
+	    document.listForm.action = "<c:url value='/stock/naver/selectNaverMyResearchList.do'/>";
 	    document.listForm.submit();
 }
 
 function linkPage(pageNo){
 	Loading();
     document.listForm.pageIndex.value = pageNo;
-    document.listForm.action = "<c:url value='/stock/info/selectMyStockList.do'/>";
+    document.listForm.action = "<c:url value='/stock/naver/selectNaverMyResearchList.do'/>";
     document.listForm.submit();
 }
 
@@ -169,16 +176,10 @@ function excelDown(gubun){
 }
 
 
-function fnInsert(){
-	$("#mode").val("insert");
-	document.listForm.action = "<c:url value='/stock/info/moveMyStock.do'/>";
-    document.listForm.submit();
-}
-
-function fnDetail(seq){
-	$("#seq").val(seq);
+function fnDetail(rpId){
+	$("#rpId").val(rpId);
 	$("#mode").val("update");
-	document.listForm.action = "<c:url value='/stock/info/moveMyStock.do'/>";
+	document.listForm.action = "<c:url value='/stock/naver/selectNaverMyResearchDetail.do'/>";
     document.listForm.submit();
 }
 </script>
@@ -196,12 +197,12 @@ function fnDetail(seq){
 <body>
 	<noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 	<div class="board">
-	<h1>${pageTitle}</h1>
+	<h1>${pageTitle} 내역</h1>
 	
 	<form name="listForm" method="post">
 		<input type="hidden" name="pageIndex"	id="pageIndex"/>
 		<input type="hidden" name="stockSite"	value="${stockSite}"/>
-		<input type="hidden" name="seq"	id="seq" />
+		<input type="hidden" name="rpId"	id="rpId" />
 		<input type="hidden" name="mode"	id="mode" />
 		
 		<!-- 검색영역11 -->
@@ -211,16 +212,31 @@ function fnDetail(seq){
 				<li>
 					<select name="searchType" id="searchType" class="select" title="검색구분">
 						<option value="" <c:if test="${empty searchType}">selected="selected"</c:if>>선택</option>
-						<option value="stockNm" <c:if test="${'stockNm' eq searchType}">selected="selected"</c:if>>종목</option>
+						<option value="keyword" <c:if test="${'keyword' eq searchType}">selected="selected"</c:if>>제목</option>
+						<option value="writeDate" <c:if test="${'writeDate' eq searchType}">selected="selected"</c:if>>기간</option>
+						<option value="itemCode" <c:if test="${'itemCode' eq searchType}">selected="selected"</c:if>>종목</option>
 					</select>
 				</li>
 				<li class="stype keyword" style="border: 0px solid #d2d2d2;">
 					<input class="s_input" name="keyword" id="keyword" type="text"  size="10" style="width: 150px;" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${keyword}"/>'>
 				</li>
 			
+				<li class="stype writeDate"><div style="line-height:4px;">&nbsp;</div><div>기간 : </div></li>
+				<li class="stype writeDate">
+					<input type="text" name="writeFromDate" id="writeFromDate" size="15" maxlength="10" value="${writeFromDate == null ? today : writeFromDate}" style="width: 80px; text-align: center;" title="시작 기간 입력" />  ~
+					<input type="text" name="writeToDate" id="writeToDate" size="15" maxlength="10" value="${writeToDate == null ? today : writeToDate}" style="width: 80px; text-align: center;" title="끝나는 기간 입력" >	
+				</li>
+				<li class="stype itemCode"><div style="line-height:4px;">&nbsp;</div><div>종목 : </div></li>
+				<!-- 검색키워드 및 조회버튼 -->
+				<li class="stype itemCode" style="border: 0px solid #d2d2d2;">
+					<input type="hidden" name="itemCode" 	id="stock_code" value="${itemCode}"/>
+					<input class="s_input" name="itemName" id="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${param.itemName}"/>'  maxlength="155" readonly="readonly">
+					<a id="popupStocks" href="#none" target="_blank" title="종목 검색" style="selector-dummy:expression(this.hideFocus=false);">
+						<img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />" alt='' width="15" height="15" />(종목검색)
+					</a>
+				</li>
 				<li  style="border: 0px solid #d2d2d2;">
 					<input type="button" class="s_btn"  onClick="fncSelectList('1');" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-					<!-- <span class="btn_b"><a href="/sym/ccm/ccc/RegistCcmCmmnClCodeView.do" title="등록 버튼">등록</a></span> -->
 				</li>
 			</ul>
 		</div>
@@ -229,7 +245,7 @@ function fnDetail(seq){
 			<ul style="margin-bottom: 0px;">
 				<!-- 검색키워드 및 조회버튼 -->
 				<li style="border: 0px solid #d2d2d2;">
-					<input type="button" class="s_btn" onClick="fnInsert()" value="등록" title="등록 <spring:message code="input.button" />" />
+					<%-- <input type="button" class="s_btn" onClick="fnInsert()" value="등록" title="등록 <spring:message code="input.button" />" /> --%>
 					<input type="button" class="s_btn" onClick="excelDown('L')" value="<spring:message code="stock.com.excelDown.title" />" title="<spring:message code="stock.com.excelDown.title" /> <spring:message code="input.button" />" />
 				</li>
 			</ul>
@@ -239,64 +255,75 @@ function fnDetail(seq){
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
+		<col width="3%">
+		<col width="5%"><!-- 순번 -->
+		<col width="15%"><!-- 종목 -->
+		<col><!-- 제목 -->
+		<col width="5%"><!-- 투자의견 -->
+		<col width="3%"><!-- 첨부 -->
+		<col width="8%"><!-- 발행일 -->
+		<col width="8%"><!-- 당일가 -->
+		<col width="8%"><!-- 목표가 -->
+		<col width="8%"><!-- 현재가 -->
+		<col width="5%"><!-- 수정일자 -->
+		<col width="5%"><!-- 등록일자 -->
+		<col width="5%">
 	</colgroup>
 	<thead>
 	<tr class="algin-center">
 		<th><input type="checkbox" name="checkAll" id="checkAll" class="check2" title="전체선택"/></th>
 		<th>순번</th>
 		<th>종목</th>
-		<th>수량</th>
-		<th>구분</th>
-		<th>거래일자</th>
-		<th>수수료</th>
-		<th>거래세/농특세</th>
-		<th>소득세/주민세</th>
-		<th>단가</th>
-		<th>금액</th>
+		<th>제목</th>
+		<th>투자의견</th>
+		<th>첨부</th>
+		<th>발행일</th>
+		<th>당일가</th>
+		<th>목표가</th>
+		<th>현재가</th>
+		<th>수정일자</th>
 		<th>등록일자</th>
+		<th></th>
 	</tr>
 	</thead>
 	<tbody class="ov">
-	<c:if test="${fn:length(list) == 0}">
+	<c:if test="${fn:length(reserchList) == 0}">
 		<tr>
-			<td colspan="12"><spring:message code="common.nodata.msg" /></td>
+			<td colspan="13"><spring:message code="common.nodata.msg" /></td>
 		</tr>
 	</c:if>
-	<c:forEach var="item" items="${list}" varStatus="status">
+	<c:forEach var="item" items="${reserchList}" varStatus="status">
 	<tr>
 		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
-		<td><c:out value="${item.seq}"/></td>
+		<td><c:out value="${item.rn}"/></td>
 		<td>
-			<c:out value="${item.code}"/>
-			<a href="#none" onclick="fnDetail('${item.code}');'"><c:out value="${item.code}"/></a>
+			<c:out value="${item.stocksName}"/>
 		</td>
-		<td><c:out value="${item.qy}"/></td>
-		<td><c:out value="${item.gubun}"/></td>
-		<td><c:out value="${item.delngDe}"/></td>
-		<td><c:out value="${item.fee}"/></td>
-		<td><c:out value="${item.trftax}"/></td>
-		<td><c:out value="${item.incmtax}"/></td>
-		<td><c:out value="${item.unitPrice}"/></td>
-		<td><c:out value="${item.rm}"/></td>
+		<td style="text-align: left;"><c:out value="${item.rpTitle}"/></td>
+		<td><c:out value="${item.stockRecommendationNm}"/></td>
+		<td>
+			<a href="${item.rpLink}" target="_blank"><img src="/images/egovframework/com/cmm/down_pdf.gif" alt="pdf" ></a>
+		</td>
+		<td><c:out value="${item.rpDate}"/></td>
+		<td style="text-align: right;"><fmt:formatNumber value="${item.dayPrice}" pattern="#,###" />원</td>
+		<td style="text-align: right;"><fmt:formatNumber value="${item.targetPrice}" pattern="#,###" />원</td>
+		<td style="text-align: right;"></td>
+		<td><c:out value="${item.uptDate}"/></td>
 		<td><c:out value="${item.regDate}"/></td>
+		<td>
+			<div class="button_box">
+			<ul style="margin-bottom: 0px;">
+				<li style="border: 0px solid #d2d2d2;">
+					<input type="button" class="s_btn" onClick="fnDetail('${item.rpId}');" value="수정" title="수정 <spring:message code="input.button" />" />
+				</li>
+			</ul>
+		</div>
+		</td>
 	</tr>
 	</c:forEach>
 	</tbody>
 	</table>
 	<c:if test="${!empty paginationInfo}">
-		<!-- paging navigation -->
 		<div class="pagination">
 			<ul><ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/></ul>
 		</div>

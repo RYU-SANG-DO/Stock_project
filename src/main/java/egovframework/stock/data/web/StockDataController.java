@@ -78,4 +78,40 @@ public class StockDataController {
         model.addAllAttributes(commandMap);
         return "egovframework/stock/data/stocksList";
     }
+    
+    /**
+	 * 주식 종목 내역(팝업)
+	 * @return
+	 * @throws Exception
+	 */
+    @RequestMapping("/stock/data/selectStocksPopList.do")
+    public String selectStocksPopList(@RequestParam Map<String, Object> commandMap , @ModelAttribute("stocksDataVO") StocksDataVO stocksDataVO,  HttpServletRequest request, ModelMap model) throws Exception {
+		System.out.println(commandMap);
+		String dart_api_url = StringUtil.nvl(egovMessageSource.getMessage("stock.dart.api.url"));
+        
+    	// 내역 조회
+		//stocksDataVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		stocksDataVO.setPageSize(propertiesService.getInt("pageSize"));
+		stocksDataVO.setPageUnit(30);
+
+    	/** pageing */
+    	PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(stocksDataVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(stocksDataVO.getPageUnit());
+		paginationInfo.setPageSize(stocksDataVO.getPageSize());
+
+		stocksDataVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		stocksDataVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		stocksDataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+		List<Map<String,Object>> resultList = stockDataService.selectStocksList(stocksDataVO);
+        model.addAttribute("resultList", resultList);
+        
+       int totCnt = stockDataService.selectStocksListTotCnt(stocksDataVO);
+       paginationInfo.setTotalRecordCount(totCnt);
+       model.addAttribute("paginationInfo", paginationInfo);
+
+        model.addAllAttributes(commandMap);
+        return "egovframework/stock/data/pop/stocksPopList";
+    }
 }

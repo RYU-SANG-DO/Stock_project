@@ -19,15 +19,33 @@
 				A.REL_STOCK_CODE,
 				B.STOCKS_NAME,
 				A.STOCK_RECOMMENDATION,
-				A.DAY_PRICE,
-				A.TARGET_PRICE,
-				A.USER_SUMMARY,
+				(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='STRE' AND CODE=A.STOCK_RECOMMENDATION) AS STOCK_RECOMMENDATION_NM,
+				NVL(A.DAY_PRICE, 0) AS DAY_PRICE,
+				NVL(A.TARGET_PRICE, 0) AS TARGET_PRICE,
+				DBMS_LOB.SUBSTR(A.USER_SUMMARY, 4000, 1) AS USER_SUMMARY,
 				TO_CHAR(A.UPT_DATE , 'YYYY-MM-DD') AS UPT_DATE,
 				TO_CHAR(A.REG_DATE , 'YYYY-MM-DD') AS REG_DATE
 			FROM STOCK_RESEARCH_DATA A,
 					STOCKS_LIST B
 			WHERE A.REL_STOCK_CODE =  B.STOCKS_CODE(+)
-			ORDER BY A.RP_DATE DESC
+			]]>
+			<if test="searchType == 'keyword'">
+				<![CDATA[
+					AND A.RP_TITLE LIKE '%'||#{keyword}||'%'
+				]]>
+			</if>
+			<if test="searchType == 'writeDate'">
+				<![CDATA[
+					AND A.RP_DATE BETWEEN #{writeFromDate}  AND #{writeToDate} 
+				]]>
+			</if>
+			<if test="searchType == 'itemCode'">
+				<![CDATA[
+					AND A.REL_STOCK_CODE = #{itemCode}
+				]]>
+			</if>
+			<![CDATA[
+			ORDER BY A.RP_DATE DESC , A.UPT_DATE DESC
 			  ) TB )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 			]]> 
 	</select>
@@ -40,6 +58,21 @@
 				STOCKS_LIST B
 		WHERE A.REL_STOCK_CODE =  B.STOCKS_CODE(+)
 		]]>
+			<if test="searchType == 'keyword'">
+				<![CDATA[
+					AND A.RP_TITLE LIKE '%'||#{keyword}||'%'
+				]]>
+			</if>
+			<if test="searchType == 'writeDate'">
+				<![CDATA[
+					AND A.RP_DATE BETWEEN #{writeFromDate}  AND #{writeToDate} 
+				]]>
+			</if>
+			<if test="searchType == 'itemCode'">
+				<![CDATA[
+					AND A.REL_STOCK_CODE = #{itemCode}
+				]]>
+			</if>
 	</select>
 		
 	<insert id="insertStockResearchData" parameterType="java.util.Map">
@@ -85,15 +118,16 @@
 				A.REL_STOCK_CODE,
 				B.STOCKS_NAME,
 				A.STOCK_RECOMMENDATION,
-				A.DAY_PRICE,
-				A.TARGET_PRICE,
-				A.USER_SUMMARY,
+				(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='STRE' AND CODE=A.STOCK_RECOMMENDATION) AS STOCK_RECOMMENDATION_NM,
+				NVL(A.DAY_PRICE, 0) AS DAY_PRICE,
+				NVL(A.TARGET_PRICE, 0) AS TARGET_PRICE,
+				DBMS_LOB.SUBSTR(A.USER_SUMMARY, 4000, 1) AS USER_SUMMARY,
 				TO_CHAR(A.UPT_DATE , 'YYYY-MM-DD') AS UPT_DATE,
 				TO_CHAR(A.REG_DATE , 'YYYY-MM-DD') AS REG_DATE
 			FROM STOCK_RESEARCH_DATA A,
 					STOCKS_LIST B
 			WHERE A.REL_STOCK_CODE =  B.STOCKS_CODE(+)
-			AND A.RP_ID = #{seq}
+			AND A.RP_ID = #{rpId}
 			]]> 
 	</select>
 	

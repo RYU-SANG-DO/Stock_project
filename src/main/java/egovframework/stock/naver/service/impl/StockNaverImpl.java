@@ -52,6 +52,12 @@ public class StockNaverImpl extends EgovAbstractServiceImpl implements StockNave
 	public List<Map<String, Object>> selectStockResearchDataList(Map<String, Object> commandMap) throws Exception {
 		return stockNaverDao.selectStockResearchDataList(commandMap);
 	}
+
+	//My resserch 상세 조회
+	@Override
+	public Map<String, Object> selectStockResearchDataDetail(Map<String, Object> commandMap) throws Exception {
+		return stockNaverDao.selectStockResearchDataDetail(commandMap);
+	}
 		
 
 }

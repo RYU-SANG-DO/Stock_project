@@ -32,4 +32,6 @@ public interface StockNaverService{
 
 	//My resserch List
 	List<Map<String, Object>> selectStockResearchDataList(Map<String, Object> commandMap) throws Exception;
+	//My resserch 상세 조회
+	Map<String, Object> selectStockResearchDataDetail(Map<String, Object> commandMap) throws Exception;
 }
