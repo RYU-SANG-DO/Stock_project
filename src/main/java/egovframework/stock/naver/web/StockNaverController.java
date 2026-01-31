@@ -989,7 +989,6 @@ public class StockNaverController {
 		
 		int totCnt = stockNaverService.selectStockResearchDataListTotCnt(commandMap);
 		
-		
 		naverResearchVO = pagingManageController.PagingManageVo(naverResearchVO, model, totCnt);
 		System.out.println("FirstIndex=>"+naverResearchVO.getFirstIndex());
 		System.out.println("RecordCountPerPage=>"+naverResearchVO.getRecordCountPerPage());
@@ -999,6 +998,17 @@ public class StockNaverController {
 		commandMap.put("firstIndex", firstIndex);
 		commandMap.put("recordCountPerPage", recordCountPerPage);
 		List<Map<String, Object>> list = stockNaverService.selectStockResearchDataList(commandMap);
+		for(Map<String, Object> map : list) {
+			String stockCode = StringUtil.nvl(map.get("relStockCode"),"");
+			if(!"".equals(stockCode)) {
+				Map<String, Object> stockMap = naverUtil.getStockInfo(stockCode, 0);
+				int nowPrice = Integer.parseInt(StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", ""));//현재단가
+				int dayPrice = Integer.parseInt(StringUtil.nvl(map.get("dayPrice"),"0"));
+				int dyaNowPrice = nowPrice-dayPrice;
+				map.put("nowPrice", nowPrice);
+				map.put("dyaNowPrice", dyaNowPrice);
+			}
+		}
 		
 		model.addAttribute("reserchList", list);
 		model.addAttribute("paramInfo",commandMap);

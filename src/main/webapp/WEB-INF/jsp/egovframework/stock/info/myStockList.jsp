@@ -278,17 +278,14 @@ function fnDetail(seq){
 	<tr>
 		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
 		<td><c:out value="${item.seq}"/></td>
-		<td>
-			<c:out value="${item.code}"/>
-			<a href="#none" onclick="fnDetail('${item.code}');'"><c:out value="${item.code}"/></a>
-		</td>
-		<td><c:out value="${item.qy}"/></td>
-		<td><c:out value="${item.gubun}"/></td>
+		<td><a href="#none" onclick="fnDetail('${item.seq}');"><c:out value="${item.stocksName}"/></a></td>
+		<td><fmt:formatNumber value="${item.qy}" pattern="#,###" /></td>
+		<td><c:out value="${item.gubunNm}"/></td>
 		<td><c:out value="${item.delngDe}"/></td>
-		<td><c:out value="${item.fee}"/></td>
-		<td><c:out value="${item.trftax}"/></td>
-		<td><c:out value="${item.incmtax}"/></td>
-		<td><c:out value="${item.unitPrice}"/></td>
+		<td><fmt:formatNumber value="${item.fee}" pattern="#,###" />원</td>
+		<td><fmt:formatNumber value="${item.trftax}" pattern="#,###" />원</td>
+		<td><fmt:formatNumber value="${item.incmtax}" pattern="#,###" />원</td>
+		<td><fmt:formatNumber value="${item.unitPrice}" pattern="#,###" />원</td>
 		<td><c:out value="${item.rm}"/></td>
 		<td><c:out value="${item.regDate}"/></td>
 	</tr>

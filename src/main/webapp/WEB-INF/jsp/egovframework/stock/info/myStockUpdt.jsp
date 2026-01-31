@@ -19,6 +19,23 @@
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
 <script type="text/javascript">
+$(function(){
+	$("#delngDe").datepicker( 
+	        {dateFormat:'yy-mm-dd'
+	         , showOn: 'button'
+	         , buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>'
+	         , buttonImageOnly: true
+	
+	         , showMonthAfterYear: true
+	         , showOtherMonths: true
+		     , selectOtherMonths: true
+				
+	         , changeMonth: true // 월선택 select box 표시 (기본은 false)
+	         , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
+	         , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
+	});
+	
+});
 /* ********************************************************
  * 수정처리화면
  ******************************************************** */
@@ -34,9 +51,9 @@ function fn_egov_updt(){
 	  	 }else if($("#unitPrice").val() == ""){
 	  		alert("단가는 필수입니다.");
 			return;
-	  	 }else if($("#delngDe").val() == ""){
-	  		alert("거래일자는 필수입니다.");
-			return;
+	  	 //}else if($("#delngDe").val() == ""){
+	  	//	alert("거래일자는 필수입니다.");
+		//	return;
 	  	 }else{
 	  		$('#qy').val($('#qy').val().replace(/,/g, ""));
 	  		$('#fee').val($('#fee').val().replace(/,/g, ""));
@@ -71,6 +88,11 @@ function fn_egov_list() {
 	document.egovFrm.submit();
 }
 </script>
+<style>
+.cssright{
+	text-align: right;
+}    
+</style>
 </head>
 <body>
 
@@ -94,18 +116,18 @@ function fn_egov_list() {
 		<tr>
 			<th><label for="code">종목코드 <span class="pilsu">*</span></label></th>
 			<td class="left">
-   				<input type="text" name="code"	id="stock_code"/>
-   				<input type="text" name="codeNm" id="searchKeyword" size="30" maxlength="100" style="width: auto;" readonly="readonly"/>
-   				<a id="popupStocks" href="#none" target="_blank" title="종목 검색" style="selector-dummy:expression(this.hideFocus=false);">
+   				<input type="hidden" name="code"	id="stock_code" value="<c:out value="${infoMap.code}"/>"/>
+   				<input type="text" name="codeNm" id="searchKeyword" size="30" maxlength="100" style="width: auto;" readonly="readonly" value="<c:out value="${infoMap.stocksName}"/>"/>
+   				<%-- <a id="popupStocks" href="#none" target="_blank" title="종목 검색" style="selector-dummy:expression(this.hideFocus=false);">
 						<img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />" alt='' width="15" height="15" />(종목검색)
-					</a>
+					</a> --%>
 			</td>
 		</tr>
 		
 		<tr>
 			<th><label for="qy">수량 <span class="pilsu">*</span></label></th>
 			<td class="left">
-   				<input type="number" name="qy"	id="qy" class="cssright" size="10" maxlength="10" style="text-align: right;" value="<c:out value="${infoMap.qy}"/>"/>
+   				<input type="text" name="qy"	id="qy" class="cssright" size="10" maxlength="10" style="width:auto; text-align: right;" value="<c:out value="${infoMap.qy}"/>"/>
 			</td>
 		</tr>
 		
@@ -122,26 +144,26 @@ function fn_egov_list() {
 		<tr>
 			<th><label for="fee">수수료</label></th>
 			<td class="left">
-   				<input type="number" name="fee"	id="fee" size="10" maxlength="5" class="cssright" value="<fmt:formatNumber value="${infoMap.fee}" pattern="#,###" />"/>원
+   				<input type="text" name="fee"	id="fee" size="10" maxlength="5" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.fee}" pattern="#,###" />"/>원
 			</td>
 		</tr>
 		
 		<tr>
 			<th><label for="trftax">거래세/농특세</label></th>
 			<td class="left">			
-   				<input type="number" name="trftax"	id="trftax" size="10" maxlength="5" class="cssright" value="<fmt:formatNumber value="${infoMap.trftax}" pattern="#,###" />"/>원
+   				<input type="text" name="trftax"	id="trftax" size="10" maxlength="5" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.trftax}" pattern="#,###" />"/>원
 			</td>
 		</tr>
 		<tr>
 			<th><label for="incmtax">소득세/주민세</label></th>
 			<td class="left">			
-   				<input type="number" name="incmtax"	id="incmtax" size="10" maxlength="5" class="cssright" value="<fmt:formatNumber value="${infoMap.incmtax}" pattern="#,###" />"/>원
+   				<input type="text" name="incmtax"	id="incmtax" size="10" maxlength="5" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.incmtax}" pattern="#,###" />"/>원
 			</td>
 		</tr>
 		<tr>
 			<th><label for="unitPrice">단가 <span class="pilsu">*</span></label></th>
 			<td class="left">			
-   				<input type="number" name="unitPrice"	id="unitPrice" size="10" maxlength="5" class="cssright" value="<fmt:formatNumber value="${infoMap.unitPrice}" pattern="#,###" />"/>원
+   				<input type="text" name="unitPrice"	id="unitPrice" size="10" maxlength="5" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.unitPrice}" pattern="#,###" />"/>원
 			</td>
 		</tr>
 		<tr>

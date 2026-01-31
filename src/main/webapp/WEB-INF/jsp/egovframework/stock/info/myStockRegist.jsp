@@ -41,7 +41,7 @@ $(function(){
 	     	e.preventDefault();
 	         //var page = $(this).attr("href");
 	         var pagetitle = $(this).attr("title");
-	         var page = "<c:url value='/stock/data/selectStocksList.do'/>";
+	         var page = "<c:url value='/stock/data/selectStocksPopList.do'/>";
 	         var $dialog = $('<div style="overflow:hidden;padding: 0px 0px 0px 0px;"></div>')
 	         .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
 	         .dialog({
@@ -68,9 +68,9 @@ function fn_egov_regist(form){
   	 }else if($("#unitPrice").val() == ""){
   		alert("단가는 필수입니다.");
 		return;
-  	 }else if($("#delngDe").val() == ""){
-  		alert("거래일자는 필수입니다.");
-		return;
+  	// }else if($("#delngDe").val() == ""){
+  	//	alert("거래일자는 필수입니다.");
+	//	return;
   	 }else{
   		if(confirm("<spring:message code="common.regist.msg" />")){	
   			form.action="/stock/info/saveMyStock.do";	

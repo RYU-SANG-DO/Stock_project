@@ -12,17 +12,21 @@
 			SELECT /*selectMyStockList*/
 				 A.SEQ
 				,A.CODE
+				,B.STOCKS_NAME
 				,A.QY
 				,A.GUBUN
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='STRE' AND CODE=A.GUBUN) AS GUBUN_NM
 				,A.DELNG_DE
 				,A.FEE
 				,A.TRFTAX
 				,A.INCMTAX
 				,A.UNIT_PRICE
+				,(A.QY*A.UNIT_PRICE)-(A.FEE+A.TRFTAX+A.INCMTAX) AS TOTAL_PRICE
 				,A.RM
-				,A.REG_DATE
-			FROM STOCKS_TRANSACTION_INFO A
-			WHERE 1=1
+				,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
+			FROM STOCKS_TRANSACTION_INFO A,
+					STOCKS_LIST B
+			WHERE A.CODE =  B.STOCKS_CODE(+)
 			]]>
 			<if test="gubun != null and gubun != ''">
 				<![CDATA[
@@ -56,13 +60,15 @@
 				,B.STOCKS_NAME
 				,A.QY
 				,A.GUBUN
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='STRE' AND CODE=A.GUBUN) AS GUBUN_NM
 				,A.DELNG_DE
 				,A.FEE
 				,A.TRFTAX
 				,A.INCMTAX
 				,A.UNIT_PRICE
+				,(A.QY*A.UNIT_PRICE)-(A.FEE+A.TRFTAX+A.INCMTAX) AS TOTAL_PRICE
 				,A.RM
-				,A.REG_DATE
+				,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
 			FROM STOCKS_TRANSACTION_INFO A,
 					STOCKS_LIST B
 			WHERE A.CODE =  B.STOCKS_CODE(+)
@@ -74,7 +80,7 @@
 	<!-- 거래내역 등록 -->
 	<insert id="insertMyStock" parameterType="java.util.Map">
 		<![CDATA[/*insertMyStock*/
-			INSRT INTO STOCKS_TRANSACTION_INFO ( 
+			INSERT INTO STOCKS_TRANSACTION_INFO ( 
 				SEQ,
 				CODE,
 				QY,
@@ -91,7 +97,7 @@
 							  #{code}, 
 							  NVL(#{qy},'0'), 
 							  #{gubun}, 
-							  #{delngDe}, 
+							  NVL(#{delngDe},''), 
 							  NVL(#{fee},'0'), 
 							  NVL(#{trftax},'0'), 
 							  NVL(#{incmtax},'0'), 
