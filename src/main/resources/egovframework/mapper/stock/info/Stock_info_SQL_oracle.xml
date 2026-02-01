@@ -21,6 +21,7 @@
 				,A.TRFTAX
 				,A.INCMTAX
 				,A.UNIT_PRICE
+				,A.ACCOUNT
 				,(A.QY*A.UNIT_PRICE)-(A.FEE+A.TRFTAX+A.INCMTAX) AS TOTAL_PRICE
 				,A.RM
 				,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
@@ -28,10 +29,13 @@
 					STOCKS_LIST B
 			WHERE A.CODE =  B.STOCKS_CODE(+)
 			]]>
-			<if test="gubun != null and gubun != ''">
-				<![CDATA[
-					AND A.GUBUN = #{gubun}
-				]]>
+			<if test="keyword != null and keyword != ''">
+				<if test="searchType == 'stockNm'">
+					AND B.STOCKS_NAME LIKE  '%'||#{keyword}||'%'
+				</if>
+				<if test="searchType == 'account'">
+					AND A.ACCOUNT LIKE  '%'||#{keyword}||'%'
+				</if>
 			</if>
 			<![CDATA[
 			ORDER BY A.DELNG_DE DESC
@@ -41,13 +45,19 @@
 	
 	<select id="selectMyStockListTotCnt" parameterType="java.util.Map" resultType="int">
 		<![CDATA[
-		SELECT COUNT(A.SEQ) AS "totcnt" FROM STOCKS_TRANSACTION_INFO A
-		WHERE 1=1
+		SELECT 
+			COUNT(A.SEQ) AS "totcnt" 
+		FROM STOCKS_TRANSACTION_INFO A,
+				STOCKS_LIST B
+		WHERE A.CODE =  B.STOCKS_CODE(+)
 		]]>
-		<if test="gubun != null and gubun != ''">
-			<![CDATA[
-				AND A.GUBUN = #{gubun}
-			]]>
+		<if test="keyword != null and keyword != ''">
+			<if test="searchType == 'stockNm'">
+				AND B.STOCKS_NAME LIKE  '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'account'">
+				AND A.ACCOUNT LIKE  '%'||#{keyword}||'%'
+			</if>
 		</if>
 		
 	</select>
@@ -66,6 +76,7 @@
 				,A.TRFTAX
 				,A.INCMTAX
 				,A.UNIT_PRICE
+				,A.ACCOUNT
 				,(A.QY*A.UNIT_PRICE)-(A.FEE+A.TRFTAX+A.INCMTAX) AS TOTAL_PRICE
 				,A.RM
 				,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
@@ -90,6 +101,7 @@
 				TRFTAX,
 				INCMTAX,
 				UNIT_PRICE,
+				ACCOUNT,
 				RM,
 				REG_DATE
 			  ) VALUES ( 
@@ -102,6 +114,7 @@
 							  NVL(#{trftax},'0'), 
 							  NVL(#{incmtax},'0'), 
 							  NVL(#{unitPrice},'0'), 
+							  NVL(#{account},''), 
 							  NVL(#{rm},''), 
 							  SYSDATE 
 							  )			
@@ -120,6 +133,7 @@
 				TRFTAX = NVL(#{trftax},'0'),
 				INCMTAX = NVL(#{incmtax},'0'),
 				UNIT_PRICE = NVL(#{unitPrice},'0'),
+				ACCOUNT = NVL(#{account},''),
 				RM = #{rm}
 			WHERE SEQ = #{seq}
 		]]>

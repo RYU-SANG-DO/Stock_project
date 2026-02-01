@@ -210,8 +210,9 @@ function fnDetail(seq){
 				<li><div style="line-height:4px;">&nbsp;</div><div>검색구분 : </div></li>
 				<li>
 					<select name="searchType" id="searchType" class="select" title="검색구분">
-						<option value="" <c:if test="${empty searchType}">selected="selected"</c:if>>선택</option>
+						<%-- <option value="" <c:if test="${empty searchType}">selected="selected"</c:if>>선택</option> --%>
 						<option value="stockNm" <c:if test="${'stockNm' eq searchType}">selected="selected"</c:if>>종목</option>
+						<option value="account" <c:if test="${'account' eq searchType}">selected="selected"</c:if>>계좌</option>
 					</select>
 				</li>
 				<li class="stype keyword" style="border: 0px solid #d2d2d2;">
@@ -239,9 +240,11 @@ function fnDetail(seq){
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
+		<col width="25px">
+		<col width="40px">
 		<col>
-		<col>
-		<col>
+		<col width="40px">
+		<col width="40px">
 		<col>
 		<col>
 		<col>
@@ -263,8 +266,11 @@ function fnDetail(seq){
 		<th>수수료</th>
 		<th>거래세/농특세</th>
 		<th>소득세/주민세</th>
-		<th>단가</th>
+		<th>당일단가</th>
+		<th>현재단가</th>
 		<th>금액</th>
+		<th>수익률</th>
+		<th>계좌</th>
 		<th>등록일자</th>
 	</tr>
 	</thead>
@@ -275,9 +281,16 @@ function fnDetail(seq){
 		</tr>
 	</c:if>
 	<c:forEach var="item" items="${list}" varStatus="status">
+		<c:set var="pColor" value="#666"/>
+		<c:if test="${item.dyaNowPrice lt 0}">
+			<c:set var="pColor" value="blue"/>
+		</c:if>
+		<c:if test="${item.dyaNowPrice gt 0}">
+			<c:set var="pColor" value="red"/>
+		</c:if>
 	<tr>
 		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
-		<td><c:out value="${item.seq}"/></td>
+		<td><c:out value="${item.rn}"/></td>
 		<td><a href="#none" onclick="fnDetail('${item.seq}');"><c:out value="${item.stocksName}"/></a></td>
 		<td><fmt:formatNumber value="${item.qy}" pattern="#,###" /></td>
 		<td><c:out value="${item.gubunNm}"/></td>
@@ -286,7 +299,12 @@ function fnDetail(seq){
 		<td><fmt:formatNumber value="${item.trftax}" pattern="#,###" />원</td>
 		<td><fmt:formatNumber value="${item.incmtax}" pattern="#,###" />원</td>
 		<td><fmt:formatNumber value="${item.unitPrice}" pattern="#,###" />원</td>
-		<td><c:out value="${item.rm}"/></td>
+		<td><fmt:formatNumber value="${item.nowPrice}" pattern="#,###" />원</td>
+		<td style="text-align: right; color:${pColor};">
+			<fmt:formatNumber value="${item.dyaNowPrice}" pattern="#,###" />원
+		</td>
+		<td style="text-align: right; color:${pColor};"><c:out value="${item.dyaNowPecent}"/>%</td>
+		<td><c:out value="${item.account}"/></td>
 		<td><c:out value="${item.regDate}"/></td>
 	</tr>
 	</c:forEach>

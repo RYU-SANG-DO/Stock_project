@@ -116,7 +116,7 @@ function fn_egov_list() {
 		<tr>
 			<th><label for="code">종목코드 <span class="pilsu">*</span></label></th>
 			<td class="left">
-   				<input type="hidden" name="code"	id="stock_code" value="<c:out value="${infoMap.code}"/>"/>
+   				<input type="hidden" name="code"	id="stock_code" value="<c:out value="${infoMap.stocksCode}"/>"/>
    				<input type="text" name="codeNm" id="searchKeyword" size="30" maxlength="100" style="width: auto;" readonly="readonly" value="<c:out value="${infoMap.stocksName}"/>"/>
    				<%-- <a id="popupStocks" href="#none" target="_blank" title="종목 검색" style="selector-dummy:expression(this.hideFocus=false);">
 						<img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />" alt='' width="15" height="15" />(종목검색)
@@ -172,7 +172,12 @@ function fn_egov_list() {
    				<input type="text" name="delngDe"	id="delngDe" size="10" maxlength="15" readonly="readonly" style="text-align:cneter; width: auto; margin-right:5px;"/>
 			</td>
 		</tr>
-		
+		<tr>
+			<th><label for="account">계좌</label></th>
+			<td class="left">			
+   				<input type="text" name="account"	id="account" size="10" maxlength="9" style="width:auto;" value="<c:out value="${infoMap.account}"/>"/>
+			</td>
+		</tr>
 		<tr>
 			<th><label for="rm">비고</label></th>
 			<td class="nopd">

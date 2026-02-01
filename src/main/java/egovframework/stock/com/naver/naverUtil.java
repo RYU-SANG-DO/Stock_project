@@ -164,17 +164,15 @@ public class naverUtil extends StockDefaultVO{
 	 * @throws Exception
 	 */
 	public static Map<String, Object> getStockInfo(String stockCode , int startnum) throws Exception{
-		System.out.println("getStockInfo start");
+		System.out.println("getStockInfo start:"+stockCode+","+startnum);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		//삼성전자[005930] , 카카오[035720], 한화에어로스페이스[012450],두산중공업[034020],LG에너지솔루션[373220],SK하이닉스[000660]
-		String [] stockCodes = {"005930","035720","012450","034020","373220","000660"};
 		String URL = naver_domain_url+"/item/main.naver?code="+stockCode; //NAVER 주식 
 		Document doc;
 		int start = startnum;
-		String excelpath = "D:/eclipse_java/com/stock/cospi_20220311.xlsx";
 		StockDefaultVO vo = new StockDefaultVO();
 		vo.setStockTitles("기타");
-		System.out.println(vo.getStockTitles());
+//		System.out.println(vo.getStockTitles());
 		try {
 			
 			//System.out.println("종목\t주가\t등락률\t시가\t고가\t저가\t거래량\t타입\t전일대비\t가져오는 시간");

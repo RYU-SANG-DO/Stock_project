@@ -178,7 +178,7 @@ input[type="number"] {
 			</td>
 		</tr>
 		<tr>
-			<th><label for="delngDe">거래일자 <span class="pilsu">*</span></label></th>
+			<th><label for="delngDe">거래일자</label></th>
 			<td class="left">
    				<input type="text" name="delngDe"	id="delngDe" size="10" maxlength="15" readonly="readonly" style="text-align:cneter; width: auto; margin-right:5px;"/>
 			</td>

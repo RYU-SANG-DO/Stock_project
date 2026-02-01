@@ -20,6 +20,7 @@ import egovframework.com.cmm.web.PagingManageController;
 import egovframework.stock.com.ComDateUtil;
 import egovframework.stock.com.ExcelUtil;
 import egovframework.stock.com.StringUtil;
+import egovframework.stock.com.naver.naverUtil;
 import egovframework.stock.info.service.StockInfoService;
 
 @Controller
@@ -68,7 +69,25 @@ public class StockInfoController {
 		int totCnt = stockInfoService.selectMyStockListTotCnt(commandMap);
 		pagingManageController.PagingManage(commandMap, model, totCnt);
 		List<Map<String, Object>> list = stockInfoService.selectMyStockList(commandMap);
-		
+		for(Map<String, Object> map : list) {
+			String stockCode = StringUtil.nvl(map.get("code"),"");
+			int nowPrice = 0;
+			int dyaNowPrice = 0;
+			String dyaNowPecent = "0";
+			if(!"".equals(stockCode)) {
+				Map<String, Object> stockMap = naverUtil.getStockInfo(stockCode, 0);
+				if(stockMap != null) {					
+					nowPrice = Integer.parseInt(StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", ""));//현재단가
+					int unitPrice = Integer.parseInt(StringUtil.nvl(map.get("unitPrice"),"0"));
+					int qy = Integer.parseInt(StringUtil.nvl(map.get("qy"),"0"));
+					dyaNowPrice = (nowPrice*qy)-(unitPrice*qy);
+					dyaNowPecent = String.format("%.2f",(nowPrice-unitPrice)/(float)unitPrice*100);
+				}
+				map.put("nowPrice", nowPrice);
+				map.put("dyaNowPrice", dyaNowPrice);
+				map.put("dyaNowPecent", dyaNowPecent);
+			}
+		}
 		model.addAttribute("paramInfo",commandMap);
 		model.addAttribute("list",list);
 		model.addAllAttributes(commandMap);
@@ -97,6 +116,17 @@ public class StockInfoController {
 		int totCnt = stockInfoService.selectMyStockListTotCnt(commandMap);
 		commandMap.put("pageUnit", totCnt);
 		List<Map<String, Object>> allList = stockInfoService.selectMyStockList(commandMap);
+		for(Map<String, Object> map : allList) {
+			String stockCode = StringUtil.nvl(map.get("code"),"");
+			if(!"".equals(stockCode)) {
+				Map<String, Object> stockMap = naverUtil.getStockInfo(stockCode, 0);
+				int nowPrice = Integer.parseInt(StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", ""));//현재단가
+				int unitPrice = Integer.parseInt(StringUtil.nvl(map.get("unitPrice"),"0"));
+				int dyaNowPrice = nowPrice-unitPrice;
+				map.put("nowPrice", nowPrice);
+				map.put("dyaNowPrice", dyaNowPrice);
+			}
+		}
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("filePath", filePath);
