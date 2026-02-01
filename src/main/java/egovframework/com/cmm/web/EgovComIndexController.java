@@ -159,10 +159,11 @@ public class EgovComIndexController {
 					}
 					
 					try {
+//						System.out.println("0.getOrder=>"+zooVO.getOrder());
 						String order_title = StringUtil.nvl(egovMessageSource.getMessage("comCmm.left."+zooVO.getOrder()));
 						zooVO.setOrder_title(order_title);
 					} catch (NoSuchMessageException e) {
-						System.out.println("order_title[NoSuchMessage]=>"+zooVO.getName());
+						System.out.println("0.order_title[NoSuchMessage]=>"+zooVO.getName());
 						zooVO.setOrder_title(zooVO.getName());
 					} catch(Exception e) {
 						e.printStackTrace();
@@ -208,10 +209,11 @@ public class EgovComIndexController {
 					}
 					
 					try {
+//						System.out.println("1.getOrder=>"+zooVO.getOrder());
 						String order_title = StringUtil.nvl(egovMessageSource.getMessage("comCmm.left."+zooVO.getOrder()));
 						zooVO.setOrder_title(order_title);
 					} catch (NoSuchMessageException e) {
-						System.out.println("order_title[NoSuchMessage]=>"+zooVO.getName());
+						System.out.println("1.order_title[NoSuchMessage]=>"+zooVO.getName());
 						zooVO.setOrder_title(zooVO.getName());
 					} catch(Exception e) {
 						e.printStackTrace();

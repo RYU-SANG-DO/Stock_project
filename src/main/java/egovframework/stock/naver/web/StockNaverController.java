@@ -754,19 +754,13 @@ public class StockNaverController {
 //		model.addAllAttributes(commandMap);
 //        return "egovframework/stock/naver/research/researchMain";
 //    }
-	@IncludedInfo(name="네이버 리서치",order = 11140 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
-    @RequestMapping("/stock/naver/selectNaverResearchMain.do")
-    public String selectNaverResearchMain(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
-		model.addAllAttributes(commandMap);
-        return "egovframework/stock/naver/research/researchMain";
-    }
 	
 	/**
 	 * 네이버 리서치 
 	 * @return
 	 * @throws Exception
 	 */
-	@IncludedInfo(name="네이버 리서치",order = 11140 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
+	@IncludedInfo(name="네이버 리서치",order = 11040 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
     @RequestMapping("/stock/naver/selectNaverResearchList.do")
     public String selectNaverResearchList(@RequestParam Map<String, Object> commandMap, @ModelAttribute("naverResearchVO") NaverResearchVO naverResearchVO,
     		HttpServletRequest request,ModelMap model) throws Exception {
@@ -967,7 +961,7 @@ public class StockNaverController {
 	 * @return
 	 * @throws Exception
 	 */
-	@IncludedInfo(name="네이버 My 리서치",order = 11160 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
+	@IncludedInfo(name="네이버 My 리서치",order = 11060 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
     @RequestMapping("/stock/naver/selectNaverMyResearchList.do")
     public String selectNaverMyResearchList(@RequestParam Map<String, Object> reqParamMap, @ModelAttribute("naverResearchVO") NaverResearchVO naverResearchVO,
     		HttpServletRequest request,
