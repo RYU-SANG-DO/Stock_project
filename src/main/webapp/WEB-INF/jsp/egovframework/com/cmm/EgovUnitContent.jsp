@@ -64,9 +64,35 @@
 		$dialog.dialog('open');
 </c:if>
     });
+    
+    function Loading() {
+        var maskHeight = $(document).height();
+        var maskWidth  = window.document.body.clientWidth;
+         
+        var mask       = "<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
+        var loadingImg ='';
+         
+        loadingImg +=" <div id='loadingImg'>";
+        loadingImg +=" <img src='${pageContext.request.contextPath}/images/loading.gif' style='position:absolute; text-align:center; display:block; top:50%; left:50%;'/>";
+        loadingImg += "</div>";  
+     
+        $('body').append(mask)
+     
+        $('#mask').css({
+                'width' : maskWidth,
+                'height': maskHeight,
+                'opacity' :'0.3'
+        });
+        
+        $('#mask').show();
+      
+        $('.loadingImg').append(loadingImg);
+        $('#loadingImg').show();
+    }  
 </script>
 </head>
 <body>
+<div id="map" class="loadingImg"></div>
 	<c:if test="${loginVO != null}">
 		${loginVO.name}(${loginVO.id})<spring:message code="comCmm.unitContent.2"/> <a href="${pageContext.request.contextPath }/uat/uia/actionLogout.do"><spring:message code="comCmm.unitContent.3"/></a>
 		<!--

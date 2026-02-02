@@ -7,6 +7,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>eGovFrame 공통 컴포넌트</title>
 <link href="<c:url value='/css/egovframework/com/cmm/main.css' />" rel="stylesheet" type="text/css">
+<script type="text/javaScript">
+
+//메뉴이동
+function leftMenuMove(){
+	if (parent._content && typeof parent._content.Loading === 'function') {
+        parent._content.Loading();
+    } else {
+        console.log("아직 페이지가 로드되지 않았거나 함수가 없습니다.");
+    }
+}
+
+</script>
 <style type="text/css">
 link { color: #666666; text-decoration: none; }
 link:hover { color: #000000; text-decoration: none; }
@@ -79,7 +91,7 @@ link:hover { color: #000000; text-decoration: none; }
 		<c:choose>
 			<c:when test="${result.gid eq '200'}">
 				<ul class="2depth" style="margin-left: ${margin_left}px;">
-					<li><a href="${pageContext.request.contextPath}<c:out value="${result.listUrl}"/>" target="_content" class="link" title="${result}"> <c:out value="${result.order}"/>. <c:out value="${result.name}"/></a></li>
+					<li><a href="<c:url value='${result.listUrl}'/>" onclick="leftMenuMove();" target="_content" class="link" title="${result}"> <c:out value="${result.order}"/>. <c:out value="${result.name}"/></a></li>
 				</ul>
 			</c:when>
 			<c:otherwise>
