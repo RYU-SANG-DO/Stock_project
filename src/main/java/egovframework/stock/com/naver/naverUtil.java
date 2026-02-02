@@ -11,8 +11,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -241,6 +243,134 @@ public class naverUtil extends StockDefaultVO{
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
+		System.out.println(resultMap);
+		System.out.println("getStockInfo end");
+		return resultMap;
+	}
+	
+	/**
+	 * 코스피 종목 정보
+	 * @param stockCode
+	 * @param startnum
+	 * @param type
+	 * @return
+	 * @throws Exception
+	 */
+	public static Map<String, Object> getStockInfoType(String stockCode , int startnum) throws Exception{
+		System.out.println("getStockInfo start:"+stockCode+","+startnum);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		//삼성전자[005930] , 카카오[035720], 한화에어로스페이스[012450],두산중공업[034020],LG에너지솔루션[373220],SK하이닉스[000660]
+		String URL = naver_domain_url+"/item/main.naver?code="+stockCode; //NAVER 주식
+		System.out.println(URL);
+		SimpleDateFormat format = new SimpleDateFormat ( "HH");
+		int time = Integer.parseInt(format.format(new Date()));
+		System.out.println("time=>"+time);
+		String type = "KRX";
+		if(time >=8 && time <= 16) {
+			type = "KRX";
+		}else {
+			type = "NXT";
+		}
+		Document doc;
+		StockDefaultVO vo = new StockDefaultVO();
+		vo.setStockTitles("기타");
+//		System.out.println(vo.getStockTitles());
+		try {
+			
+			//System.out.println("종목\t주가\t등락률\t시가\t고가\t저가\t거래량\t타입\t전일대비\t가져오는 시간");
+			//for(int i = 0 ; i < stockCodes.length ; i++) {
+				//String code = StringUtil.nvl(stockCodes[i],"");
+				String code = StringUtil.nvl(stockCode,"");
+				doc = Jsoup.connect(URL).get();
+				Elements elem = doc.select(".date");
+				String[] str = elem.text().split(" ");
+
+				Elements todaylist =doc.select(".new_totalinfo dl>dd");
+				Elements summaryInfoList =doc.select(".summary_info p");
+				Elements copAnalysis =doc.select(".cop_analysis");//기업실적분석 section cop_analysis
+				Elements theadtrs = doc.select(".cop_analysis thead tr");
+				
+			
+				String summaryInfo ="";
+				for(Element element : summaryInfoList) {
+					summaryInfo += element.text();
+				}
+				
+				if("NXT".equals(type)) {					
+					Elements krxElem =doc.select("#rate_info_krx");
+					Elements nxtElem =doc.select("#rate_info_nxt>.blind");
+					String name = nxtElem.select("dt>strong").text();
+					String juga = nxtElem.select("dd").get(0).text().split(" ")[1];
+					String [] points = nxtElem.select("dd").get(1).text().split(" ");
+					String [] percents = nxtElem.select("dd").get(2).text().split(" ");
+					System.out.println("name=>"+name);
+					System.out.println("juga=>"+juga);
+					System.out.println(Arrays.toString(points));
+					System.out.println(Arrays.toString(percents));
+					
+					resultMap.put("parameter"+(startnum++), name);
+					resultMap.put("parameter"+(startnum++), juga);
+					resultMap.put("parameter"+(startnum++), percents[0].replace("%", ""));
+					resultMap.put("parameter"+(startnum++), "");
+					resultMap.put("parameter"+(startnum++), "");
+					resultMap.put("parameter"+(startnum++), "");
+					resultMap.put("parameter"+(startnum++), "");
+					resultMap.put("parameter"+(startnum++), points[2]);
+					resultMap.put("parameter"+(startnum++), points[0]);
+					resultMap.put("parameter"+(startnum++), str[0]+" "+str[1]);
+					resultMap.put("parameter"+(startnum++), summaryInfo);				
+					
+				}else {
+					
+				
+					if(todaylist != null && todaylist.size() > 0) { 
+						String name = todaylist.get(1).text().split(" ")[1] != null ? todaylist.get(1).text().split(" ")[1] : "";
+						String juga = todaylist.get(3).text().split(" ")[1] != null ? todaylist.get(3).text().split(" ")[1] : "";
+						String DungRakrate = todaylist.get(3).text().split(" ")[6] != null ? todaylist.get(3).text().split(" ")[6] : "";
+						if(todaylist.get(3).text().split(" ")[5] != null && todaylist.get(3).text().split(" ")[5].equals("마이너스")) {
+							DungRakrate = "-"+DungRakrate;
+						}
+						//DungRakrate = DungRakrate+"%";
+						String siga =  todaylist.get(5).text().split(" ")[1] != null ? todaylist.get(5).text().split(" ")[1] : "";
+						String goga = todaylist.get(6).text().split(" ")[1] != null  ? todaylist.get(6).text().split(" ")[1] : "";
+						String zeoga = todaylist.get(8).text().split(" ")[1] != null ? todaylist.get(8).text().split(" ")[1] : "";
+						String georaeryang = todaylist.get(10).text().split(" ")[1] != null ? todaylist.get(10).text().split(" ")[1] : "";
+		
+						String stype = todaylist.get(3).text().split(" ")[3] != null ? todaylist.get(3).text().split(" ")[3] : ""; 
+		
+						String vsyesterday = todaylist.get(3).text().split(" ")[4] != null ? todaylist.get(3).text().split(" ")[4] : "";
+						
+						//System.out.println(name+"\t"+juga+"\t"+DungRakrate+"\t"+siga+"\t"+goga+"\t"+zeoga+"\t"+georaeryang+"\t"+stype+"\t"+vsyesterday+"\t"+str[0]+" "+str[1]);
+						resultMap.put("parameter"+(startnum++), name);
+						resultMap.put("parameter"+(startnum++), juga);
+						resultMap.put("parameter"+(startnum++), DungRakrate.replace("퍼센트", ""));
+						resultMap.put("parameter"+(startnum++), siga);
+						resultMap.put("parameter"+(startnum++), goga);
+						resultMap.put("parameter"+(startnum++), zeoga);
+						resultMap.put("parameter"+(startnum++), georaeryang);
+						resultMap.put("parameter"+(startnum++), stype);
+						resultMap.put("parameter"+(startnum++), vsyesterday);
+						resultMap.put("parameter"+(startnum++), str[0]+" "+str[1]);
+						resultMap.put("parameter"+(startnum++), summaryInfo);				
+					}else {
+						resultMap.put("parameter"+(startnum++), "");
+						resultMap.put("parameter"+(startnum++), "");
+						resultMap.put("parameter"+(startnum++), "");
+						resultMap.put("parameter"+(startnum++), "");
+						resultMap.put("parameter"+(startnum++), "");
+						resultMap.put("parameter"+(startnum++), "");
+						resultMap.put("parameter"+(startnum++), "");
+						resultMap.put("parameter"+(startnum++), "");
+						resultMap.put("parameter"+(startnum++), "");
+						resultMap.put("parameter"+(startnum++), "");
+						resultMap.put("parameter"+(startnum++), "");
+					}
+					
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		System.out.println(resultMap);
 		System.out.println("getStockInfo end");
 		return resultMap;
 	}

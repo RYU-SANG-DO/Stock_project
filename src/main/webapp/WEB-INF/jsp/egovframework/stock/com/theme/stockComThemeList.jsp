@@ -132,7 +132,7 @@ function fn_process(cmd) {
  ******************************************************** */
 function fn_validatorThemeList() {
 
-	if(document.menuManageVO.themeId.value == ""){alert("메뉴번호는 Not Null 항목입니다."); return false;}
+	//if(document.menuManageVO.themeId.value == ""){alert("메뉴번호는 Not Null 항목입니다."); return false;}
 	if(!checkNumber(document.menuManageVO.themeId.value)){alert("메뉴번호는 숫자만 입력 가능합니다."); return false;} 
 
 	if(document.menuManageVO.themeOrdr.value == ""){alert("메뉴순서는 Not Null 항목입니다."); return false;}

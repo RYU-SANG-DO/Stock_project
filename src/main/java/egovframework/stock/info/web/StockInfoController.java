@@ -76,7 +76,7 @@ public class StockInfoController {
 			String dyaNowPecent = "0";
 			if(!"".equals(stockCode)) {
 				Map<String, Object> stockMap = naverUtil.getStockInfo(stockCode, 0);
-				if(stockMap != null) {					
+				if(stockMap != null) {
 					nowPrice = Integer.parseInt(StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", ""));//현재단가
 					int unitPrice = Integer.parseInt(StringUtil.nvl(map.get("unitPrice"),"0"));
 					int qy = Integer.parseInt(StringUtil.nvl(map.get("qy"),"0"));
@@ -120,6 +120,7 @@ public class StockInfoController {
 			String stockCode = StringUtil.nvl(map.get("code"),"");
 			if(!"".equals(stockCode)) {
 				Map<String, Object> stockMap = naverUtil.getStockInfo(stockCode, 0);
+				String rm = StringUtil.nvl(stockMap.get("parameter10"),"");
 				int nowPrice = Integer.parseInt(StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", ""));//현재단가
 				int unitPrice = Integer.parseInt(StringUtil.nvl(map.get("unitPrice"),"0"));
 				int dyaNowPrice = nowPrice-unitPrice;

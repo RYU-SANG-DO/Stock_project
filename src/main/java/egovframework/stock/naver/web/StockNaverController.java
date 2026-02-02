@@ -939,8 +939,10 @@ public class StockNaverController {
 							insertMap.put("codeNid", code_nid);
 							System.out.println(insertMap);
 							Map<String, Object> stockMap = naverUtil.getStockInfo(StringUtil.nvl(map.get("code"),""), 0);
+							String userSummary = StringUtil.nvl(stockMap.get("parameter10"),"");
 							String dayPrice = StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", "");
 							insertMap.put("dayPrice", dayPrice);
+							insertMap.put("userSummary", userSummary);
 							totcnt += stockNaverService.insertStockResearchData(insertMap);
 							insertList.add(insertMap);
 						}
@@ -994,7 +996,7 @@ public class StockNaverController {
 		for(Map<String, Object> map : list) {
 			String stockCode = StringUtil.nvl(map.get("relStockCode"),"");
 			if(!"".equals(stockCode)) {
-				Map<String, Object> stockMap = naverUtil.getStockInfo(stockCode, 0);
+				Map<String, Object> stockMap = naverUtil.getStockInfoType(stockCode, 0);
 				int nowPrice = Integer.parseInt(StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", ""));//현재단가
 				int dayPrice = Integer.parseInt(StringUtil.nvl(map.get("dayPrice"),"0"));
 				int dyaNowPrice = nowPrice-dayPrice;

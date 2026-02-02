@@ -94,6 +94,7 @@
 				RP_LINK,
 				REL_STOCK_CODE,
 				DAY_PRICE,
+				USER_SUMMARY,
 				UPT_DATE,
 				REG_DATE
             ) VALUES (
@@ -104,6 +105,7 @@
                 #{rpLink},
                 #{relStockCode},
                 #{dayPrice},
+                NVL(#{userSummary},''),
                 SYSDATE,
                 SYSDATE
             )
