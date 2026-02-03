@@ -24,7 +24,23 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/js/egovframework/com/cmm/bootstrap-4.0.0/css/bootstrap.min.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/js/egovframework/com/cmm/jquery-ui-1.14.0.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/util.js'/>" ></script>
 
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script>
+var toolbarOptions = [
+    [{ 'font': [] }],                                 	// 폰트 설정
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],	// 텍스트 크기 설정
+    ['bold', 'italic', 'underline', 'strike'],        	// toggled buttons
+    [{ 'color': [] }, { 'background': [] }],       // dropdown with defaults from theme
+    [{ 'align': [] }],                                	// 텍스트 정렬
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],     	// 리스트 항목
+    [{ 'indent': '-1'}, { 'indent': '+1' }],         // outdent/indent
+    ['blockquote', 'code-block'],                   // 코드블럭, 인용 문구
+    ['link', 'image'],                                		// 링크, 이미지 추가
+    ['clean']                                         		// remove formatting button
+];
+</script>

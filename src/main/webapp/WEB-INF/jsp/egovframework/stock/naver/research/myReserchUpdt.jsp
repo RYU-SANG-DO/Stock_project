@@ -24,11 +24,13 @@
  ******************************************************** */
 function fn_egov_updt(){
 	let form = document.egovFrm;
+	console.log(quill.root.innerHTML);
+	form.userSummary.value= quill.root.innerHTML;
 	form.mode.value = "update";	
 	$('#dayPrice').val($('#dayPrice').val().replace(/,/g, ""));
-		$('#targetPrice').val($('#targetPrice').val().replace(/,/g, ""));
-		if(confirm("<spring:message code="common.update.msg" />")){	
-			form.action="/stock/naver/saveNaverMyResearch.do";	
+	$('#targetPrice').val($('#targetPrice').val().replace(/,/g, ""));
+	if(confirm("<spring:message code="common.update.msg" />")){	
+		form.action="/stock/naver/saveNaverMyResearch.do";	
 		form.submit();	
 	}
 }
@@ -136,10 +138,10 @@ input[type="number"] {
 		<tr>
 			<th><label for="rm">요약</label></th>
 			<td class="nopd">
-				<textarea name="userSummary" title="요약" cols="300" rows="10" style="height:auto; text-align: left;"><c:out value="${infoMap.userSummary}"/></textarea>
+				<input type="hidden" name="userSummary" id="userSummary" value="<c:out value="${infoMap.userSummary}" escapeXml="false"/>">
+				<div id="editor" style="height: 300px;"></div>
 			</td>
 		</tr>
-		
 	</tbody>
 	</table>
 
@@ -154,6 +156,14 @@ input[type="number"] {
 </div>
 
 </form>
-
-</body>
-</html>
+<script>
+ var quill = new Quill('#editor', {
+    modules: {
+        toolbar: toolbarOptions                       // modules에 toolbar : toolbarOptions를 추가
+    },
+    theme: 'snow'                                     // 테마는 snow로 설정
+}); 
+//에디터의 HTML 구조를 직접 설정
+quill.root.innerHTML = document.getElementById('userSummary').value;
+</script>
+<jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />

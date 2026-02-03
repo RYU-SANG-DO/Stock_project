@@ -204,5 +204,4 @@ input[type="number"] {
 
 </form>
 
-</body>
-</html>
+<jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />
