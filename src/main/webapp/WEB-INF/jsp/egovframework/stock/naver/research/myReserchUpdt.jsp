@@ -88,21 +88,18 @@ input[type="number"] {
 		<tr>
 			<th><label for="relStockCode">종목</label></th>
 			<td class="left">
-   				<%-- <input type="hidden" name="relStockCode" id="relStockCode" value="<c:out value="${infoMap.relStockCode}"/>"/> --%>
-   				<c:out value="${infoMap.stocksName}"/>
+   				<a href="https://finance.naver.com/item/main.naver?code=${infoMap.relStockCode}" target="_blank"><c:out value="${infoMap.stocksName}"/></a>
 			</td>
 		</tr>
 		<tr>
 			<th><label for="rpTitle">리포트 제목</label></th>
 			<td class="left">
-   				<%-- <input type="text" name="rpTitle" id="rpTitle" size="10" maxlength="10" value="<c:out value="${infoMap.rpTitle}"/>"/> --%>
-   				<c:out value="${infoMap.rpTitle}"/>
+   				<a href="https://finance.naver.com/research/company_read.naver?nid=${infoMap.originUid}" target="_blank"><c:out value="${infoMap.rpTitle}"/></a>
 			</td>
 		</tr>
 		<tr>
 			<th><label for="rpDate">리포트 발행일</label></th>
 			<td class="left">
-   				<%-- <input type="text" name="rpDate" id="rpDate" size="10" maxlength="10" value="<c:out value="${infoMap.rpDate}"/>"/> --%>
    				<c:out value="${infoMap.rpDate}"/>
 			</td>
 		</tr>
@@ -114,10 +111,6 @@ input[type="number"] {
 				<c:forEach var="item" items="${clCodeList}" varStatus="status">
 					<option value="${item.code}" <c:if test="${infoMap.stockRecommendation eq item.code}">selected="selected"</c:if>><c:out value="${item.codeNm}"/></option> 
 				</c:forEach>
-					<%-- <option value="BUY" <c:if test="${infoMap.stockRecommendation eq 'BUY'}">selected="selected"</c:if>>매수</option> 
-					<option value="SELL" <c:if test="${infoMap.stockRecommendation eq 'SELL'}">selected="selected"</c:if>>매도</option>
-					<option value="NEUTRAL" <c:if test="${infoMap.stockRecommendation eq 'NEUTRAL'}">selected="selected"</c:if>>중립</option>
-					<option value="HOLD" <c:if test="${infoMap.stockRecommendation eq 'HOLD'}">selected="selected"</c:if>>보유</option> --%>
 				</select>
 			</td>
 		</tr>

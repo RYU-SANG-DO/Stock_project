@@ -305,14 +305,10 @@ function fnDetail(rpId){
 	<tr >
 		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
 		<td><c:out value="${item.rn}"/></td>
-		<td>
-			<c:out value="${item.stocksName}"/>
-		</td>
-		<td style="text-align: left;"><c:out value="${item.rpTitle}"/></td>
+		<td><a href="https://finance.naver.com/item/main.naver?code=${item.relStockCode}" target="_blank"><c:out value="${item.stocksName}"/></a></td>
+		<td style="text-align: left;"><a href="https://finance.naver.com/research/company_read.naver?nid=${item.originUid}" target="_blank"><c:out value="${item.rpTitle}"/></a></td>
 		<td><c:out value="${item.stockRecommendationNm}"/></td>
-		<td>
-			<a href="${item.rpLink}" target="_blank"><img src="/images/egovframework/com/cmm/down_pdf.gif" alt="pdf" ></a>
-		</td>
+		<td><a href="${item.rpLink}" target="_blank"><img src="/images/egovframework/com/cmm/down_pdf.gif" alt="pdf" ></a></td>
 		<td><c:out value="${item.rpDate}"/></td>
 		<td style="text-align: right;"><fmt:formatNumber value="${item.dayPrice}" pattern="#,###" />원</td>
 		<td style="text-align: right;"><fmt:formatNumber value="${item.targetPrice}" pattern="#,###" />원</td>
