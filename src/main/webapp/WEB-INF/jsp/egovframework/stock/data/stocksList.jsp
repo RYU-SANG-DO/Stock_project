@@ -52,6 +52,10 @@ function choisStocksListSearch(vCode,vName) {
 	//parentFrom[0].searchKeyword.value = vName;	
     parent.$('.ui-dialog-content').dialog('close');
 }
+
+function fnInsertStock(){
+	
+}
 -->
 </script>
 </head>
@@ -79,7 +83,14 @@ function choisStocksListSearch(vCode,vName) {
 			</li>
 		</ul>
 	</div>
-
+	<div class="button_box">
+		<ul style="margin-bottom: 0px;">
+			<!-- 검색키워드 및 조회버튼 -->
+			<li style="border: 0px solid #d2d2d2;">
+				<input type="button" class="s_btn" onClick="fnInsertStock()" value="종목 등록" title="종목 등록 <spring:message code="input.button" />" />
+			</li>
+		</ul>
+	</div>
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>

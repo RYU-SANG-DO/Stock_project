@@ -230,7 +230,13 @@ function fnInsertStock(){
 				alert("ERROR!");
 				return;
 			} 
-		}
+		},
+		error: function(xhr, status, error) {
+	        console.error("상태 코드:", xhr.status); // 예: 404, 500
+	        console.error("에러 메시지:", error);
+	        console.log("응답 텍스트:", xhr.responseText); // 서버에서 보낸 상세 에러 내용
+			alert("처리중 오류가 발생했습니다.");
+	    }
 	});
 	
 }
