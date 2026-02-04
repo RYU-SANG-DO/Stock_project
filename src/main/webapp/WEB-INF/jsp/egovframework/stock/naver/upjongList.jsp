@@ -95,7 +95,7 @@ function fncSelectDetailList(upjongNo , upjongNm){
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
-		<ul>
+		<ul style="margin-bottom: 0px;">
 			<select name="listType" class="select" title="검색조건구분"><!-- 검색조건구분 -->
 				<option value="" <c:if test="${empty listType}">selected="selected"</c:if>>페이지보기</option>
 				<option value="A" <c:if test="${'A' eq listType}">selected="selected"</c:if>>전체 보기</option>
@@ -114,7 +114,16 @@ function fncSelectDetailList(upjongNo , upjongNm){
 	</div>
 	
 	<div class="button_box">
-		<ul>
+		<ul style="margin-bottom: 0px;">
+			<li style="float:left;">
+				페이지 사이즈:
+				<select name="pageUnit" class="select" title="페이지">
+					<option value="10" <c:if test="${'10' eq naverThemeVO.pageUnit}">selected="selected"</c:if>>10</option>
+					<option value="30" <c:if test="${'30' eq naverThemeVO.pageUnit}">selected="selected"</c:if>>30</option>
+					<option value="60" <c:if test="${'60' eq naverThemeVO.pageUnit}">selected="selected"</c:if>>60</option>
+					<option value="100" <c:if test="${'100' eq naverThemeVO.pageUnit}">selected="selected"</c:if>>100</option>
+				</select>
+			</li>
 			<!-- 검색키워드 및 조회버튼 -->
 			<li style="border: 0px solid #d2d2d2;">
 				<input type="button" class="s_btn" onClick="naverExcelDown('L')" value="<spring:message code="stock.com.excelDown.title" />" title="<spring:message code="stock.com.excelDown.title" /> <spring:message code="input.button" />" />

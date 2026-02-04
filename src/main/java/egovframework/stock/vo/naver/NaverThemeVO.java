@@ -51,8 +51,8 @@ public class NaverThemeVO extends ComDefaultVO{
         		"firstIndex='"+this.getFirstIndex()+'\''+"," +
         		"pageSize='"+this.getPageSize()+'\''+"," +
         		"pageUnit='"+this.getPageUnit()+'\''+"," +
-        		"recordCountPerPage='"+this.getRecordCountPerPage()+'\'' +
-        		"stockSite='"+this.getStockSite()+'\''+"," +
+        		"recordCountPerPage='"+this.getRecordCountPerPage()+'\''+"," +
+        		"stockSite='"+this.getStockSite()+'\'' +
                 '}';
     }
 }

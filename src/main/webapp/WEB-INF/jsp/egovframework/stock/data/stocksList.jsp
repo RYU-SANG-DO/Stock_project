@@ -95,6 +95,15 @@ function fnUpdateStock(code){
 	</div>
 	<div class="button_box">
 		<ul style="margin-bottom: 0px;">
+			<li style="float:left;">
+				페이지 사이즈:
+				<select name="pageUnit" class="select" title="페이지">
+					<option value="10" <c:if test="${'10' eq stocksDataVO.pageUnit}">selected="selected"</c:if>>10</option>
+					<option value="30" <c:if test="${'30' eq stocksDataVO.pageUnit}">selected="selected"</c:if>>30</option>
+					<option value="60" <c:if test="${'60' eq stocksDataVO.pageUnit}">selected="selected"</c:if>>60</option>
+					<option value="100" <c:if test="${'100' eq stocksDataVO.pageUnit}">selected="selected"</c:if>>100</option>
+				</select>
+			</li>
 			<!-- 검색키워드 및 조회버튼 -->
 			<li style="border: 0px solid #d2d2d2;">
 				<input type="button" class="s_btn" onClick="fnInsertStock()" value="종목 등록" title="종목 등록 <spring:message code="input.button" />" />

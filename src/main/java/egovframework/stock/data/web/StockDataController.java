@@ -56,7 +56,7 @@ public class StockDataController {
     	// 내역 조회
 		//stocksDataVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		stocksDataVO.setPageSize(propertiesService.getInt("pageSize"));
-		stocksDataVO.setPageUnit(30);
+		stocksDataVO.setPageUnit(Integer.parseInt(StringUtil.nvl(stocksDataVO.getPageUnit(),"30")));
 
     	/** pageing */
     	PaginationInfo paginationInfo = new PaginationInfo();
