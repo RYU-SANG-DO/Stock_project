@@ -74,10 +74,12 @@ public class StockInfoController {
 			int nowPrice = 0;
 			int dyaNowPrice = 0;
 			String dyaNowPecent = "0";
+			double indepercent = 0.0;
 			if(!"".equals(stockCode)) {
 				Map<String, Object> stockMap = naverUtil.getStockInfoType(stockCode, 0);
 				if(stockMap != null) {
 					nowPrice = Integer.parseInt(StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", ""));//현재단가
+					indepercent = Double.parseDouble(StringUtil.nvl(stockMap.get("parameter2"),"0.0"));//현재증감률
 					int unitPrice = Integer.parseInt(StringUtil.nvl(map.get("unitPrice"),"0"));
 					int qy = Integer.parseInt(StringUtil.nvl(map.get("qy"),"0"));
 					dyaNowPrice = (nowPrice*qy)-(unitPrice*qy);
@@ -86,6 +88,7 @@ public class StockInfoController {
 				map.put("nowPrice", nowPrice);
 				map.put("dyaNowPrice", dyaNowPrice);
 				map.put("dyaNowPecent", dyaNowPecent);
+				map.put("indepercent", indepercent);
 			}
 		}
 		model.addAttribute("paramInfo",commandMap);

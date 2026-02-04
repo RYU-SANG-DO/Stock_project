@@ -244,7 +244,8 @@ function fnDetail(seq){
 		<col width="40px">
 		<col>
 		<col width="40px">
-		<col width="40px">
+		<%-- <col width="40px"> --%>
+		<col>
 		<col>
 		<col>
 		<col>
@@ -261,13 +262,14 @@ function fnDetail(seq){
 		<th>순번</th>
 		<th>종목</th>
 		<th>수량</th>
-		<th>구분</th>
+		<!-- <th>구분</th> -->
 		<th>거래일자</th>
 		<th>수수료</th>
 		<th>거래세/농특세</th>
 		<th>소득세/주민세</th>
 		<th>당일단가</th>
 		<th>현재단가</th>
+		<th>증감률</th>
 		<th>금액</th>
 		<th>수익률</th>
 		<th>계좌</th>
@@ -282,24 +284,24 @@ function fnDetail(seq){
 	</c:if>
 	<c:forEach var="item" items="${list}" varStatus="status">
 		<c:set var="pColor" value="#666"/>
-		<c:if test="${item.dyaNowPrice lt 0}">
-			<c:set var="pColor" value="blue"/>
-		</c:if>
-		<c:if test="${item.dyaNowPrice gt 0}">
-			<c:set var="pColor" value="red"/>
-		</c:if>
+		<c:set var="indeColor" value="#666"/>
+		<c:if test="${item.dyaNowPrice lt 0}"><c:set var="pColor" value="blue"/></c:if>
+		<c:if test="${item.dyaNowPrice gt 0}"><c:set var="pColor" value="red"/></c:if>
+		<c:if test="${item.indepercent lt 0}"><c:set var="indeColor" value="blue"/></c:if>
+		<c:if test="${item.indepercent gt 0}"><c:set var="indeColor" value="red"/></c:if>
 	<tr>
 		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
 		<td><c:out value="${item.rn}"/></td>
 		<td><a href="#none" onclick="fnDetail('${item.seq}');"><c:out value="${item.stocksName}"/></a></td>
 		<td><fmt:formatNumber value="${item.qy}" pattern="#,###" /></td>
-		<td><c:out value="${item.gubunNm}"/></td>
+		<%-- <td><c:out value="${item.gubunNm}"/></td> --%>
 		<td><c:out value="${item.delngDe}"/></td>
 		<td><fmt:formatNumber value="${item.fee}" pattern="#,###" />원</td>
 		<td><fmt:formatNumber value="${item.trftax}" pattern="#,###" />원</td>
 		<td><fmt:formatNumber value="${item.incmtax}" pattern="#,###" />원</td>
 		<td><fmt:formatNumber value="${item.unitPrice}" pattern="#,###" />원</td>
 		<td><fmt:formatNumber value="${item.nowPrice}" pattern="#,###" />원</td>
+		<td style="right; color:${indeColor};"><c:out value="${item.indepercent}"/>%</td>
 		<td style="text-align: right; color:${pColor};">
 			<fmt:formatNumber value="${item.dyaNowPrice}" pattern="#,###" />원
 		</td>
