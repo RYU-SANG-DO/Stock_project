@@ -993,15 +993,22 @@ public class StockNaverController {
 		commandMap.put("firstIndex", firstIndex);
 		commandMap.put("recordCountPerPage", recordCountPerPage);
 		List<Map<String, Object>> list = stockNaverService.selectStockResearchDataList(commandMap);
+		double indepercent = 0.0;
+		String dyaNowPecent = "0";
 		for(Map<String, Object> map : list) {
 			String stockCode = StringUtil.nvl(map.get("relStockCode"),"");
 			if(!"".equals(stockCode)) {
 				Map<String, Object> stockMap = naverUtil.getStockInfoType(stockCode, 0);
 				int nowPrice = Integer.parseInt(StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", ""));//현재단가
+				indepercent = Double.parseDouble(StringUtil.nvl(stockMap.get("parameter2"),"0.0"));//현재증감률
 				int dayPrice = Integer.parseInt(StringUtil.nvl(map.get("dayPrice"),"0"));
 				int dyaNowPrice = nowPrice-dayPrice;
+				dyaNowPecent = String.format("%.2f",(dyaNowPrice)/(float)dayPrice*100);
+				//indepercent = Double.parseDouble(dyaNowPecent);
 				map.put("nowPrice", nowPrice);
 				map.put("dyaNowPrice", dyaNowPrice);
+				map.put("dyaNowPecent", dyaNowPecent);
+				map.put("indepercent", indepercent);
 			}
 		}
 		

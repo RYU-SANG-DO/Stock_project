@@ -282,7 +282,7 @@ function fnDetail(rpId){
 		<th>당일가</th>
 		<th>목표가</th>
 		<th>현재가</th>
-		<th>차액</th>
+		<th>증감률</th>
 		<th>수정일자</th>
 		<th>등록일자</th>
 		<th></th>
@@ -313,7 +313,7 @@ function fnDetail(rpId){
 		<td style="text-align: right;"><fmt:formatNumber value="${item.dayPrice}" pattern="#,###" />원</td>
 		<td style="text-align: right;"><fmt:formatNumber value="${item.targetPrice}" pattern="#,###" />원</td>
 		<td style="text-align: right;"><fmt:formatNumber value="${item.nowPrice}" pattern="#,###" />원</td>
-		<td style="text-align: right; color:${pColor};"><fmt:formatNumber value="${item.dyaNowPrice}" pattern="#,###" />원</td>
+		<td style="color:${pColor};"><c:out value="${item.dyaNowPecent}"/>%</td>
 		<td><c:out value="${item.uptDate}"/></td>
 		<td><c:out value="${item.regDate}"/></td>
 		<td>
