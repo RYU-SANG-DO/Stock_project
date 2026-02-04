@@ -20,37 +20,32 @@
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
 <script type="text/javascript">
 /* ********************************************************
- * 수정처리화면
+ * 등록처리화면
  ******************************************************** */
-function fn_egov_updt(){
+function fn_egov_regist(){
 	let form = document.egovFrm;
-	console.log(quill.root.innerHTML);
-	form.userSummary.value= quill.root.innerHTML;
-	form.mode.value = "update";	
-	$('#dayPrice').val($('#dayPrice').val().replace(/,/g, ""));
-	$('#targetPrice').val($('#targetPrice').val().replace(/,/g, ""));
-	if(confirm("<spring:message code="common.update.msg" />")){	
-		form.action="/stock/naver/saveNaverMyResearch.do";	
-		form.submit();	
-	}
+	 if($("#stocksCode").val() == ""){
+	  		alert("종목 코드는 필수입니다.");
+			return;
+	  	 }else if($("#stocksName").val() == ""){
+	  		alert("종목 명은 필수입니다.");
+			return;
+	  	 }else if($("#unitPrice").val() == ""){
+	  		alert("단가는 필수입니다.");
+			return;
+	  	 }else{
+			if(confirm("<spring:message code="common.regist.msg" />")){	
+				form.action="/stock/data/saveStocksInfo.do";	
+				form.submit();	
+			}
+	  	 }
 }
 
-/* ********************************************************
- * 삭제처리
- ******************************************************** */
- function fn_egov_delete(){
-	if(confirm("<spring:message code="common.delete.msg" />")){	
-		// Delete하기 위한 키값을 셋팅
-		document.egovFrm.mode.value = "delete";	
-		document.egovFrm.action = "<c:url value='/stock/naver/saveNaverMyResearch.do'/>";
-		document.egovFrm.submit();
-	}	
-}	
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list() {
-	document.egovFrm.action = "<c:url value='/stock/naver/selectNaverMyResearchList.do'/>";
+	document.egovFrm.action = "<c:url value='/stock/data/selectStocksList.do'/>";
 	document.egovFrm.mode.value="list";
 	document.egovFrm.submit();
 }
@@ -73,11 +68,11 @@ input[type="number"] {
 <input type="hidden" name="mode" value="insert">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
-	<h2>${pageTitle} <spring:message code="title.insert" /></h2>
+	<h2>${pageTitle} <spring:message code="title.create" /></h2>
 
 	<!-- 등록폼 -->
 	<table class="wTable" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
-	<caption>${pageTitle } <spring:message code="title.update" /></caption>
+	<caption>${pageTitle } <spring:message code="title.create" /></caption>
 	<colgroup>
 		<col style="width: 20%;">
 		<col style="width: ;">
@@ -85,15 +80,15 @@ input[type="number"] {
 	<tbody>
 		<!-- 입력 -->
 		<tr>
-			<th><label for="relStockCode">종목 명</label></th>
+			<th><label for="relStockCode">종목코드</label></th>
 			<td class="left">
-   				<input type="text" name="stocksName"	id="stocksName" size="80" maxlength="80" class="cssright" style="width:auto;" />
+   				<input type="text" name="stocksCode"	id="stocksCode" size="10" maxlength="10" style="width:auto;" />
 			</td>
 		</tr>
 		<tr>
-			<th><label for="relStockCode">종목코드</label></th>
+			<th><label for="relStockCode">종목 명</label></th>
 			<td class="left">
-   				<input type="text" name="stocksCode"	id="stocksCode" size="10" maxlength="10" class="cssright" style="width:auto;" />
+   				<input type="text" name="stocksName"	id="stocksName" size="80" maxlength="80" style="width:auto;" />
 			</td>
 		</tr>
 		<tr>
@@ -101,34 +96,34 @@ input[type="number"] {
 			<td class="left">
 				<select name="stocksGubun" id="stocksGubun" title="종목구분">
 				<option value="KOSPI" selected="selected">코스피</option> 
-				<option value="KOSDAQ" selected="selected">코스닥</option> 
+				<option value="KOSDAQ">코스닥</option> 
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<th><label for="homepage">홈페이지</label></th>
 			<td class="left">
-   				<input type="text" name="homepage"	id="homepage" size="80" maxlength="80" class="cssright" style="width:auto;" />
+   				<input type="text" name="homepage"	id="homepage" size="80" maxlength="80" style="width:auto;" />
 			</td>
 		</tr>
 		<tr>
 			<th><label for="upjong">업종</label></th>
 			<td class="left">
-   				<input type="text" name="upjong"	id="upjong" size="80" maxlength="80" class="cssright" style="width:auto;" />
+   				<input type="text" name="upjong"	id="upjong" size="80" maxlength="80" style="width:auto;" />
 			</td>
 		</tr>
 		<tr>
 			<th><label for="mainPrduct">주요제품</label></th>
 			<td class="left">
-   				<input type="text" name="mainPrduct" id="mainPrduct" size="100" maxlength="350" class="cssright" style="width:auto;" />
+   				<input type="text" name="mainPrduct" id="mainPrduct" size="100" maxlength="350" style="width:auto;" />
 			</td>
 		</tr>
 		<tr>
 			<th><label for="country">국가</label></th>
 			<td class="left">
 				<select name="country" id="country" title="국가">
-					<option value="KOSPI" selected="selected">코스피</option> 
-					<option value="KOSDAQ" selected="selected">코스닥</option> 
+					<option value="KOR" selected="selected">한국</option> 
+					<option value="USA">미국</option> 
 				</select>
 			</td>
 		</tr>
@@ -137,8 +132,7 @@ input[type="number"] {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="#none" onClick="fn_egov_updt(); return false;" title="<spring:message code="title.update" /> <spring:message code="input.button" />"><spring:message code="button.update" /></a></span>
-		<span class="btn_s"><a href="#none" onClick="fn_egov_delete(); return false;" title="<spring:message code="title.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="#none" onClick="fn_egov_regist(); return false;" title="<spring:message code="title.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 		<a href="#none" onClick="fn_egov_list();" class="btn_s" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a>
 	</div>
 	<div style="clear:both;"></div>

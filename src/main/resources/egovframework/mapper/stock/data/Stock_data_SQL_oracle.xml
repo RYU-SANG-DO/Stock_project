@@ -62,4 +62,56 @@
 			]]>
 	</select>
 	
+	<insert id="insertStocksInfo" parameterType="java.util.Map">
+	<![CDATA[
+        MERGE INTO STOCKS_LIST T
+        USING DUAL
+        ON (
+        		T.STOCKS_CODE = #{stocksCode} 
+        		)
+        WHEN NOT MATCHED THEN
+            INSERT (
+                STOCKS_CODE,
+				STOCKS_NAME,
+				STOCKS_GUBUN,
+				HOMEPAGE,
+				UPJONG,
+				MAIN_PRDUCT,
+				COUNTRY,
+				REG_DATE
+            ) VALUES (
+                #{stocksCode},
+                #{stocksName},
+                #{stocksGubun},
+                #{homepage},
+                #{upjong},
+                #{mainPrduct},
+                NVL(#{country},'KOR'),
+                SYSDATE
+            )
+	]]>
+    </insert>
+    
+    <!-- 종목 정보 수정 -->
+	<update id="updateStocksInfo" parameterType="java.util.Map">
+		<![CDATA[/*updateStocksInfo*/
+			UPDATE STOCKS_LIST
+			SET 	STOCKS_NAME = NVL(#{stocksName},STOCKS_NAME),
+					STOCKS_GUBUN = #{stocksGubun},
+					HOMEPAGE = #{homepage},
+					UPJONG = #{upjong},
+					MAIN_PRDUCT = #{mainPrduct},
+					COUNTRY = NVL(#{country},'KOR')
+			WHERE STOCKS_CODE = #{stocksCode} 
+		]]>
+	</update>
+	
+	<!-- 종목 정보 삭제 -->
+	<delete id="deleteStocksInfo" parameterType="java.util.Map">
+		<![CDATA[/*deleteStocksInfo*/
+			DELETE FROM STOCKS_LIST
+			WHERE STOCKS_CODE = #{stocksCode} 	
+		]]>
+	</delete>
+	
 </mapper>

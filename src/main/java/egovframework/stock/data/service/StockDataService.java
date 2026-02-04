@@ -23,4 +23,10 @@ public interface StockDataService{
 	//종목 정보 상세 조회
 	Map<String, Object> selectStocksDetail(StocksDataVO stocksDataVO) throws Exception;
 
+	int insertStocksInfo(Map<String, Object> commandMap) throws Exception;
+
+	int updateStocksInfo(Map<String, Object> commandMap) throws Exception;
+
+	int deleteStocksInfo(Map<String, Object> commandMap) throws Exception;
+
 }

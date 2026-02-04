@@ -24,15 +24,21 @@
  ******************************************************** */
 function fn_egov_updt(){
 	let form = document.egovFrm;
-	console.log(quill.root.innerHTML);
-	form.userSummary.value= quill.root.innerHTML;
-	form.mode.value = "update";	
-	$('#dayPrice').val($('#dayPrice').val().replace(/,/g, ""));
-	$('#targetPrice').val($('#targetPrice').val().replace(/,/g, ""));
-	if(confirm("<spring:message code="common.update.msg" />")){	
-		form.action="/stock/naver/saveNaverMyResearch.do";	
-		form.submit();	
-	}
+	 if($("#stocksCode").val() == ""){
+	  		alert("종목 코드는 필수입니다.");
+			return;
+	  	 }else if($("#stocksName").val() == ""){
+	  		alert("종목 명은 필수입니다.");
+			return;
+	  	 }else if($("#unitPrice").val() == ""){
+	  		alert("단가는 필수입니다.");
+			return;
+	  	 }else{
+				if(confirm("<spring:message code="common.update.msg" />")){	
+					form.action="/stock/data/saveStocksInfo.do";	
+					form.submit();	
+				}
+	  	 }
 }
 
 /* ********************************************************
@@ -42,7 +48,7 @@ function fn_egov_updt(){
 	if(confirm("<spring:message code="common.delete.msg" />")){	
 		// Delete하기 위한 키값을 셋팅
 		document.egovFrm.mode.value = "delete";	
-		document.egovFrm.action = "<c:url value='/stock/naver/saveNaverMyResearch.do'/>";
+		document.egovFrm.action = "<c:url value='/stock/data/saveStocksInfo.do'/>";
 		document.egovFrm.submit();
 	}	
 }	
@@ -50,7 +56,7 @@ function fn_egov_updt(){
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list() {
-	document.egovFrm.action = "<c:url value='/stock/naver/selectNaverMyResearchList.do'/>";
+	document.egovFrm.action = "<c:url value='/stock/data/selectStocksList.do'/>";
 	document.egovFrm.mode.value="list";
 	document.egovFrm.submit();
 }
@@ -70,10 +76,10 @@ input[type="number"] {
 
 <!-- 상단타이틀 -->
 <form name="egovFrm" method="post"> 
-<input type="hidden" name="mode" value="insert">
+<input type="hidden" name="mode" value="update">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
-	<h2>${pageTitle} <spring:message code="title.insert" /></h2>
+	<h2>${pageTitle} <spring:message code="title.update" /></h2>
 
 	<!-- 등록폼 -->
 	<table class="wTable" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
@@ -85,50 +91,50 @@ input[type="number"] {
 	<tbody>
 		<!-- 입력 -->
 		<tr>
-			<th><label for="relStockCode">종목 명</label></th>
+			<th><label for="relStockCode">종목코드</label></th>
 			<td class="left">
-   				<input type="text" name="stocksName"	id="stocksName" size="80" maxlength="80" class="cssright" style="width:auto;" />
+   				<input type="text" name="stocksCode"	id="stocksCode" size="10" maxlength="10" style="width:auto;" readonly="readonly" value="<c:out value="${stockInfo.stocksCode}"/>"/>
 			</td>
 		</tr>
 		<tr>
-			<th><label for="relStockCode">종목코드</label></th>
+			<th><label for="relStockCode">종목 명</label></th>
 			<td class="left">
-   				<input type="text" name="stocksCode"	id="stocksCode" size="10" maxlength="10" class="cssright" style="width:auto;" />
+   				<input type="text" name="stocksName"	id="stocksName" size="80" maxlength="80" style="width:auto;" value="<c:out value="${stockInfo.stocksName}"/>"/>
 			</td>
 		</tr>
 		<tr>
 			<th><label for="stocksGubun">종목구분</label></th>
 			<td class="left">
 				<select name="stocksGubun" id="stocksGubun" title="종목구분">
-				<option value="KOSPI" selected="selected">코스피</option> 
-				<option value="KOSDAQ" selected="selected">코스닥</option> 
+					<option value="KOSPI" <c:if test="${stockInfo.stocksGubun eq 'KOSPI'}">selected="selected"</c:if>>코스피</option> 
+					<option value="KOSDAQ" <c:if test="${stockInfo.stocksGubun eq 'KOSDAQ'}">selected="selected"</c:if>>코스닥</option> 
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<th><label for="homepage">홈페이지</label></th>
 			<td class="left">
-   				<input type="text" name="homepage"	id="homepage" size="80" maxlength="80" class="cssright" style="width:auto;" />
+   				<input type="text" name="homepage"	id="homepage" size="80" maxlength="80" style="width:auto;" value="<c:out value="${stockInfo.homepage}"/>" />
 			</td>
 		</tr>
 		<tr>
 			<th><label for="upjong">업종</label></th>
 			<td class="left">
-   				<input type="text" name="upjong"	id="upjong" size="80" maxlength="80" class="cssright" style="width:auto;" />
+   				<input type="text" name="upjong"	id="upjong" size="80" maxlength="80" style="width:auto;" value="<c:out value="${stockInfo.upjong}"/>"/>
 			</td>
 		</tr>
 		<tr>
 			<th><label for="mainPrduct">주요제품</label></th>
 			<td class="left">
-   				<input type="text" name="mainPrduct" id="mainPrduct" size="100" maxlength="350" class="cssright" style="width:auto;" />
+   				<input type="text" name="mainPrduct" id="mainPrduct" size="100" maxlength="350" style="width:auto;" value="<c:out value="${stockInfo.mainPrduct}"/>"/>
 			</td>
 		</tr>
 		<tr>
 			<th><label for="country">국가</label></th>
 			<td class="left">
 				<select name="country" id="country" title="국가">
-					<option value="KOSPI" selected="selected">코스피</option> 
-					<option value="KOSDAQ" selected="selected">코스닥</option> 
+					<option value="KOR" <c:if test="${stockInfo.country eq 'KOR'}">selected="selected"</c:if>>한국</option> 
+					<option value="USA" <c:if test="${stockInfo.country eq 'USA'}">selected="selected"</c:if>>미국</option> 
 				</select>
 			</td>
 		</tr>

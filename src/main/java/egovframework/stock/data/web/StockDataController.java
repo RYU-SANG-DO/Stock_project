@@ -135,4 +135,28 @@ public class StockDataController {
         model.addAllAttributes(commandMap);
         return returnUrl;
     }
+    
+    /**
+   	 * 주식 종목 등록 및 수정
+   	 * @return
+   	 * @throws Exception
+   	 */
+       @RequestMapping("/stock/data/saveStocksInfo.do")
+       public String saveStocksInfo(@RequestParam Map<String, Object> commandMap , @ModelAttribute("stocksDataVO") StocksDataVO stocksDataVO,  HttpServletRequest request, ModelMap model) throws Exception {
+   		System.out.println(commandMap);
+   		String stocksCode = StringUtil.nvl(commandMap.get("stocksCode"),"");
+   		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(stocksCode)?"insert":"update"));
+           String returnUrl = "forward:/stock/data/selectStocksList.do";
+           int cnt = 0;
+       	if("insert".equals(move)) {
+       		cnt =stockDataService.insertStocksInfo(commandMap);
+       	}if("update".equals(move)) {
+       		cnt =stockDataService.updateStocksInfo(commandMap);
+       	}if("delete".equals(move)) {
+       		cnt = stockDataService.deleteStocksInfo(commandMap);
+       	}
+       	System.out.println(move+":"+cnt);
+           model.addAllAttributes(commandMap);
+           return returnUrl;
+       }
 }

@@ -89,7 +89,6 @@ function fnUpdateStock(code){
 			<li>
 				<label for="">종목명 : </label><!-- 프로그램명 -->
 				<input class="s_input2 vat" name="searchKeyword" type="text"  value='<c:out value="${stocksDataVO.searchKeyword}"/>'  size="30" maxlength="60" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
-				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title="<spring:message code="title.inquire"/>" onclick="selectStocksListSearch(); return false;" /><!-- 조회 -->
 			</li>
 		</ul>
@@ -110,6 +109,7 @@ function fnUpdateStock(code){
 			<col style="width:10%" />
 			<col/>
 			<col/>
+			<col style="width:5%" />
 		</colgroup>
 		<thead>
 			<tr>
@@ -118,14 +118,13 @@ function fnUpdateStock(code){
 			   <th scope="col">종목명</th>
 			   <th scope="col">업종</th>
 			   <th scope="col">주요제품</th>
+			   <th scope="col">수정</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="result" items="${resultList}" varStatus="status">
 			  <tr>
-			  	<td>
-			    	<c:out value="${result.rn}"/>
-			    </td>
+			  	<td><c:out value="${result.rn}"/></td>
 			    <td>
 			      <span class="link">
 			      	<a href="#LINK" onclick="choisStocksListSearch('<c:out value="${result.stocksCode}"/>','<c:out value="${result.stocksName}"/>'); return false;"><c:out value="${result.stocksCode}"/></a>
@@ -136,11 +135,16 @@ function fnUpdateStock(code){
 			      	<a href="#LINK" onclick="choisStocksListSearch('<c:out value="${result.stocksCode}"/>','<c:out value="${result.stocksName}"/>'); return false;"><c:out value="${result.stocksName}"/></a>
 			      </span>
 			    </td>
+			    <td style="text-align: left;"><c:out value="${result.upjong}"/></td>
+			    <td style="text-align: left;"><c:out value="${result.mainPrduct}"/></td>
 			     <td>
-			    	<c:out value="${result.upjong}"/>
-			    </td>
-			    <td style="text-align: left;">
-			    	<c:out value="${result.mainPrduct}"/>
+			    	<div class="button_box">
+						<ul style="margin-bottom: 0px;text-align: center;">
+							<li style="border: 0px solid #d2d2d2;">
+								<input type="button" class="s_btn" onClick="fnUpdateStock('${result.stocksCode}');" value="<spring:message code="title.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
+							</li>
+						</ul>
+					</div>
 			    </td>
 			  </tr>
 			 </c:forEach>
