@@ -114,4 +114,25 @@ public class StockDataController {
         model.addAllAttributes(commandMap);
         return "egovframework/stock/data/pop/stocksPopList";
     }
+    
+    /**
+	 * 주식 종목 등록 및 수정 화면 이동
+	 * @return
+	 * @throws Exception
+	 */
+    @RequestMapping("/stock/data/moveStockView.do")
+    public String moveStockView(@RequestParam Map<String, Object> commandMap , @ModelAttribute("stocksDataVO") StocksDataVO stocksDataVO,  HttpServletRequest request, ModelMap model) throws Exception {
+		System.out.println(commandMap);
+		String stocksCode = StringUtil.nvl(commandMap.get("stocksCode"),"");
+		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(stocksCode)?"insert":"update"));
+        String returnUrl = "egovframework/stock/data/stocksRegist";
+    	if("update".equals(move)) {
+    		Map<String,Object> stockInfo = stockDataService.selectStocksDetail(stocksDataVO);
+            model.addAttribute("stockInfo", stockInfo);
+            returnUrl = "egovframework/stock/data/stocksUpdt";
+    	}
+
+        model.addAllAttributes(commandMap);
+        return returnUrl;
+    }
 }

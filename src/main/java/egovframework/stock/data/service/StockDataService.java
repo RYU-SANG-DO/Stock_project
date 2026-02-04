@@ -20,4 +20,7 @@ public interface StockDataService{
 
 	int selectStocksListTotCnt(StocksDataVO stocksDataVO) throws Exception;
 
+	//종목 정보 상세 조회
+	Map<String, Object> selectStocksDetail(StocksDataVO stocksDataVO) throws Exception;
+
 }

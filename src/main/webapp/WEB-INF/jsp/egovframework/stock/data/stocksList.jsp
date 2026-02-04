@@ -54,7 +54,16 @@ function choisStocksListSearch(vCode,vName) {
 }
 
 function fnInsertStock(){
-	
+	document.stockFrm.mode.value="insert";
+	document.stockFrm.action = "<c:url value='/stock/data/moveStockView.do'/>";
+   	document.stockFrm.submit();
+}
+
+function fnUpdateStock(code){
+	document.stockFrm.mode.value="update";
+	document.stockFrm.stocksCode.value=code;
+	document.stockFrm.action = "<c:url value='/stock/data/moveStockView.do'/>";
+   	document.stockFrm.submit();
 }
 -->
 </script>
@@ -62,6 +71,8 @@ function fnInsertStock(){
 <body>
 <form name="stockFrm" action ="<c:url value='/stock/data/selectStocksList.do'/>" method="post">
 <input name="pageIndex" type="hidden" value="<c:out value='${stocksDataVO.pageIndex}'/>"/>
+<input type="hidden" name="mode"	id="mode" />
+<input type="hidden" name="stocksCode"	id="stocksCode" />
 <div class="board" style="width:100%;">
 	<h1>종목 검색</h1><!-- 프로그램파일명 검색 -->
 

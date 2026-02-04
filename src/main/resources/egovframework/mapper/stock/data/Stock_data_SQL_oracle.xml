@@ -45,4 +45,21 @@
 		
 	</select>
 	
+	<!-- 종목 상세 조회 -->
+	<select id="selectStocksDetail"  parameterType="egovframework.stock.data.service.StocksDataVO" resultType="egovMap">
+		<![CDATA[
+			SELECT /*selectStockList*/
+				 A.STOCKS_CODE
+				,A.STOCKS_NAME
+				,A.STOCKS_GUBUN
+				,A.HOMEPAGE
+				,A.UPJONG
+				,A.MAIN_PRDUCT
+				,A.COUNTRY
+				,A.REG_DATE
+			FROM STOCKS_LIST A
+			WHERE A.STOCKS_CODE = #{stocksCode}
+			]]>
+	</select>
+	
 </mapper>

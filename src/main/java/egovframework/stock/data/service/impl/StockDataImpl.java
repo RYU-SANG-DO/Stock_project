@@ -28,5 +28,11 @@ public class StockDataImpl extends EgovAbstractServiceImpl implements StockDataS
 		return stockDataDao.selectStocksListTotCnt(stocksDataVO);
 	}
 
+	//종목 정보 상세 조회
+	@Override
+	public Map<String, Object> selectStocksDetail(StocksDataVO stocksDataVO) throws Exception {
+		return stockDataDao.selectStocksDetail(stocksDataVO);
+	}
+
 
 }
