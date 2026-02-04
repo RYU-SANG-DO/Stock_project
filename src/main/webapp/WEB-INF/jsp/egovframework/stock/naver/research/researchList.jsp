@@ -224,7 +224,11 @@ function fnInsertStock(){
 		success : function(returnData, status) {
 			console.log(status, returnData);
 			if(status == "success") {
-				alert(returnData.totcnt+"건의 데이터가 등록되었습니다.");
+				if(returnData.totcnt > 0){
+					alert(returnData.totcnt+"건의 데이터가 등록되었습니다.");
+				}else{
+					alert("이미 등록된 데이터가 있습니다.");
+				}
 				return;
 			} else{
 				alert("ERROR!");

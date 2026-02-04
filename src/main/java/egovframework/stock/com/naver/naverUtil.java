@@ -296,9 +296,9 @@ public class naverUtil extends StockDefaultVO{
 					summaryInfo += element.text();
 				}
 				
-				if("NXT".equals(type)) {					
-					Elements krxElem =doc.select("#rate_info_krx");
-					Elements nxtElem =doc.select("#rate_info_nxt>.blind");
+				Elements krxElem =doc.select("#rate_info_krx");
+				Elements nxtElem =doc.select("#rate_info_nxt>.blind");
+				if("NXT".equals(type) && nxtElem != null && nxtElem.size() > 0) {
 					String name = nxtElem.select("dt>strong").text();
 					String juga = nxtElem.select("dd").get(0).text().split(" ")[1];
 					String [] points = nxtElem.select("dd").get(1).text().split(" ");
