@@ -301,11 +301,11 @@ function fnDetail(seq){
 		<td><fmt:formatNumber value="${item.incmtax}" pattern="#,###" />원</td>
 		<td><fmt:formatNumber value="${item.unitPrice}" pattern="#,###" />원</td>
 		<td><fmt:formatNumber value="${item.nowPrice}" pattern="#,###" />원</td>
-		<td style="right; color:${indeColor};"><c:out value="${item.indepercent}"/>%</td>
-		<td style="text-align: right; color:${pColor};">
+		<td style="color:${indeColor};"><c:out value="${item.indepercent}"/>%</td>
+		<td style="color:${pColor};">
 			<fmt:formatNumber value="${item.dyaNowPrice}" pattern="#,###" />원
 		</td>
-		<td style="text-align: right; color:${pColor};"><c:out value="${item.dyaNowPecent}"/>%</td>
+		<td style="color:${pColor};"><c:out value="${item.dyaNowPecent}"/>%</td>
 		<td><c:out value="${item.account}"/></td>
 		<td><c:out value="${item.regDate}"/></td>
 	</tr>
