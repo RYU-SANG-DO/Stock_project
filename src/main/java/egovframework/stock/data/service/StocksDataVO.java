@@ -24,7 +24,7 @@ public class StocksDataVO extends ComDefaultVO{
 	
 	private String gubun;
 	
-	private String searchKeyword;
+	private String stocksCode;
 	
 	private String [] fieldIds = null;
 	
@@ -45,7 +45,8 @@ public class StocksDataVO extends ComDefaultVO{
         		"no='"+no+'\''+"," +
         		"listType='"+listType+'\''+"," +
         		"gubun='"+gubun+'\''+"," +
-        		"searchKeyword='"+searchKeyword+'\''+"," +
+        		"stocksCode='"+stocksCode+'\''+"," +
+        		"searchKeyword='"+this.getSearchKeyword()+'\''+"," +
         		"fieldIds='"+Arrays.toString(fieldIds)+'\''+"," +
         		"pageIndex='"+this.getPageIndex()+'\''+"," +
         		"firstIndex='"+this.getFirstIndex()+'\''+"," +
