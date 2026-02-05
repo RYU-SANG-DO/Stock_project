@@ -100,6 +100,16 @@ function fn_egov_inqire_list() {
 			</td>
 		</tr>
 		
+		<!-- 영문원문명 -->
+		<c:set var="title"><spring:message code="comUssOlhWor.wordDicaryVO.originalEngNm"/> </c:set>
+		<tr>
+			<th><label for="originalEngNm">${title} <span class="pilsu">*</span></label></th>
+			<td class="left">
+			    <form:input path="originalEngNm" title="${title} ${inputTxt}" size="100" maxlength="100" />
+   				<div><form:errors path="originalEngNm" cssClass="error" /></div>     
+			</td>
+		</tr>
+		
 		<!-- 용어설명 -->
 		<c:set var="title"><spring:message code="comUssOlhWor.wordDicaryVO.wordDc"/> </c:set>
 		<tr>

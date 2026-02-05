@@ -69,6 +69,11 @@
 			<th><spring:message code="comUssOlhWor.wordDicaryVO.engNm" /></th>
 			<td class="left"><c:out value="${result.engNm}"/></td>
 		</tr>
+		<!-- 영문원문명 -->
+		<tr>
+			<th><spring:message code="comUssOlhWor.wordDicaryVO.originalEngNm" /></th>
+			<td class="left"><c:out value="${result.originalEngNm}"/></td>
+		</tr>
 		<!-- 용어설명 -->
 		<tr>
 			<th class="vtop"><spring:message code="comUssOlhWor.wordDicaryVO.wordDc" /></th>

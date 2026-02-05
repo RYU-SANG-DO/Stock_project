@@ -79,7 +79,7 @@ function fnUpdateStock(code){
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
-				<label for="gubun">구분 : </label><!-- 프로그램명 -->
+				<label for="gubun">구분 : </label>
 				<select name="gubun" id="gubun" class="select" title="구분">
 					<option value="" <c:if test="${empty gubun}">selected="selected"</c:if>>전체</option>
 					<option value="KOSPI" <c:if test="${'KOSPI' eq gubun}">selected="selected"</c:if>>유가</option>
@@ -87,7 +87,15 @@ function fnUpdateStock(code){
 				</select>
 			</li>
 			<li>
-				<label for="">종목명 : </label><!-- 프로그램명 -->
+				<label for="gubun">분류 : </label>
+				<select name="cl" id="cl" class="select" title="분류">
+					<option value="" <c:if test="${empty cl}">selected="selected"</c:if>>전체</option>
+					<option value="UPJONG" <c:if test="${'KOSPI' eq cl}">selected="selected"</c:if>>업종</option>
+					<option value="PRDUCT" <c:if test="${'KOSDAQ' eq cl}">selected="selected"</c:if>>주요제품</option>
+				</select>
+			</li>
+			<li>
+				<label for="">검색명 : </label><!-- 프로그램명 -->
 				<input class="s_input2 vat" name="searchKeyword" type="text"  value='<c:out value="${stocksDataVO.searchKeyword}"/>'  size="30" maxlength="60" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title="<spring:message code="title.inquire"/>" onclick="selectStocksListSearch(); return false;" /><!-- 조회 -->
 			</li>

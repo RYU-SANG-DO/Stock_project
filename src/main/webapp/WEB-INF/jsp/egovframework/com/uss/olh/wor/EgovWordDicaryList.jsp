@@ -92,11 +92,10 @@ function fn_egov_inquire_worddicarydetail(wordId) {
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle}<spring:message code="title.list" /></caption>
 	<colgroup>
-		<col style="width: 9%;">
-		<col style="width: 20%;">
-		<col style="width: 20%;">
-		<col style="width: 13%;">
-		<col style="width: 13%;">
+		<col style="width: 5%;">
+		<col>
+		<col>
+		<col>
 		<col style="width: 13%;">
 	</colgroup>
 	<thead>
@@ -104,24 +103,22 @@ function fn_egov_inquire_worddicarydetail(wordId) {
 		<th><spring:message code="table.num" /></th><!-- 번호 -->
 		<th class="board_th_link"><spring:message code="comUssOlhWor.wordDicaryVO.wordNm" /></th><!-- 용어명 -->
 		<th><spring:message code="comUssOlhWor.wordDicaryVO.engNm" /></th><!-- 영문명 -->
-		<th><spring:message code="comUssOlhWor.wordDicaryVO.synonm" /></th><!-- 동의어 -->
-		<th><spring:message code="table.reger" /></th><!-- 등록자 -->
+		<th><spring:message code="comUssOlhWor.wordDicaryVO.originalEngNm" /></th><!-- 영어원문명 -->
 		<th><spring:message code="table.regdate" /></th><!-- 등록일자 -->
 	</tr>
 	</thead>
 	<tbody class="ov">
 	<c:if test="${fn:length(resultList) == 0}">
 	<tr>
-		<td colspan="6"><spring:message code="common.nodata.msg" /></td>
+		<td colspan="5"><spring:message code="common.nodata.msg" /></td>
 	</tr>
 	</c:if>
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/uss/olh/wor/selectWordDicaryDetail.do?wordId=${resultInfo.wordId}'/>" onClick="fn_egov_inquire_worddicarydetail('<c:out value="${resultInfo.wordId}"/>');return false;"><c:out value='${fn:substring(resultInfo.wordNm, 0, 40)}'/></a></td>
-		<td class="left"><c:out value='${resultInfo.engNm}'/></td>
-		<td class="left"><c:out value='${resultInfo.synonm}'/></td>
-		<td><c:out value='${resultInfo.emplyrNm}'/></td>
+		<td class="center"><a href="<c:url value='/uss/olh/wor/selectWordDicaryDetail.do?wordId=${resultInfo.wordId}'/>" onClick="fn_egov_inquire_worddicarydetail('<c:out value="${resultInfo.wordId}"/>');return false;"><c:out value='${fn:substring(resultInfo.wordNm, 0, 40)}'/></a></td>
+		<td class="center"><c:out value='${resultInfo.engNm}'/></td>
+		<td class="center"><c:out value='${resultInfo.originalEngNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>		
 	</tr>
 	</c:forEach>

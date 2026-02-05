@@ -26,6 +26,8 @@ public class StocksDataVO extends ComDefaultVO{
 	
 	private String stocksCode;
 	
+	private String cl;
+	
 	private String [] fieldIds = null;
 	
 	public String getJsonFieldIds() {
