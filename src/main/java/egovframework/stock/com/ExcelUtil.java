@@ -1021,4 +1021,161 @@ public class ExcelUtil {
 		//System.out.println("resultSetMnspXlsxExcelCreate end");
 		return resultMap;
 	}
+	
+	/**
+	 * 리서치 내역 엑셀 파일 생성
+	 * @param mnspList
+	 * @param reqMap
+	 * @param sheetNum
+	 * @param rowNum
+	 * @return
+	 */
+	public static Map<String,Object> resultResearchXlsxExcelCreateV01(List<Map<String, Object>> resultList , Map<String,Object> reqMap, int sheetNum, int rowNum) {
+		System.out.println("resultResearchXlsxExcelCreateV01("+ resultList.size()+") start");
+		Map<String,Object> resultMap = new HashMap<String, Object>();
+		FileOutputStream outStream = null;
+		InputStream fis = null;	
+		String p_type = StringUtil.nvl(reqMap.get("p_type"),"");
+		System.out.println("p_type=>"+p_type);
+		String resultFilePath = StringUtil.nvl(reqMap.get("resultFilePath"),"");
+		String filePath = StringUtil.nvl(reqMap.get("filePath"),"");
+		String fileName = StringUtil.nvl(reqMap.get("fileName"),"stock_form.xlsx");
+		String fileResultName = StringUtil.nvl(reqMap.get("fileResultName"),"stock_result.xlsx");
+		try {
+			String year = StringUtil.nvl(reqMap.get("searchYear"),ComDateUtil.getYear());
+			String quarter = StringUtil.nvl(reqMap.get("searchQuarter"),ComDateUtil.getQuarter());
+			System.out.println(filePath+ "/" + fileName);
+			fis = new FileInputStream(filePath+ "/" + fileName);
+			XSSFWorkbook workbook = new XSSFWorkbook(fis); // xlsx 파일 Open
+			
+	        XSSFSheet sheet = workbook.getSheetAt(sheetNum);
+	        XSSFRow curRow;
+	        XSSFCell curCell;
+	        String [] titles = {"순번","종목명","종목코드","제목","증권사","첨부URL","작성일"};
+	        curRow = sheet.createRow(0);    // row 생성
+	        for(int j = 0 ; j < titles.length ; j++) {
+	        	curCell = curRow.createCell(j);
+	        	XSSFCellStyle cs = workbook.createCellStyle();
+	        	cs.setAlignment(HorizontalAlignment. CENTER);
+	        	cs.setBorderRight(BorderStyle.THIN);
+	    		cs.setBorderLeft(BorderStyle.THIN);
+	    		cs.setBorderTop(BorderStyle.THIN);
+	    		cs.setBorderBottom(BorderStyle.THIN);
+	    		cs.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+	    		cs.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	        	curCell.setCellStyle(cs);
+	        	curCell.setCellValue(titles[j]);
+	        }
+    		
+	        
+	        for (int rowIndex = rowNum; rowIndex < resultList.size()+rowNum; rowIndex++) {
+	        	Map<String, Object> map = resultList.get(rowIndex);
+	        	System.out.println(map);
+	        	//Map<String, Object> voMap = BeanUtils.describe(vo);
+	        	curRow = sheet.createRow(rowIndex+1);    // row 생성
+	        	sheet.autoSizeColumn(rowIndex+1);
+	        	XSSFCellStyle cellStyle2 = workbook.createCellStyle();
+	        	cellStyle2.setAlignment(HorizontalAlignment.CENTER); //가운데 정렬
+	    		//테두리 선 (우,좌,위,아래)
+	    		cellStyle2.setBorderRight(BorderStyle.THIN);
+	    		cellStyle2.setBorderLeft(BorderStyle.THIN);
+	    		cellStyle2.setBorderTop(BorderStyle.THIN);
+	    		cellStyle2.setBorderBottom(BorderStyle.THIN);
+	    		cellStyle2.setFillForegroundColor(IndexedColors.YELLOW.getIndex()); // 노란색
+	    		cellStyle2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	        	
+	        	XSSFCellStyle cellStyle1 = workbook.createCellStyle();
+	    		cellStyle1.setAlignment(HorizontalAlignment.CENTER); //가운데 정렬
+	    		//테두리 선 (우,좌,위,아래)
+	    		cellStyle1.setBorderRight(BorderStyle.THIN);
+	    		cellStyle1.setBorderLeft(BorderStyle.THIN);
+	    		cellStyle1.setBorderTop(BorderStyle.THIN);
+	    		cellStyle1.setBorderBottom(BorderStyle.THIN);
+	        	cellStyle1.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	        	
+	        	XSSFFont RedBold = workbook.createFont();
+	        	RedBold.setColor(HSSFColor.RED.index);
+	        	RedBold.setFontName("나눔고딕"); //글씨체
+	        	
+	        	XSSFFont BludBold = workbook.createFont();
+	        	BludBold.setColor(HSSFColor.BLUE.index);
+	        	BludBold.setFontName("나눔고딕"); //글씨체
+	        	
+	        	int cellIndex = 0;
+	        	curCell = curRow.createCell(cellIndex++);
+				XSSFCellStyle cs = workbook.createCellStyle();
+				cs.setBorderRight(BorderStyle.THIN);
+	    		cs.setBorderLeft(BorderStyle.THIN);
+	    		cs.setBorderTop(BorderStyle.THIN);
+	    		cs.setBorderBottom(BorderStyle.THIN);
+				cs.setAlignment(HorizontalAlignment.CENTER);
+				curCell.setCellStyle(cs);
+        		curCell.setCellValue(rowIndex+1);
+	        	
+	        	for (int i = 0; i <  5; i++) {
+	        		curCell = curRow.createCell(cellIndex++);
+	        		String pam = StringUtil.nvl(map.get("parameter"+i),"").trim();
+	        		String code = StringUtil.nvl(map.get("code"),"").trim();
+	        		cs = workbook.createCellStyle();
+	        		cs.setBorderRight(BorderStyle.THIN);
+		    		cs.setBorderLeft(BorderStyle.THIN);
+		    		cs.setBorderTop(BorderStyle.THIN);
+		    		cs.setBorderBottom(BorderStyle.THIN);
+	        		cs.setAlignment(HorizontalAlignment.CENTER);	        		
+	        		curCell.setCellStyle(cs);
+	        		
+	        		if(i == 0) {//종목명
+//	        			if(!"".equals(code)) {
+//	        				pam = pam+"["+code+"]";
+//	        			}
+	        			curCell.setCellValue(pam);
+	        			
+	        			curCell = curRow.createCell(cellIndex++);
+		        		curCell.setCellStyle(cs);
+		        		curCell.setCellValue(code);
+		        		
+	        		}else if(i == 1) {//제목
+	        			cs.setAlignment(HorizontalAlignment.LEFT);
+	        			curCell.setCellValue(pam);
+	        		}else if(i == 2) {//증권사
+	        			cs.setAlignment(HorizontalAlignment.CENTER);
+	        			curCell.setCellValue(pam);
+	        		}else if(i == 3) {//첨부파일 URL
+	        			pam = StringUtil.nvl(map.get("parameter"+i+"_href"),"").trim();
+	        			cs = workbook.createCellStyle();
+	        			cs.setBorderRight(BorderStyle.THIN);
+			    		cs.setBorderLeft(BorderStyle.THIN);
+			    		cs.setBorderTop(BorderStyle.THIN);
+			    		cs.setBorderBottom(BorderStyle.THIN);
+	        			cs.setAlignment(HorizontalAlignment.LEFT);
+	        			curCell.setCellStyle(cs);
+	        			curCell.setCellValue(pam);
+	        		}else if(i == 4) {//작성일
+	        			curCell.setCellValue(pam);
+	        		}
+	        		
+//	        	    cs.setWrapText(true);
+
+	        	}
+	        }
+	        System.out.println(resultFilePath+ "/" + fileResultName);
+			outStream = new FileOutputStream(resultFilePath+ "/" + fileResultName);
+			workbook.write(outStream);
+			resultMap.put("code", "00");
+			resultMap.put("codeNm", "정상");
+		} catch (Exception e){
+			resultMap.put("code", "21");
+			resultMap.put("codeNm", "파일생성 오류");
+			e.printStackTrace();
+		} finally {
+			try {
+				fis.close();
+				outStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("resultResearchXlsxExcelCreateV01 end");
+		return resultMap;
+	}
 }

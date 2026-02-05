@@ -153,15 +153,16 @@ function press() {
 }
 
 //내역 엑셀 다운로드
-function excelDown(gubun){
-	$("#downGubun").val(gubun);
+function excelDown(){
+	Loading();
 	$.ajax({
 		type : "POST",
-		url : "<c:url value='/stock/dart/selectDartApiResultListExclDownAjax.do'/>",
+		url : "<c:url value='/stock/naver/selectNaverResearchListExclDownAjax.do'/>",
 		//data : { "knoTypeCd": $("#knoTypeCd").val() },
 		data: $("#listForm").serialize(),
 		dataType : 'json',
 		success : function(returnData, status) {
+			closeLoading();
 			console.log(status, returnData);
 			if(status == "success") {
 				alert(returnData.fileResultName+"파일로 다운로드가 완료되었습니다.");
@@ -177,7 +178,16 @@ function excelDown(gubun){
 				alert("ERROR!");
 				return;
 			} 
-		}
+		},
+	    error: function(xhr, status, error) {
+	        // 요청이 실패했을 때 실행 (404, 500 에러 등)
+	        console.log('에러 발생:', error);
+	    },
+	    complete: function() {
+	        // 성공/실패 여부와 상관없이 마지막에 항상 실행 (finally 역할)
+	         closeLoading();
+	         console.log('요청 종료');
+	    }
 	});
 }
 
@@ -287,7 +297,7 @@ function fnInsertStock(){
 			</tbody>
 			</table>
 	</div>
-	<form name="listForm" method="post">
+	<form name="listForm" id="listForm" method="post">
 		<input type="hidden" name="pageIndex"	id="pageIndex" value="${pageIndex}"/>
 		<input type="hidden" name="stockSite"	value="${stockSite}"/>
 		<input type="hidden" name="searchGubun"	value="${searchGubun}"/>
@@ -429,12 +439,21 @@ function fnInsertStock(){
 		
 		<div class="button_box">
 			<ul style="margin-bottom: 0px;">
+				<%-- <li style="float:left;">
+					페이지 사이즈:
+					<select name="pageUnit" class="select" title="페이지">
+						<option value="10" <c:if test="${'10' eq naverResearchVO.pageUnit}">selected="selected"</c:if>>10</option>
+						<option value="30" <c:if test="${'30' eq naverResearchVO.pageUnit}">selected="selected"</c:if>>30</option>
+						<option value="60" <c:if test="${'60' eq naverResearchVO.pageUnit}">selected="selected"</c:if>>60</option>
+						<option value="100" <c:if test="${'100' eq naverResearchVO.pageUnit}">selected="selected"</c:if>>100</option>
+					</select>
+				</li> --%>
 				<!-- 검색키워드 및 조회버튼 -->
 				<li style="border: 0px solid #d2d2d2;">
 					<c:if test="${searchGubun eq 'company'}">
 						<input type="button" class="s_btn" onClick="fnInsertStock()" value="종목 리포트 등록" title="종록 리포트 등록 <spring:message code="input.button" />" />
 					</c:if>
-					<input type="button" class="s_btn" onClick="excelDown('L')" value="<spring:message code="stock.com.excelDown.title" />" title="<spring:message code="stock.com.excelDown.title" /> <spring:message code="input.button" />" />
+					<input type="button" class="s_btn" onClick="excelDown()" value="<spring:message code="stock.com.excelDown.title" />" title="<spring:message code="stock.com.excelDown.title" /> <spring:message code="input.button" />" />
 				</li>
 			</ul>
 		</div>
