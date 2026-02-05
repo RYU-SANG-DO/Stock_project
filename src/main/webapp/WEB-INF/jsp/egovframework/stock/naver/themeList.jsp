@@ -18,7 +18,7 @@
 
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
 <script type="text/javaScript" defer="defer">
-function fncSelectThemeList(pageNo){
+function fnSearchList(pageNo){
 	Loading();
     document.listForm.pageIndex.value = pageNo;
     document.listForm.action = "<c:url value='/stock/naver/selectThemeList.do'/>";
@@ -36,7 +36,7 @@ function linkPage(pageNo){
 function press() {
 	Loading();
     if (event.keyCode==13) {
-    	fncSelectThemeList('1');
+    	fnSearchList('1');
     }
 }
 
@@ -114,7 +114,7 @@ function fncSelectStocksInfo(stock_code){
 			<!-- 검색키워드 및 조회버튼 -->
 			<li style="border: 0px solid #d2d2d2;">
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${param.searchKeyword}"/>'  maxlength="155" >
-				<input type="button" class="s_btn"  onClick="fncSelectThemeList('1');" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
+				<input type="button" class="s_btn"  onClick="fnSearchList('1');" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
 			</li>
 		</ul>
 	</div>

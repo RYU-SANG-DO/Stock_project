@@ -48,8 +48,6 @@ function choisStocksListSearch(vCode,vName) {
 	var parentFrom = parent.document.getElementsByTagName('form');
 	parent.$("#stock_code").val(vCode);	
 	parent.$("#searchKeyword").val(vName);	
-	//parentFrom[0].stock_code.value = vCode;
-	//parentFrom[0].searchKeyword.value = vName;	
     parent.$('.ui-dialog-content').dialog('close');
 }
 

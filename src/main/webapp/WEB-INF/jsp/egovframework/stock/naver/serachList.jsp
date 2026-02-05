@@ -26,7 +26,7 @@ $(function(){
 	
 	$(".s_input").on("keyup",function(event){
 		 if (event.keyCode==13) {
-		    	fncSelectList('1');
+			 	fnSearchList('1');
 		    }
 	});
 	
@@ -62,7 +62,7 @@ $(function(){
 	
 });
 
-function fncSelectList(pageNo){
+function fnSearchList(pageNo){
 	if($("#searchKeyword").val() == ""){
 		alert("검색어는 필수입니다.");
 		return;
@@ -157,7 +157,7 @@ function naverExcelDown(gubun){
 			<!-- 검색키워드 및 조회버튼 -->
 			<li style="border: 0px solid #d2d2d2;">
 				<input class="s_input" name="searchKeyword" id="searchKeyword" type="text"  size="40" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchKeyword}"/>'  maxlength="155" >
-				<input type="button" class="s_btn"  onClick="fncSelectList('1');" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
+				<input type="button" class="s_btn"  onClick="fnSearchList('1');" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
 			</li>
 		</ul>
 	</div>

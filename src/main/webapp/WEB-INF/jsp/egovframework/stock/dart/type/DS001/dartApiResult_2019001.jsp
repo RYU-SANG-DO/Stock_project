@@ -36,7 +36,7 @@ $(function(){
      	}
          //var page = $(this).attr("href");
          var pagetitle = $(this).attr("title");
-         var page = "<c:url value='/stock/data/selectStocksList.do'/>?gubun="+gubun;
+         var page = "<c:url value='/stock/data/selectStocksPopList.do'/>?gubun="+gubun;
          var $dialog = $('<div style="overflow:hidden;padding: 0px 0px 0px 0px;"></div>')
          .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
          .dialog({
@@ -97,7 +97,7 @@ $(function(){
 });
 //검색
 function fncSelectDataList(pageNo){
-	/* if($("#bgn_de").val() == ""){
+	 if($("#bgn_de").val() == ""){
 		alert("검색기간에 시작일을 선택해 주세요.");
 		return;
 	}else if($("#end_de").val() == ""){	
@@ -106,7 +106,7 @@ function fncSelectDataList(pageNo){
 	}else if($("#stock_code").val() == ""){	
 		alert("종목을 선택해 주세요.");
 		return;
-	} */
+	}
 		Loading();
 	    document.listForm.pageIndex.value = pageNo;
 	    document.listForm.action = "<c:url value='/stock/dart/selectDartApiResultList.do'/>";

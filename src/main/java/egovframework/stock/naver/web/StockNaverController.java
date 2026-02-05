@@ -568,7 +568,7 @@ public class StockNaverController {
 	 * @return
 	 * @throws Exception
 	 */
-	@IncludedInfo(name="네이버 주식 정보(상승_보합_하락)",order = 11050 ,gid = 200 ,keyL1="stock" ,keyL2="naver" ,lv=1)
+	@IncludedInfo(name="네이버 주식 정보(상승_보합_하락)",order = 11040 ,gid = 200 ,keyL1="stock" ,keyL2="naver" ,lv=1)
     @RequestMapping("/stock/naver/selectSiseList.do")
     public String selectSiseList(@RequestParam Map<String, Object> reqParamMap, @ModelAttribute("naverThemeVO") NaverThemeVO naverThemeVO,
     		HttpServletRequest request,
@@ -760,7 +760,7 @@ public class StockNaverController {
 	 * @return
 	 * @throws Exception
 	 */
-	@IncludedInfo(name="네이버 리서치",order = 11040 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
+	@IncludedInfo(name="네이버 리서치",order = 11050 ,gid = 200,keyL1="stock" ,keyL2="naver" ,lv=1)
     @RequestMapping("/stock/naver/selectNaverResearchList.do")
     public String selectNaverResearchList(@RequestParam Map<String, Object> commandMap, @ModelAttribute("naverResearchVO") NaverResearchVO naverResearchVO,
     		HttpServletRequest request,ModelMap model) throws Exception {
