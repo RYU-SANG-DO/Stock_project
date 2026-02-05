@@ -21,7 +21,17 @@
 			WHERE 1=1
 			]]>
 			<if test="searchKeyword != null and searchKeyword != ''">
-				<![CDATA[AND A.STOCKS_NAME LIKE '%'||#{searchKeyword}||'%']]>
+				<choose>
+					<when test="cl == 'UPJONG'">
+						<![CDATA[AND A.UPJONG LIKE '%'||#{searchKeyword}||'%']]>
+					</when>
+					<when test="cl == 'PRDUCT'">
+						<![CDATA[AND A.MAIN_PRDUCT LIKE '%'||#{searchKeyword}||'%']]>
+					</when>
+					<otherwise>
+						<![CDATA[AND A.STOCKS_NAME LIKE '%'||#{searchKeyword}||'%']]>
+					</otherwise>
+				</choose>
 			</if>
 			<if test="gubun != null and gubun != ''">
 				<![CDATA[AND A.STOCKS_GUBUN = #{gubun}]]>
@@ -37,7 +47,17 @@
 		SELECT COUNT(A.STOCKS_CODE) AS "totcnt" FROM STOCKS_LIST A
 		WHERE 1=1
 		<if test="searchKeyword != null and searchKeyword != ''">
-			<![CDATA[AND A.STOCKS_NAME LIKE '%'||#{searchKeyword}||'%']]>
+			<choose>
+					<when test="cl == 'UPJONG'">
+						<![CDATA[AND A.UPJONG LIKE '%'||#{searchKeyword}||'%']]>
+					</when>
+					<when test="cl == 'PRDUCT'">
+						<![CDATA[AND A.MAIN_PRDUCT LIKE '%'||#{searchKeyword}||'%']]>
+					</when>
+					<otherwise>
+						<![CDATA[AND A.STOCKS_NAME LIKE '%'||#{searchKeyword}||'%']]>
+					</otherwise>
+				</choose>
 		</if>
 		<if test="gubun != null and gubun != ''">
 			<![CDATA[AND A.STOCKS_GUBUN = #{gubun}]]>

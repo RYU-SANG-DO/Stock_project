@@ -53,6 +53,9 @@ public class StockDataController {
 //		model.addAllAttributes(commandMap);
 //        return "egovframework/stock/data/stocksList";
         
+		if("".equals(StringUtil.nvl(stocksDataVO.getCl()))) {
+			stocksDataVO.setCl("NAME");
+		}
     	// 내역 조회
 		//stocksDataVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		stocksDataVO.setPageSize(propertiesService.getInt("pageSize"));

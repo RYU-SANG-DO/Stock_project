@@ -89,9 +89,9 @@ function fnUpdateStock(code){
 			<li>
 				<label for="gubun">분류 : </label>
 				<select name="cl" id="cl" class="select" title="분류">
-					<option value="" <c:if test="${empty cl}">selected="selected"</c:if>>전체</option>
-					<option value="UPJONG" <c:if test="${'KOSPI' eq cl}">selected="selected"</c:if>>업종</option>
-					<option value="PRDUCT" <c:if test="${'KOSDAQ' eq cl}">selected="selected"</c:if>>주요제품</option>
+					<option value="NAME" <c:if test="${empty cl || 'NAME' eq cl}">selected="selected"</c:if>>종목명</option>
+					<option value="UPJONG" <c:if test="${'UPJONG' eq cl}">selected="selected"</c:if>>업종</option>
+					<option value="PRDUCT" <c:if test="${'PRDUCT' eq cl}">selected="selected"</c:if>>주요제품</option>
 				</select>
 			</li>
 			<li>
@@ -123,7 +123,7 @@ function fnUpdateStock(code){
 		<colgroup>
 			<col style="width:3%"/>
 			<col style="width:5%"/>
-			<col style="width:10%" />
+			<col style="width:15%" />
 			<col/>
 			<col/>
 			<col style="width:5%" />

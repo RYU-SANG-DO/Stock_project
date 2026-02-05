@@ -60,7 +60,15 @@ function naverExcelDown(gubun){
 
 //테마 목록으로 이동
 function themeList(){
+	Loading();
     document.listForm.action = "<c:url value='/stock/naver/selectThemeList.do'/>";
+    document.listForm.submit();
+}
+
+//테마 목록으로 이동
+function fncSelectThemeDetailList(){
+	Loading();
+    document.listForm.action = "<c:url value='/stock/naver/selectThemeDetailList.do'/>";
     document.listForm.submit();
 }
 
@@ -95,14 +103,13 @@ function fieldDefault() {
 <body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form name="listForm" id="listForm" action="${pageContext.request.contextPath}/stock/naver/selectThemeDetailList.do" method="post">
+<form name="listForm" id="listForm" method="post">
 	<input type="hidden" name="downGubun" id="downGubun"/>
 	<input type="hidden" name="type" id="type" value="theme"/>
 	<input type="hidden" name="no" id="no" value="${no}"/>
 	<input type="hidden" name="field_type" id="field_type" />
 	<input type="hidden" name="pageIndex" id="pageIndex" value="${pageIndex}"/>
-	<input type="hidden" name="gubun" value="${gubun}"/>
-	<input type="hidden" name="searchKeyword" value="${searchKeyword}"/>
+	<input type="hidden" name="themeNm" value="${themeNm}"/>
 <div class="board">
 	<h1><spring:message code="stock.${stockSite}.title"/> <spring:message code="stock.${stockSite}.theme.title"/> <spring:message code="title.detail" /> (${themeNm})</h1>
 	<div style="padding: 10px; border: 1px solid #b1bbcb; background-color:#f5f5f2; margin-bottom: 7px;">
@@ -173,8 +180,19 @@ function fieldDefault() {
 		</div>
 		<div class="button_box">
 		<ul>
-			<li style="float:left;font-size: 14px;">
+			<%-- <li style="float:left;font-size: 14px;">
 				<span>검색 : </span><span>${searchKeyword}</span>
+			</li> --%>
+			<li style="float:left;">
+				<select name="gubun" class="select" title="테마,종목 구분"><!-- 테마,종목 구분 -->
+					<option value="" <c:if test="${'S' ne gubun}">selected="selected"</c:if>>테마</option>
+					<option value="S" <c:if test="${'S' eq gubun}">selected="selected"</c:if>>종목</option>
+				</select>
+			</li>
+			<li style="float:left;">
+				<label for="">검색명 : </label><!-- 프로그램명 -->
+				<input class="s_input2 vat" name="searchKeyword" type="text"  value='<c:out value="${searchKeyword}"/>'  size="30" maxlength="60" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
+				<input type="button" class="s_btn"  onClick="fncSelectThemeDetailList();" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
 			</li>
 			<!-- 검색키워드 및 조회버튼 -->
 			<li style="border: 0px solid #d2d2d2;">
