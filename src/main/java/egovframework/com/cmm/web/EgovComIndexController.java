@@ -75,7 +75,6 @@ public class EgovComIndexController {
 	
 	@RequestMapping("/index.do")
 	public String index(ModelMap model) {
-		System.out.println("EGOVCOM=>["+cryptoService.encrypt("EGOVCOM")+"]");
 		return "egovframework/com/cmm/EgovUnitMain";
 	}
 
