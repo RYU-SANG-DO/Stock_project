@@ -16,7 +16,8 @@
 				,A.HOMEPAGE
 				,A.UPJONG
 				,A.MAIN_PRDUCT
-				,A.REG_DATE
+				,TO_CHAR(A.UPT_DATE,'YYYY-MM-DD') AS UPT_DATE
+                ,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
 			FROM STOCKS_LIST A
 			WHERE 1=1
 			]]>
@@ -76,7 +77,8 @@
 				,A.UPJONG
 				,A.MAIN_PRDUCT
 				,A.COUNTRY
-				,A.REG_DATE
+				,TO_CHAR(A.UPT_DATE,'YYYY-MM-DD') AS UPT_DATE
+                ,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
 			FROM STOCKS_LIST A
 			WHERE A.STOCKS_CODE = #{stocksCode}
 			]]>
@@ -98,7 +100,8 @@
 				UPJONG,
 				MAIN_PRDUCT,
 				COUNTRY,
-				REG_DATE
+				REG_DATE,
+				UPT_DATE
             ) VALUES (
                 #{stocksCode},
                 #{stocksName},
@@ -107,6 +110,7 @@
                 #{upjong},
                 #{mainPrduct},
                 NVL(#{country},'KOR'),
+                SYSDATE,
                 SYSDATE
             )
 	]]>
@@ -121,7 +125,8 @@
 					HOMEPAGE = #{homepage},
 					UPJONG = #{upjong},
 					MAIN_PRDUCT = #{mainPrduct},
-					COUNTRY = NVL(#{country},'KOR')
+					COUNTRY = NVL(#{country},'KOR'),
+					UPT_DATE = SYSDATE
 			WHERE STOCKS_CODE = #{stocksCode} 
 		]]>
 	</update>
@@ -133,5 +138,128 @@
 			WHERE STOCKS_CODE = #{stocksCode} 	
 		]]>
 	</delete>
+	
+	<select id="selectStockHistList"  parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+		 SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT /*selectStockHistList*/
+				A.SEQ
+				,A.STOCKS_CODE
+				,B.STOCKS_NAME
+				,A.COLLECTION_DATE
+				,A.TITLE
+				,A.ORIGIN
+				,A.EVALUATION
+				,TO_CHAR(A.UPT_DATE,'YYYY-MM-DD') AS UPT_DATE
+                ,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
+			FROM STOCKS_HIST A , STOCKS_LIST B
+			WHERE A.STOCKS_CODE = B.STOCKS_CODE(+)
+			]]>
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<choose>
+					<when test="gubun == 'TITLE'">
+						<![CDATA[AND A.TITLE LIKE '%'||#{searchKeyword}||'%']]>
+					</when>
+					<when test="gubun == 'ORIGIN'">
+						<![CDATA[AND A.ORIGIN LIKE '%'||#{searchKeyword}||'%']]>
+					</when>
+					<otherwise>
+						<![CDATA[AND A.TITLE LIKE '%'||#{searchKeyword}||'%']]>
+					</otherwise>
+				</choose>
+			</if>
+			<![CDATA[
+			ORDER BY A.REG_DATE DESC
+			  ) TB )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+			]]> 
+	</select>
+	
+	<select id="selectStockHistListTotCnt" parameterType="java.util.Map" resultType="int">
+		<![CDATA[
+		SELECT 
+			COUNT(A.SEQ) AS TOT_CNT 
+		FROM STOCKS_HIST A
+		WHERE 1=1
+		]]>
+		<if test="searchKeyword != null and searchKeyword != ''">
+				<choose>
+					<when test="gubun == 'TITLE'">
+						<![CDATA[AND A.TITLE LIKE '%'||#{searchKeyword}||'%']]>
+					</when>
+					<when test="gubun == 'ORIGIN'">
+						<![CDATA[AND A.ORIGIN LIKE '%'||#{searchKeyword}||'%']]>
+					</when>
+					<otherwise>
+						<![CDATA[AND A.TITLE LIKE '%'||#{searchKeyword}||'%']]>
+					</otherwise>
+				</choose>
+			</if>
+	</select>
+	
+	<!-- 종목 이력 상세 정보 -->
+	<select id="selectStockHistDetail"  parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+			SELECT /*selectStockHistDetail*/
+				A.SEQ
+				,A.STOCKS_CODE
+				,B.STOCKS_NAME
+				,A.COLLECTION_DATE
+				,A.TITLE
+				,A.ORIGIN
+				,A.EVALUATION
+				,TO_CHAR(A.UPT_DATE,'YYYY-MM-DD') AS UPT_DATE
+                ,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
+			FROM STOCKS_HIST A , STOCKS_LIST B
+			WHERE A.STOCKS_CODE = B.STOCKS_CODE(+)
+			AND A.SEQ = #{seq}
+			]]> 
+	</select>
+	
+	<!-- 종목 이력 등록 -->
+	<insert id="insertStockHist" parameterType="java.util.Map">
+           INSERT INTO STOCKS_HIST (
+                SEQ,
+				STOCKS_CODE,
+				COLLECTION_DATE,
+				TITLE,
+				ORIGIN,
+				EVALUATION,
+				USER_SUMMARY,
+				UPT_DATE,
+				REG_DATE
+            ) VALUES (
+                SEQ_STOCKS_HIST.NEXTVAL,
+                #{stocksCode},
+                #{collectionDate},
+                #{title},
+                #{origin},
+                #{evaluation},
+                #{userSummary},
+                SYSDATE,
+                SYSDATE
+            )
+    </insert>
+    
+	<!-- 종목 이력 수정 -->
+	<update id="updateStockHist" parameterType="java.util.Map">
+		<![CDATA[/*updateStockHist*/
+			UPDATE STOCKS_HIST
+			SET 	TITLE = #{title},
+					ORIGIN = #{origin},
+					EVALUATION = #{evaluation},
+					USER_SUMMARY = #{userSummary},
+					UPT_DATE = SYSDATE
+			WHERE SEQ = #{seq}
+		]]>
+	</update>
+	
+	<!-- 종목 이력 삭제 -->
+	<delete id="deleteStockHist" parameterType="java.util.Map">
+		<![CDATA[/*deleteStockHist*/
+			DELETE FROM STOCKS_HIST
+			WHERE SEQ = #{seq}		
+		]]>
+	</delete>
+    
 	
 </mapper>

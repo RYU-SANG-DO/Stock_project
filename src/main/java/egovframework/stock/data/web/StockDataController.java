@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.web.PagingManageController;
+import egovframework.stock.com.ComDateUtil;
 import egovframework.stock.com.StringUtil;
 import egovframework.stock.data.service.StockDataService;
 import egovframework.stock.data.service.StocksDataVO;
@@ -161,5 +162,49 @@ public class StockDataController {
        	System.out.println(move+":"+cnt);
            model.addAllAttributes(commandMap);
            return returnUrl;
+       }
+       
+       /**
+   	 * 종목 이력 관리 내역
+   	 * @return
+   	 * @throws Exception
+   	 */
+       @RequestMapping("/stock/data/hist/selectStockHistList.do")
+       public String selectStockHistList(@RequestParam Map<String, Object> reqParamMap, 
+       		HttpServletRequest request,
+       		ModelMap model) throws Exception {
+   		System.out.println("종목 이력 관리 내역 시작");
+   		Map<String, Object> commandMap = StringUtil.mapToMap(request);
+   		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".hist.list")));
+   		System.out.println(commandMap);
+   		String searchKeyword = StringUtil.nvl(commandMap.get("searchKeyword"),"");
+   		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+   		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+   		commandMap.put("today_ko", today_ko);
+   		int totCnt = stockDataService.selectStockHistListTotCnt(commandMap);
+   		pagingManageController.PagingManage(commandMap, model, totCnt);
+   		List<Map<String, Object>> list = stockDataService.selectStockHistList(commandMap);
+   	
+   		model.addAttribute("paramInfo",commandMap);
+   		model.addAttribute("list",list);
+   		model.addAllAttributes(commandMap);
+   		System.out.println("종목 이력 관리 내역 종료");
+           return "egovframework/stock/data/hist/stockHistList";
+       }
+       
+       /**
+   	 * 종목 이력 상세화면
+   	 * @return
+   	 * @throws Exception
+   	 */
+       @RequestMapping("/stock/data/hist/selectStockHistDetail.do")
+       public String selectStockHistDetail(@RequestParam Map<String, Object> commandMap , @ModelAttribute("stocksDataVO") StocksDataVO stocksDataVO,  HttpServletRequest request, ModelMap model) throws Exception {
+   			System.out.println(commandMap);
+   			String stocksCode = StringUtil.nvl(commandMap.get("stocksCode"),"");
+   			String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(stocksCode)?"insert":"update"));
+       		Map<String,Object> histInfo = stockDataService.selectStockHistDetail(commandMap);
+       		model.addAttribute("histInfo", histInfo);
+       		model.addAllAttributes(commandMap);
+       		return "egovframework/stock/data/hist/stockHistDetail";
        }
 }

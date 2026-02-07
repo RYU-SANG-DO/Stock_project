@@ -35,4 +35,17 @@ public class StockDataDAO extends EgovComAbstractDAO {
 	public int deleteStocksInfo(Map<String, Object> commandMap) throws Exception{
 		return delete("StockDataDAO.deleteStocksInfo", commandMap);
 	}
+
+	public int selectStockHistListTotCnt(Map<String, Object> commandMap) throws Exception{
+		return selectOne("StockDataDAO.selectStockHistListTotCnt", commandMap);
+	}
+
+	public List<Map<String, Object>> selectStockHistList(Map<String, Object> commandMap) throws Exception{
+		return selectList("StockDataDAO.selectStockHistList", commandMap);
+	}
+
+	//이력 상세 페이지
+	public Map<String, Object> selectStockHistDetail(Map<String, Object> commandMap) throws Exception{
+		return selectOne("StockDataDAO.selectStockHistDetail", commandMap);
+	}
 }

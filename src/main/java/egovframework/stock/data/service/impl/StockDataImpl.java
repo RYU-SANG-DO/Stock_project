@@ -49,5 +49,21 @@ public class StockDataImpl extends EgovAbstractServiceImpl implements StockDataS
 		return stockDataDao.deleteStocksInfo(commandMap);
 	}
 
+	@Override
+	public int selectStockHistListTotCnt(Map<String, Object> commandMap) throws Exception {
+		return stockDataDao.selectStockHistListTotCnt(commandMap);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectStockHistList(Map<String, Object> commandMap) throws Exception {
+		return stockDataDao.selectStockHistList(commandMap);
+	}
+
+	//이력 상세 페이지
+	@Override
+	public Map<String, Object> selectStockHistDetail(Map<String, Object> commandMap) throws Exception {
+		return stockDataDao.selectStockHistDetail(commandMap);
+	}
+
 
 }

@@ -29,4 +29,10 @@ public interface StockDataService{
 
 	int deleteStocksInfo(Map<String, Object> commandMap) throws Exception;
 
+	int selectStockHistListTotCnt(Map<String, Object> commandMap) throws Exception;
+
+	List<Map<String, Object>> selectStockHistList(Map<String, Object> commandMap) throws Exception;
+
+	Map<String, Object> selectStockHistDetail(Map<String, Object> commandMap) throws Exception;
+
 }
