@@ -22,6 +22,14 @@ div.preloader {
 }
 </style>
 <script type="text/javaScript" defer="defer">
+var quill = new Quill('#editor', {
+    modules: {
+        toolbar: toolbarOptions                       // modules에 toolbar : toolbarOptions를 추가
+    },
+    theme: 'snow'                                     // 테마는 snow로 설정
+});
+//에디터의 HTML 구조를 직접 설정
+ //quill.root.innerHTML = document.getElementById('userSummary').value;
 function getByteLength(str) {
     let byteCount = 0;
     for (let i = 0; i < str.length; i++) {
@@ -37,6 +45,8 @@ $(function(){
 	 //Loading();
 	 //setTimeout("closeLoading()", 3000);
 	if(quill != null){	
+		//quill.root.innerHTML = document.getElementById('userSummary').value;
+	     document.getElementById('byte-count').innerText = getByteLength(quill.getText().trim())+" Byte";
 		//3. text-change 이벤트 리스너 등록
 		 quill.on('text-change', function() {
 		     const maxByte = 3900;
