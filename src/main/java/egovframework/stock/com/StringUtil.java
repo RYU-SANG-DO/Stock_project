@@ -393,5 +393,25 @@ public class StringUtil {
 	            return "";
 	        }
 	    }
+		
+		/**
+	     * 변환된 HTML 태그들을 다시 변환한다.
+	     * 
+	     * @param src
+	     * @return
+	     */
+		public static String replaceString(String src) {
+			if("".equals(src))return "";
+		String srcString = src;
+		
+		srcString = srcString.replaceAll("&lt;", "<");
+		srcString = srcString.replaceAll("&gt;", ">");
+		srcString = srcString.replaceAll("&quot;", "\"");
+		srcString = srcString.replaceAll("&apos;", "'");
+		srcString = srcString.replaceAll("&amp;", "&");
+		srcString = srcString.replaceAll("\r\n", "<br>");
+		
+		return srcString;
+	    }
 	    
 }

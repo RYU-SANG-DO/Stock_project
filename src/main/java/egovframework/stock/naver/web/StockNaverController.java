@@ -1039,6 +1039,7 @@ public class StockNaverController {
     			ModelMap model
     		) throws Exception {
 		System.out.println("주식 정보 등록 시작");
+		System.out.println(commandMap);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("jsonView");
 		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");

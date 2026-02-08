@@ -13,9 +13,12 @@
 				 A.STOCKS_CODE
 				,A.STOCKS_NAME
 				,A.STOCKS_GUBUN
+				,(CASE WHEN A.STOCKS_GUBUN = 'KOSDAQ' THEN '코스닥' ELSE '코스피' END) AS STOCKS_GUBUN_NM
 				,A.HOMEPAGE
 				,A.UPJONG
 				,A.MAIN_PRDUCT
+				,(SELECT COUNT(1) FROM STOCKS_HIST WHERE STOCKS_CODE = A.STOCKS_CODE) AS HIST_CNT
+				,(SELECT TO_CHAR(MAX(UPT_DATE),'YYYY-MM-DD') FROM STOCKS_HIST WHERE STOCKS_CODE = A.STOCKS_CODE) AS HIST_UPT_DATE
 				,TO_CHAR(A.UPT_DATE,'YYYY-MM-DD') AS UPT_DATE
                 ,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
 			FROM STOCKS_LIST A
@@ -38,7 +41,7 @@
 				<![CDATA[AND A.STOCKS_GUBUN = #{gubun}]]>
 			</if>
 			<![CDATA[
-			ORDER BY A.STOCKS_NAME
+			ORDER BY A.UPT_DATE DESC, A.STOCKS_NAME
 			  ) TB )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 			]]> 
 	</select>
@@ -73,6 +76,7 @@
 				 A.STOCKS_CODE
 				,A.STOCKS_NAME
 				,A.STOCKS_GUBUN
+				,(CASE WHEN A.STOCKS_GUBUN = 'KOSDAQ' THEN '코스닥' ELSE '코스피' END) AS STOCKS_GUBUN_NM
 				,A.HOMEPAGE
 				,A.UPJONG
 				,A.MAIN_PRDUCT
@@ -154,6 +158,7 @@
                 ,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
 			FROM STOCKS_HIST A , STOCKS_LIST B
 			WHERE A.STOCKS_CODE = B.STOCKS_CODE(+)
+			AND A.STOCKS_CODE = #{stocksCode}
 			]]>
 			<if test="searchKeyword != null and searchKeyword != ''">
 				<choose>
@@ -179,7 +184,7 @@
 		SELECT 
 			COUNT(A.SEQ) AS TOT_CNT 
 		FROM STOCKS_HIST A
-		WHERE 1=1
+		WHERE A.STOCKS_CODE = #{stocksCode}
 		]]>
 		<if test="searchKeyword != null and searchKeyword != ''">
 				<choose>
@@ -207,10 +212,12 @@
 				,A.TITLE
 				,A.ORIGIN
 				,A.EVALUATION
+				,DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1300, 1) AS USER_SUMMARY
 				,TO_CHAR(A.UPT_DATE,'YYYY-MM-DD') AS UPT_DATE
                 ,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
 			FROM STOCKS_HIST A , STOCKS_LIST B
 			WHERE A.STOCKS_CODE = B.STOCKS_CODE(+)
+			AND A.STOCKS_CODE = #{stocksCode}
 			AND A.SEQ = #{seq}
 			]]> 
 	</select>
@@ -234,7 +241,7 @@
                 #{title},
                 #{origin},
                 #{evaluation},
-                #{userSummary},
+                SUBSTR(#{userSummary}, 1, 1333),
                 SYSDATE,
                 SYSDATE
             )
@@ -247,7 +254,7 @@
 			SET 	TITLE = #{title},
 					ORIGIN = #{origin},
 					EVALUATION = #{evaluation},
-					USER_SUMMARY = #{userSummary},
+					USER_SUMMARY = SUBSTR(#{userSummary}, 1, 1333),
 					UPT_DATE = SYSDATE
 			WHERE SEQ = #{seq}
 		]]>

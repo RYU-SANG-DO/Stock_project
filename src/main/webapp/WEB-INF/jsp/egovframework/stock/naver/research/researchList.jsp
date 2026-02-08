@@ -225,6 +225,10 @@ function fnInsertStock(){
 				stockSite : document.listForm.stockSite.value,
 				searchGubun : document.listForm.searchGubun.value,
 				searchType : document.listForm.searchType.value,
+				keyword : document.listForm.keyword.value,
+				writeFromDate : document.listForm.writeFromDate.value,
+				writeToDate : document.listForm.writeToDate.value,
+				brokerCode : document.listForm.brokerCode.value,
 				itemCode : document.listForm.itemCode.value,
                 stocks: checkedValues // 배열 데이터 전송
             },

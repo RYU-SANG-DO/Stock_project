@@ -77,6 +77,9 @@ input[type="number"] {
 <!-- 상단타이틀 -->
 <form name="egovFrm" method="post"> 
 <input type="hidden" name="mode" value="update">
+<input type="hidden" name="gubun" value="${gubun}">
+<input type="hidden" name="cl" value="${cl}">
+<input type="hidden" name="searchKeyword" value="${searchKeyword}">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>

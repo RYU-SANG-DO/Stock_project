@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.web.PagingManageController;
+import egovframework.com.utl.sec.filter.CertProcessRequestWrapper;
 import egovframework.stock.com.ComDateUtil;
 import egovframework.stock.com.StringUtil;
 import egovframework.stock.data.service.StockDataService;
@@ -38,8 +39,7 @@ public class StockDataController {
     
     @Resource(name = "pagingManageController")
    	private PagingManageController pagingManageController;
-
-	
+    
 
     /**
 	 * 주식 종목 내역
@@ -170,7 +170,7 @@ public class StockDataController {
    	 * @throws Exception
    	 */
        @RequestMapping("/stock/data/hist/selectStockHistList.do")
-       public String selectStockHistList(@RequestParam Map<String, Object> reqParamMap, 
+       public String selectStockHistList(@RequestParam Map<String, Object> reqParamMap, @ModelAttribute("stocksDataVO") StocksDataVO stocksDataVO,
        		HttpServletRequest request,
        		ModelMap model) throws Exception {
    		System.out.println("종목 이력 관리 내역 시작");
@@ -178,9 +178,15 @@ public class StockDataController {
    		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".hist.list")));
    		System.out.println(commandMap);
    		String searchKeyword = StringUtil.nvl(commandMap.get("searchKeyword"),"");
+   		String gubun = StringUtil.nvl(commandMap.get("gubun"),"TITLE");
+   		commandMap.put("gubun", gubun);
    		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
    		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
    		commandMap.put("today_ko", today_ko);
+   		
+   		Map<String, Object> stockInfo = stockDataService.selectStocksDetail(stocksDataVO);
+   		model.addAttribute("stockInfo",stockInfo);
+   		
    		int totCnt = stockDataService.selectStockHistListTotCnt(commandMap);
    		pagingManageController.PagingManage(commandMap, model, totCnt);
    		List<Map<String, Object>> list = stockDataService.selectStockHistList(commandMap);
@@ -198,13 +204,77 @@ public class StockDataController {
    	 * @throws Exception
    	 */
        @RequestMapping("/stock/data/hist/selectStockHistDetail.do")
-       public String selectStockHistDetail(@RequestParam Map<String, Object> commandMap , @ModelAttribute("stocksDataVO") StocksDataVO stocksDataVO,  HttpServletRequest request, ModelMap model) throws Exception {
-   			System.out.println(commandMap);
+       public String selectStockHistDetail(@RequestParam Map<String, Object> reqParamMap , @ModelAttribute("stocksDataVO") StocksDataVO stocksDataVO,  HttpServletRequest request, ModelMap model) throws Exception {
+    	   System.out.println("종목 이력 상세 시작");
+    	   Map<String, Object> commandMap = StringUtil.mapToMap(request);
+    	   System.out.println(commandMap);
+   			commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".hist")));
    			String stocksCode = StringUtil.nvl(commandMap.get("stocksCode"),"");
-   			String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(stocksCode)?"insert":"update"));
+   			String seq = StringUtil.nvl(commandMap.get("seq"),"");
        		Map<String,Object> histInfo = stockDataService.selectStockHistDetail(commandMap);
+       		histInfo.put("userSummary", StringUtil.replaceString(StringUtil.nvl(histInfo.get("userSummary"),"")));
        		model.addAttribute("histInfo", histInfo);
        		model.addAllAttributes(commandMap);
+       		System.out.println("종목 이력 상세 종료");
        		return "egovframework/stock/data/hist/stockHistDetail";
        }
+       
+       /**
+   	 * 주식 종목 이력 등록 및 수정 화면 이동
+   	 * @return
+   	 * @throws Exception
+   	 */
+       @RequestMapping("/stock/data/hist/moveStockHistView.do")
+       public String moveStockHistView(@RequestParam Map<String, Object> reqParamMap , @ModelAttribute("stocksDataVO") StocksDataVO stocksDataVO,  HttpServletRequest request, ModelMap model) throws Exception {
+    	   System.out.println("종목 이력 등록 및 수정 화면 시작");
+    	   Map<String, Object> commandMap = StringUtil.mapToMap(request);
+    	   System.out.println(commandMap);
+    	   commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".hist")));
+   		String stocksCode = StringUtil.nvl(commandMap.get("stocksCode"),"");
+   		String seq = StringUtil.nvl(commandMap.get("seq"),"");
+   		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(seq)?"insert":"update"));
+           String returnUrl = "egovframework/stock/data/hist/stockHistRegist";
+       	if("update".equals(move)) {
+       		Map<String,Object> histInfo = stockDataService.selectStockHistDetail(commandMap);
+       		histInfo.put("userSummary", StringUtil.replaceString(StringUtil.nvl(histInfo.get("userSummary"),"")));
+               model.addAttribute("histInfo", histInfo);
+               returnUrl = "egovframework/stock/data/hist/stockHistUpdt";
+       	}else if("insert".equals(move)) {
+       		Map<String, Object> stockInfo = stockDataService.selectStocksDetail(stocksDataVO);
+       		model.addAttribute("stockInfo",stockInfo);
+       	}
+       	System.out.println("returnUrl=>"+returnUrl);
+           model.addAllAttributes(commandMap);
+           System.out.println("종목 이력 등록 및 수정 화면 종료");
+           return returnUrl;
+       }
+       
+       /**
+      	 * 주식 종목 이력 등록 및 수정
+      	 * @return
+      	 * @throws Exception
+      	 */
+          @RequestMapping("/stock/data/hist/saveStockHistInfo.do")
+          public String saveStockHistInfo(@RequestParam Map<String, Object> reqParamMap , @ModelAttribute("stocksDataVO") StocksDataVO stocksDataVO,  HttpServletRequest request, ModelMap model) throws Exception {
+        	  System.out.println("주식 종목 이력 등록 및 수정 처리 시작");
+        	  Map<String, Object> commandMap = StringUtil.mapToMap(request);
+        	  System.out.println(commandMap);
+      		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".hist")));
+      		String stocksCode = StringUtil.nvl(commandMap.get("stocksCode"),"");
+      		String seq = StringUtil.nvl(commandMap.get("seq"),"");
+      		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(seq)?"insert":"update"));
+              String returnUrl = "forward:/stock/data/hist/selectStockHistList.do";
+              int cnt = 0;
+          	if("insert".equals(move)) {
+          		cnt =stockDataService.insertStockHist(commandMap);
+          	}if("update".equals(move)) {
+          		cnt =stockDataService.updateStockHist(commandMap);
+          	}if("delete".equals(move)) {
+          		cnt = stockDataService.deleteStockHist(commandMap);
+          	}
+          	System.out.println(move+":"+cnt);
+              model.addAllAttributes(commandMap);
+              System.out.println("주식 종목 이력 등록 및 수정 처리 종료");
+              return returnUrl;
+          }
 }

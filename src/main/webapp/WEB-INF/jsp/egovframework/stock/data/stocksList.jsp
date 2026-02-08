@@ -65,8 +65,9 @@ function fnUpdateStock(code){
 }
 
 //종목 이력
-fnStockHist(code){
+function fnStockHistList(code){
 	document.stockFrm.stocksCode.value=code;
+	document.stockFrm.searchKeyword.value="";
 	document.stockFrm.action = "<c:url value='/stock/data/hist/selectStockHistList.do'/>";
    	document.stockFrm.submit();
 }
@@ -79,7 +80,7 @@ fnStockHist(code){
 <input type="hidden" name="mode"	id="mode" />
 <input type="hidden" name="stocksCode"	id="stocksCode" />
 <div class="board" style="width:100%;">
-	<h1>종목 검색</h1><!-- 프로그램파일명 검색 -->
+	<h1>종목 검색</h1>
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
@@ -102,7 +103,7 @@ fnStockHist(code){
 			<li>
 				<label for="">검색명 : </label><!-- 프로그램명 -->
 				<input class="s_input2 vat" name="searchKeyword" type="text"  value='<c:out value="${stocksDataVO.searchKeyword}"/>'  size="30" maxlength="60" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
-				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title="<spring:message code="title.inquire"/>" onclick="selectStocksListSearch(); return false;" /><!-- 조회 -->
+				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="title.inquire"/>' onclick="selectStocksListSearch(); return false;" />
 			</li>
 		</ul>
 	</div>
@@ -141,11 +142,16 @@ fnStockHist(code){
 			   <th scope="col">종목명</th>
 			   <th scope="col">업종</th>
 			   <th scope="col">주요제품</th>
-			   <th scope="col">이력</th>
+			   <th scope="col">이력건수</th>
 			   <th scope="col">수정</th>
 			</tr>
 		</thead>
 		<tbody>
+			<c:if test="${fn:length(resultList) == 0}">
+				<tr>
+					<td colspan="7"><spring:message code="common.nodata.msg" /></td>
+				</tr>
+			</c:if>
 			<c:forEach var="result" items="${resultList}" varStatus="status">
 			  <tr>
 			  	<td><c:out value="${result.rn}"/></td>
@@ -165,7 +171,7 @@ fnStockHist(code){
 			    	<div class="button_box">
 						<ul style="margin-bottom: 0px;text-align: center;">
 							<li style="border: 0px solid #d2d2d2;">
-								<input type="button" class="s_btn" onClick="fnStockHist('${result.stocksCode}');" value="이력" title="이력" />
+								<input type="button" class="s_btn" onClick="fnStockHistList('<c:out value="${result.stocksCode}"/>');" value="<c:out value="${result.histCnt}"/>" title="이력" />
 							</li>
 						</ul>
 					</div>

@@ -25,20 +25,20 @@
 function fn_egov_regist(){
 	let form = document.egovFrm;
 	 if($("#stocksCode").val() == ""){
-	  		alert("종목 코드는 필수입니다.");
-			return;
-	  	 }else if($("#stocksName").val() == ""){
-	  		alert("종목 명은 필수입니다.");
-			return;
-	  	 }else if($("#unitPrice").val() == ""){
-	  		alert("단가는 필수입니다.");
-			return;
-	  	 }else{
-			if(confirm("<spring:message code="common.regist.msg" />")){	
-				form.action="/stock/data/saveStocksInfo.do";	
-				form.submit();	
-			}
-	  	 }
+  		alert("종목 코드는 필수입니다.");
+		return;
+  	 }else if($("#stocksName").val() == ""){
+  		alert("종목 명은 필수입니다.");
+		return;
+  	 }else if($("#unitPrice").val() == ""){
+  		alert("단가는 필수입니다.");
+		return;
+  	 }else{
+		if(confirm("<spring:message code="common.regist.msg" />")){	
+			form.action="/stock/data/saveStocksInfo.do";	
+			form.submit();	
+		}
+  	 }
 }
 
 /* ********************************************************

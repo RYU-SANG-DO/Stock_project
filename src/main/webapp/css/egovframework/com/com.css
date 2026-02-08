@@ -258,7 +258,7 @@ padding-bottom :12px;
 .board_list {width:100%; table-layout:fixed; border-top:2px solid #4688d2; }
 .board_list caption { display:none; }
 .board_list thead th,
-.board_list tbody th { color:#222 ; font-size:13px; font-weight:400; background:#f4f4f4; padding:12px 0; border-bottom:1px solid #d9d9d9; }
+.board_list tbody th { color:#222 ; font-size:13px; font-weight:400; background:#f4f4f4; padding:12px 0; border-bottom:1px solid #d9d9d9; text-align:center;}
 .board_list tbody tr.odd {  }
 .board_list tbody.ov tr:hover { background:#f9f9f9; }
 .board_list tbody th { text-align:left; padding-left:14px; }

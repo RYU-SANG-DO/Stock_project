@@ -22,9 +22,42 @@ div.preloader {
 }
 </style>
 <script type="text/javaScript" defer="defer">
+function getByteLength(str) {
+    let byteCount = 0;
+    for (let i = 0; i < str.length; i++) {
+        const charCode = str.charCodeAt(i);
+        if (charCode <= 0x7F) byteCount += 1;
+        else if (charCode <= 0x7FF) byteCount += 2;
+        else byteCount += 3;
+    }
+    return byteCount;
+}
+
 $(function(){
 	 //Loading();
 	 //setTimeout("closeLoading()", 3000);
+	if(quill != null){	
+		//3. text-change 이벤트 리스너 등록
+		 quill.on('text-change', function() {
+		     const maxByte = 3900;
+		     // 태그 제외 순수 텍스트만 가져오기 (마지막 줄바꿈 제외)
+		     const text = quill.getText().trim(); 
+		     console.log(text)
+		     const currentByte = getByteLength(text);
+
+		     document.getElementById('byte-count').innerText = currentByte+" Byte";
+
+		     // 바이트 초과 시 처리
+		     if (currentByte > maxByte) {
+		         alert("최대 3,900바이트를 초과할 수 없습니다.");
+		         
+		         // 초과 시 마지막 입력을 취소하거나 텍스트를 자르는 로직
+		         // 예: 4000바이트까지만 남기고 자르기 (복잡한 서식 유지 시 주의 필요)
+		         const delta = quill.getContents();
+		         // 실제로는 입력을 막거나 경고를 주는 방식을 권장합니다.
+		     }
+		 });
+	}
 });    
     
 function Loading() {
@@ -55,7 +88,8 @@ function Loading() {
 function closeLoading() {
 	  $('#mask, #loadingImg').hide();
 	  $('#mask, #loadingImg').remove(); 
-	}
+}
+	
 </script>
 </body>
 </html>
