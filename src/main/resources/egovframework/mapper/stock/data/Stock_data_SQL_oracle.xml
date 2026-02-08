@@ -174,7 +174,7 @@
 				</choose>
 			</if>
 			<![CDATA[
-			ORDER BY A.REG_DATE DESC
+			ORDER BY A.UPT_DATE DESC, A.REG_DATE DESC
 			  ) TB )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 			]]> 
 	</select>
@@ -254,7 +254,7 @@
 			SET 	TITLE = #{title},
 					ORIGIN = #{origin},
 					EVALUATION = #{evaluation},
-					USER_SUMMARY = SUBSTR(#{userSummary}, 1, 1333),
+					USER_SUMMARY = SUBSTR(#{userSummary}, 1, 1330),
 					UPT_DATE = SYSDATE
 			WHERE SEQ = #{seq}
 		]]>

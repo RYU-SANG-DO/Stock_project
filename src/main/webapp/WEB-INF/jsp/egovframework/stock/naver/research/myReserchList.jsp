@@ -266,15 +266,16 @@ function fnDetail(rpId){
 	<colgroup>
 		<col width="3%">
 		<col width="5%"><!-- 순번 -->
-		<col width="15%"><!-- 종목 -->
+		<col width="10%"><!-- 종목 -->
 		<col><!-- 제목 -->
 		<col width="5%"><!-- 투자의견 -->
 		<col width="3%"><!-- 첨부 -->
-		<col width="8%"><!-- 발행일 -->
-		<col width="8%"><!-- 당일가 -->
-		<col width="8%"><!-- 목표가 -->
-		<col width="8%"><!-- 현재가 -->
-		<col width="8%">
+		<col width="6%"><!-- 발행일 -->
+		<col width="6%"><!-- 당일가 -->
+		<col width="6%"><!-- 목표가 -->
+		<col width="6%"><!-- 현재가 -->
+		<col width="5%">
+		<col><!-- 시기 -->
 		<col width="5%"><!-- 수정일자 -->
 		<col width="5%"><!-- 등록일자 -->
 		<col width="5%">
@@ -292,6 +293,7 @@ function fnDetail(rpId){
 		<th>목표가</th>
 		<th>현재가</th>
 		<th>증감률</th>
+		<th>반등시기</th>
 		<th>수정일자</th>
 		<th>등록일자</th>
 		<th></th>
@@ -300,7 +302,7 @@ function fnDetail(rpId){
 	<tbody class="ov">
 	<c:if test="${fn:length(reserchList) == 0}">
 		<tr>
-			<td colspan="13"><spring:message code="common.nodata.msg" /></td>
+			<td colspan="14"><spring:message code="common.nodata.msg" /></td>
 		</tr>
 	</c:if>
 	<c:forEach var="item" items="${reserchList}" varStatus="status">
@@ -323,6 +325,7 @@ function fnDetail(rpId){
 		<td style="text-align: right;"><fmt:formatNumber value="${item.targetPrice}" pattern="#,###" />원</td>
 		<td style="text-align: right;"><fmt:formatNumber value="${item.nowPrice}" pattern="#,###" />원</td>
 		<td style="color:${pColor};"><c:out value="${item.dyaNowPecent}"/>%</td>
+		<td style="text-align: left;"><c:out value="${item.whenRebound}"/></td>
 		<td><c:out value="${item.uptDate}"/></td>
 		<td><c:out value="${item.regDate}"/></td>
 		<td>

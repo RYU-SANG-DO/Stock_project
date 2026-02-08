@@ -168,7 +168,7 @@ input[type="number"] {
 			  <tr>
 			  	<td><c:out value="${result.rn}"/></td>
 			    <td style="text-align: left;"><c:out value="${result.title}"/></td>
-			    <td style="text-align: left;"><c:out value="${result.origin}"/></td>
+			    <td><c:out value="${result.origin}"/></td>
 			    <td style="text-align: left;"><c:out value="${result.evaluation}"/></td>
 			    <td><c:out value="${result.collectionDate}" escapeXml="false"/></td>
 			    <td><c:out value="${result.regDate}"/></td>

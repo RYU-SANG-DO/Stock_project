@@ -129,6 +129,12 @@ input[type="number"] {
 			</td>
 		</tr>
 		<tr>
+			<th><label for="whenRebound">시기</label></th>
+			<td class="left">			
+   				<input type="text" name="whenRebound" id="whenRebound" size="10" maxlength="80" value="<c:out value="${infoMap.whenRebound}"/>"/>
+			</td>
+		</tr>
+		<tr>
 			<th><label for="rm">요약</label></th>
 			<td class="nopd">
 				<input type="hidden" name="userSummary" id="userSummary" value="<c:out value="${infoMap.userSummary}" escapeXml="false"/>">
