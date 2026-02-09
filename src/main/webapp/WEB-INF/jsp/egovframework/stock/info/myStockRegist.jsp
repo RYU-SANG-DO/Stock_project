@@ -155,26 +155,26 @@ input[type="number"] {
 		<tr>
 			<th><label for="fee">수수료</label></th>
 			<td class="left">
-   				<input type="number" name="fee"	id="fee" size="10" maxlength="5" class="cssright"/>원
+   				<input type="number" name="fee"	id="fee" size="10" maxlength="10" class="cssright"/>원
 			</td>
 		</tr>
 		
 		<tr>
 			<th><label for="trftax">거래세/농특세</label></th>
 			<td class="left">			
-   				<input type="number" name="trftax"	id="trftax" size="10" maxlength="5" class="cssright"/>원
+   				<input type="number" name="trftax"	id="trftax" size="10" maxlength="10" class="cssright"/>원
 			</td>
 		</tr>
 		<tr>
 			<th><label for="incmtax">소득세/주민세</label></th>
 			<td class="left">			
-   				<input type="number" name="incmtax"	id="incmtax" size="10" maxlength="5" class="cssright"/>원
+   				<input type="number" name="incmtax"	id="incmtax" size="10" maxlength="10" class="cssright"/>원
 			</td>
 		</tr>
 		<tr>
 			<th><label for="unitPrice">단가 <span class="pilsu">*</span></label></th>
 			<td class="left">			
-   				<input type="number" name="unitPrice"	id="unitPrice" size="10" maxlength="5" class="cssright"/>원
+   				<input type="number" name="unitPrice"	id="unitPrice" size="10" maxlength="10" class="cssright"/>원
 			</td>
 		</tr>
 		<tr>

@@ -144,26 +144,26 @@ function fn_egov_list() {
 		<tr>
 			<th><label for="fee">수수료</label></th>
 			<td class="left">
-   				<input type="text" name="fee"	id="fee" size="10" maxlength="5" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.fee}" pattern="#,###" />"/>원
+   				<input type="text" name="fee"	id="fee" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.fee}" pattern="#,###" />"/>원
 			</td>
 		</tr>
 		
 		<tr>
 			<th><label for="trftax">거래세/농특세</label></th>
 			<td class="left">			
-   				<input type="text" name="trftax"	id="trftax" size="10" maxlength="5" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.trftax}" pattern="#,###" />"/>원
+   				<input type="text" name="trftax"	id="trftax" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.trftax}" pattern="#,###" />"/>원
 			</td>
 		</tr>
 		<tr>
 			<th><label for="incmtax">소득세/주민세</label></th>
 			<td class="left">			
-   				<input type="text" name="incmtax"	id="incmtax" size="10" maxlength="5" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.incmtax}" pattern="#,###" />"/>원
+   				<input type="text" name="incmtax"	id="incmtax" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.incmtax}" pattern="#,###" />"/>원
 			</td>
 		</tr>
 		<tr>
 			<th><label for="unitPrice">단가 <span class="pilsu">*</span></label></th>
 			<td class="left">			
-   				<input type="text" name="unitPrice"	id="unitPrice" size="10" maxlength="5" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.unitPrice}" pattern="#,###" />"/>원
+   				<input type="text" name="unitPrice"	id="unitPrice" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.unitPrice}" pattern="#,###" />"/>원
 			</td>
 		</tr>
 		<tr>
