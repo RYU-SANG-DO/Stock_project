@@ -63,7 +63,7 @@ p{
 <input type="hidden" name="seq" value="${histInfo.seq}">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
-	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
+	<h2><c:out value="${histInfo.stocksName}"/> ${pageTitle} <spring:message code="title.detail" /></h2>
 
 	<!-- 상세조회 -->
 	<table class="wTable" summary="">

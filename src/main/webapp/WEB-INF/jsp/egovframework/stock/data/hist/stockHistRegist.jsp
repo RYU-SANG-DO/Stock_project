@@ -134,6 +134,7 @@ label{
 			<td class="nopd">
 				<input type="hidden" name="userSummary" id="userSummary">
 				<div id="editor" style="height: 300px;"></div>
+				<div id="byte-count"></div>
 			</td>
 		</tr>
 	</tbody>
@@ -150,12 +151,6 @@ label{
 
 </form>
 <script>
- var quill = new Quill('#editor', {
-    modules: {
-        toolbar: toolbarOptions                       // modules에 toolbar : toolbarOptions를 추가
-    },
-    theme: 'snow'                                     // 테마는 snow로 설정
-}); 
 //에디터의 HTML 구조를 직접 설정
 quill.root.innerHTML = document.getElementById('userSummary').value;
 </script>
