@@ -212,7 +212,15 @@
 				,A.TITLE
 				,A.ORIGIN
 				,A.EVALUATION
-				,DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1300, 1) AS USER_SUMMARY
+				,DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1500, 1) AS USER_SUMMARY1
+                ,DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1500, 1501) AS USER_SUMMARY2
+                ,DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1500, 3001) AS USER_SUMMARY3
+                ,DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1500, 4501) AS USER_SUMMARY4
+                ,DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1500, 6001) AS USER_SUMMARY5
+                ,DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1500, 7501) AS USER_SUMMARY6
+                ,DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1500, 9001) AS USER_SUMMARY7
+                ,DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1500, 10501) AS USER_SUMMARY8
+                ,DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1500, 12001) AS USER_SUMMARY9
 				,TO_CHAR(A.UPT_DATE,'YYYY-MM-DD') AS UPT_DATE
                 ,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
 			FROM STOCKS_HIST A , STOCKS_LIST B
@@ -241,7 +249,7 @@
                 #{title},
                 #{origin},
                 #{evaluation},
-                SUBSTR(#{userSummary}, 1, 1333),
+                #{userSummary},
                 SYSDATE,
                 SYSDATE
             )
@@ -254,7 +262,7 @@
 			SET 	TITLE = #{title},
 					ORIGIN = #{origin},
 					EVALUATION = #{evaluation},
-					USER_SUMMARY = SUBSTR(#{userSummary}, 1, 1330),
+					USER_SUMMARY = #{userSummary},
 					UPT_DATE = SYSDATE
 			WHERE SEQ = #{seq}
 		]]>
@@ -267,6 +275,15 @@
 			WHERE SEQ = #{seq}		
 		]]>
 	</delete>
+	
+	 <!-- 종목 정보 수정 -->
+	<update id="updateStocksInfoUptDate" parameterType="java.util.Map">
+		<![CDATA[/*updateStocksInfoUptDate*/
+			UPDATE STOCKS_LIST
+			SET 	UPT_DATE = SYSDATE
+			WHERE STOCKS_CODE = #{stocksCode} 
+		]]>
+	</update>
     
 	
 </mapper>

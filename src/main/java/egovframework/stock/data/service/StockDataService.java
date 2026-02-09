@@ -41,4 +41,6 @@ public interface StockDataService{
 
 	int deleteStockHist(Map<String, Object> commandMap) throws Exception;
 
+	int updateStocksInfoUptDate(Map<String, Object> commandMap) throws Exception;
+
 }

@@ -212,7 +212,12 @@ public class StockDataController {
    			String stocksCode = StringUtil.nvl(commandMap.get("stocksCode"),"");
    			String seq = StringUtil.nvl(commandMap.get("seq"),"");
        		Map<String,Object> histInfo = stockDataService.selectStockHistDetail(commandMap);
-       		histInfo.put("userSummary", StringUtil.replaceString(StringUtil.nvl(histInfo.get("userSummary"),"")));
+       		StringBuilder fullSummary = new StringBuilder();
+    		for(int i = 1 ; i < 11 ; i++) {
+    			String summer = StringUtil.nvl(histInfo.get("userSummary"+i),"");
+    			fullSummary.append(summer);
+    		}
+    		histInfo.put("userSummary", StringUtil.replaceString(StringUtil.nvl(fullSummary.toString(),"")));
        		model.addAttribute("histInfo", histInfo);
        		model.addAllAttributes(commandMap);
        		System.out.println("종목 이력 상세 종료");
@@ -236,7 +241,12 @@ public class StockDataController {
            String returnUrl = "egovframework/stock/data/hist/stockHistRegist";
        	if("update".equals(move)) {
        		Map<String,Object> histInfo = stockDataService.selectStockHistDetail(commandMap);
-       		histInfo.put("userSummary", StringUtil.replaceString(StringUtil.nvl(histInfo.get("userSummary"),"")));
+       		StringBuilder fullSummary = new StringBuilder();
+    		for(int i = 1 ; i < 11 ; i++) {
+    			String summer = StringUtil.nvl(histInfo.get("userSummary"+i),"");
+    			fullSummary.append(summer);
+    		}
+    		histInfo.put("userSummary", StringUtil.replaceString(StringUtil.nvl(fullSummary.toString(),"")));
                model.addAttribute("histInfo", histInfo);
                returnUrl = "egovframework/stock/data/hist/stockHistUpdt";
        	}else if("insert".equals(move)) {
@@ -267,8 +277,10 @@ public class StockDataController {
               int cnt = 0;
           	if("insert".equals(move)) {
           		cnt =stockDataService.insertStockHist(commandMap);
+          		stockDataService.updateStocksInfoUptDate(commandMap);
           	}if("update".equals(move)) {
           		cnt =stockDataService.updateStockHist(commandMap);
+          		stockDataService.updateStocksInfoUptDate(commandMap);
           	}if("delete".equals(move)) {
           		cnt = stockDataService.deleteStockHist(commandMap);
           	}

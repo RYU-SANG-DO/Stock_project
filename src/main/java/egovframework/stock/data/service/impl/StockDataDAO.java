@@ -60,4 +60,8 @@ public class StockDataDAO extends EgovComAbstractDAO {
 	public int deleteStockHist(Map<String, Object> commandMap) throws Exception{
 		return delete("StockDataDAO.deleteStockHist", commandMap);
 	}
+
+	public int updateStocksInfoUptDate(Map<String, Object> commandMap) throws Exception{
+		return update("StockDataDAO.updateStocksInfoUptDate", commandMap);
+	}
 }

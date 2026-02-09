@@ -1203,7 +1203,12 @@ public class StockNaverController {
 		model.addAttribute("clCodeList", clCodeList);
 		
 		Map<String, Object> infoMap = stockNaverService.selectStockResearchDataDetail(commandMap);
-		
+		StringBuilder fullSummary = new StringBuilder();
+		for(int i = 1 ; i < 11 ; i++) {
+			String summer = StringUtil.nvl(infoMap.get("userSummary"+i),"");
+			fullSummary.append(summer);
+		}
+		infoMap.put("userSummary", fullSummary.toString());
 		model.addAttribute("infoMap", infoMap);
 		model.addAttribute("paramInfo",commandMap);
 		model.addAllAttributes(commandMap);
