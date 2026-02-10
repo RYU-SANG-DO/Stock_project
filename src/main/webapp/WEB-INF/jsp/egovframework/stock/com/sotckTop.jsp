@@ -21,9 +21,10 @@
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/bootstrap-4.0.0/js/bootstrap.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/bootstrap-4.0.0/js/bootstrap.bundle.min.js'/>" ></script>
 
+<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
+<%-- <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css"> --%>
 <link type="text/css" rel="stylesheet" href="<c:url value='/js/egovframework/com/cmm/bootstrap-4.0.0/css/bootstrap.min.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/js/egovframework/com/cmm/jquery-ui-1.14.0.css' />">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 

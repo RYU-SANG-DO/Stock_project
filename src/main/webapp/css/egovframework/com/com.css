@@ -28,7 +28,10 @@ body{
 }
 
 div,table,em,h1,h2,h3,h4,h5,h6,form,fieldset,p,th,td,input,textarea,select,button { 
-	font-family:'돋움', '굴림', 'Arial', 'AppleGothic', 'sans-serif'; font-size:13px; color:#666; }
+	font-family:'돋움', '굴림', 'Arial', 'AppleGothic', 'sans-serif'; 
+	font-size:13px; 
+	color:#666; 
+	}
 
 fieldset, img { border:0; }
 textarea { width:100%; resize:none; }
@@ -192,7 +195,7 @@ table thead tr.algin-center{ text-align: center; }
 .board h3 { color:#333;  font-size:14px; font-weight:600; margin:50px 0 10px 0; }
 .board h3 b { color:#2277d7; }
 .search_box {/* float:right;*/ position:relative; margin-bottom:7px; padding:13px 10px; border:1px solid #b1bbcb; border-top:3px solid #8191ac; background:#eef3fb; }
-.search_box ul {font-size:0; text-align:right; }
+.search_box ul {font-size:0; text-align:right; margin-bottom: 0px;}
 .search_box ul li {/* float:left;*/display:inline-block; margin-left:5px; font-size:11px; vertical-align:top; }
 .search_box ul li img { margin-left:7px; }
 .search_box ul li > div {color:#194e73; font-weight:bold; vertical-align:top; }
