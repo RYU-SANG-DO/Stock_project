@@ -507,19 +507,14 @@ function fnInsertStock(){
 					<c:when test="${not empty subject.dhref}">
 							<c:choose>
 								<c:when test="${subject.idx eq '0'}">
-									<a href="https://finance.naver.com${subject.dhref}" target="_blank">
-										<c:out value="${subject.dcn}"/>
-									</a>
+									<a href="https://finance.naver.com${subject.dhref}" target="_blank" title="종합정보"><c:out value="${subject.dcn}"/></a>
+									<a href="https://finance.naver.com/item/fchart.naver?code=${subject.code}" target="_blank" title="챠트보기"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
 								</c:when>
 								<c:when test="${subject.dclass eq 'file'}">
-									<a href="${subject.dhref}" target="_blank">
-										<img src="/images/egovframework/com/cmm/down_pdf.gif" alt="pdf" >
-									</a>
+									<a href="${subject.dhref}" target="_blank" title="리포트 다운로드"><img src="/images/egovframework/com/cmm/down_pdf.gif" alt="pdf" ></a>
 								</c:when>
 								<c:otherwise>
-									<a href="https://finance.naver.com/research/${subject.dhref}" target="_blank">
-										<c:out value="${subject.dcn}"/>
-									</a>
+									<a href="https://finance.naver.com/research/${subject.dhref}" target="_blank"><c:out value="${subject.dcn}"/></a>
 								</c:otherwise>
 							</c:choose>
 					</c:when>
