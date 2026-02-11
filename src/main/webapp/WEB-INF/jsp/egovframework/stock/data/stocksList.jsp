@@ -14,8 +14,16 @@
   String imagePath_button = "/images/egovframework/com/sym/prm/button/";
 %>
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
-<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery-1.4.2.min.js' />" ></script>
+<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery-1.4.2.min.js' />" ></script> --%>
 <script type="text/javaScript">
+$(function(){	
+	//모달 바깥쪽 클릭 시 닫기
+	$(window).on('click', function(event) {
+	    if ($(event.target).is('#chartModal')) {
+	        closeModal();
+	    }
+	});
+});
 <!--
 /* ********************************************************
  * 페이징 처리 함수
@@ -65,8 +73,34 @@ function fnStockHistList(code){
 	document.stockFrm.action = "<c:url value='/stock/data/hist/selectStockHistList.do'/>";
    	document.stockFrm.submit();
 }
+
+function openChartModal(sCode, type) {
+    let typeName = (type === 'day') ? '일봉' : (type === 'week') ? '주봉' : '월봉';
+    
+    // 1. 제목 설정
+    $("#modalTitle").text(sCode + " - " + typeName + " 차트");
+    
+    // 2. 네이버 캔들차트 대형 이미지 URL 설정
+    // 기존 이미지보다 더 상세한 정보를 담은 캔들 URL을 사용합니다.
+    let chartUrl = "https://ssl.pstatic.net/imgfinance/chart/item/candle/" + type + "/" + sCode + ".png";
+    
+    // 3. 이미지 로딩 (캐시 방지 타임스탬프 포함)
+    $("#bigChartImg").attr("src", chartUrl + "?t=" + new Date().getTime());
+    
+    // 4. 모달 표시
+    $("#chartModal").fadeIn(200);
+}
+
+function closeModal() {
+    $("#chartModal").fadeOut(200);
+}
 -->
 </script>
+<style>
+label {
+    margin-bottom: 0px;
+}
+</style>
 </head>
 <body>
 <form name="stockFrm" action ="<c:url value='/stock/data/selectStocksList.do'/>" method="post">
@@ -151,12 +185,18 @@ function fnStockHistList(code){
 			  	<td><c:out value="${result.rn}"/></td>
 			    <td>
 			      <span class="link">
-			      	<a href="#LINK" onclick="choisStocksListSearch('<c:out value="${result.stocksCode}"/>','<c:out value="${result.stocksName}"/>'); return false;"><c:out value="${result.stocksCode}"/></a>
+			      	<a href="https://finance.naver.com/item/main.naver?code=${result.stocksCode}" target="_blank" title="종합정보"><c:out value="${result.stocksCode}"/></a>
 			      </span>
 			    </td>
 			    <td>
 			    	<span class="link">
-			      	<a href="#LINK" onclick="choisStocksListSearch('<c:out value="${result.stocksCode}"/>','<c:out value="${result.stocksName}"/>'); return false;"><c:out value="${result.stocksName}"/></a>
+			      	<a href="https://finance.naver.com/item/main.naver?code=${result.stocksCode}" target="_blank" title="종합정보"><c:out value="${result.stocksName}"/></a>
+			      	<a href="https://finance.naver.com/item/fchart.naver?code=${result.stocksCode}" target="_blank" title="챠트보기"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
+			      	<span class="chart-icons" style="cursor:pointer; margin-left:10px;">
+				        <i class="fa fa-calendar-day" onclick="openChartModal('${result.stocksCode}', 'day')" title="일봉차트"> [일]</i>
+				        <i class="fa fa-calendar-week" onclick="openChartModal('${result.stocksCode}', 'week')" title="주봉차트"> [주]</i>
+				        <i class="fa fa-calendar-alt" onclick="openChartModal('${result.stocksCode}', 'month')" title="월봉차트"> [월]</i>
+				    </span>
 			      </span>
 			    </td>
 			    <td style="text-align: left;"><c:out value="${result.upjong}"/></td>

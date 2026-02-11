@@ -157,16 +157,18 @@ input[type="number"] {
 	<div class="btn">
 		<span class="btn_s"><a href="#none" onClick="fnUpdate(); return false;" title="<spring:message code="title.update" /> <spring:message code="input.button" />"><spring:message code="button.update" /></a></span>
 		<span class="btn_s"><a href="#none" onClick="fnDelete(); return false;" title="<spring:message code="title.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
-		<a href="#none" onClick="fnParentList();" class="btn_s" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a>
+		<span class="btn_s"><a href="#none" onClick="fnParentList();" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 	
 </div>
 
 </form>
+<jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />
 <script>
 $(function(){
-	quill.root.innerHTML = document.getElementById('userSummary').value;
+    if (quill && document.getElementById('userSummary')) {
+        quill.root.innerHTML = document.getElementById('userSummary').value || '';
+    }
 });
 </script>
-<jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />

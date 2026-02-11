@@ -156,9 +156,11 @@ input[type="number"] {
 </div>
 
 </form>
+<jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />
 <script>
 $(function(){
-	quill.root.innerHTML = document.getElementById('userSummary').value;
+    if (quill && document.getElementById('userSummary')) {
+        quill.root.innerHTML = document.getElementById('userSummary').value || '';
+    }
 });
 </script>
-<jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />

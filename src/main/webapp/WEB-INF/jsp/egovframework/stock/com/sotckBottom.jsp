@@ -6,6 +6,15 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!-- <div class="preloader"></div> -->
 <div id="map" class="loadingImg"></div>
+<div id="chartModal" class="modal" tabindex="-1" role="dialog" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7);">
+    <div class="modal-content" style="background-color:#fff; margin:5% auto; padding:20px; width:80%; max-width:800px; border-radius:10px; position:relative;">
+        <span onclick="closeModal()" style="position:absolute; right:20px; top:10px; font-size:28px; font-weight:bold; cursor:pointer;">&times;</span>
+        <h3 id="modalTitle" style="margin-bottom:15px;">종목 차트</h3>
+        <div id="modalBody" style="text-align:center;">
+            <img id="bigChartImg" src="" style="width:100%; height:auto; border:1px solid #eee;">
+        </div>
+    </div>
+</div>
 <style type="text/css">
 div.preloader {
    position: absolute;
@@ -22,14 +31,8 @@ div.preloader {
 }
 </style>
 <script type="text/javaScript" defer="defer">
-var quill = new Quill('#editor', {
-    modules: {
-        toolbar: toolbarOptions                       // modules에 toolbar : toolbarOptions를 추가
-    },
-    theme: 'snow'                                     // 테마는 snow로 설정
-});
+var quill = null;
 //에디터의 HTML 구조를 직접 설정
- //quill.root.innerHTML = document.getElementById('userSummary').value;
 function getByteLength(str) {
     let byteCount = 0;
     for (let i = 0; i < str.length; i++) {
@@ -42,9 +45,15 @@ function getByteLength(str) {
 }
 
 $(function(){
+	if ($('#editor').length > 0) {
+		quill = new Quill('#editor', {
+		    modules: {
+		        toolbar: toolbarOptions                       // modules에 toolbar : toolbarOptions를 추가
+		    },
+		    theme: 'snow'                                     // 테마는 snow로 설정
+		});
 	 //Loading();
 	 //setTimeout("closeLoading()", 3000);
-	if(quill != null){	
 		//quill.root.innerHTML = document.getElementById('userSummary').value;
 	     document.getElementById('byte-count').innerText = getByteLength(quill.getText().trim())+" Byte";
 		//3. text-change 이벤트 리스너 등록

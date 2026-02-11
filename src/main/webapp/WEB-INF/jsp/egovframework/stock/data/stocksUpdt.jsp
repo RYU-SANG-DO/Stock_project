@@ -155,7 +155,7 @@ input[type="number"] {
 </div>
 
 </form>
+<jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />
 <script>
 
 </script>
-<jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />
