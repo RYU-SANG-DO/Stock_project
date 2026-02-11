@@ -74,26 +74,6 @@ function fnStockHistList(code){
    	document.stockFrm.submit();
 }
 
-function openChartModal(sCode, type) {
-    let typeName = (type === 'day') ? '일봉' : (type === 'week') ? '주봉' : '월봉';
-    
-    // 1. 제목 설정
-    $("#modalTitle").text(sCode + " - " + typeName + " 차트");
-    
-    // 2. 네이버 캔들차트 대형 이미지 URL 설정
-    // 기존 이미지보다 더 상세한 정보를 담은 캔들 URL을 사용합니다.
-    let chartUrl = "https://ssl.pstatic.net/imgfinance/chart/item/candle/" + type + "/" + sCode + ".png";
-    
-    // 3. 이미지 로딩 (캐시 방지 타임스탬프 포함)
-    $("#bigChartImg").attr("src", chartUrl + "?t=" + new Date().getTime());
-    
-    // 4. 모달 표시
-    $("#chartModal").fadeIn(200);
-}
-
-function closeModal() {
-    $("#chartModal").fadeOut(200);
-}
 -->
 </script>
 <style>

@@ -48,7 +48,23 @@ $(function(){
 	if ($('#editor').length > 0) {
 		quill = new Quill('#editor', {
 		    modules: {
-		        toolbar: toolbarOptions                       // modules에 toolbar : toolbarOptions를 추가
+		        toolbar: {
+		        			container: [
+		        			   				[{ 'font': [] }],                                 	// 폰트 설정
+					        			    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],	// 텍스트 크기 설정
+					        			    ['bold', 'italic', 'underline', 'strike'],        	// toggled buttons
+					        			    [{ 'color': [] }, { 'background': [] }],       // dropdown with defaults from theme
+					        			    [{ 'align': [] }],                                	// 텍스트 정렬
+					        			    [{ 'list': 'ordered'}, { 'list': 'bullet' }],     	// 리스트 항목
+					        			    [{ 'indent': '-1'}, { 'indent': '+1' }],         // outdent/indent
+					        			    ['blockquote', 'code-block'],                   // 코드블럭, 인용 문구
+					        			    ['link', 'image'],                                		// 링크, 이미지 추가
+					        			    ['clean']                                         		// remove formatting button
+					        			],
+							handlers: {
+					                        image: imageHandler 
+					                    }
+					        }
 		    },
 		    theme: 'snow'                                     // 테마는 snow로 설정
 		});
@@ -77,7 +93,43 @@ $(function(){
 		     }
 		 });
 	}
-});    
+});
+
+function imageHandler() {
+    // 1. 숨겨진 input 생성하여 파일 선택창 띄우기
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+        const file = input.files[0];
+        const formData = new FormData();
+        formData.append('imageFile', file); // Java에서 받을 파라미터명
+
+        // 2. 서버로 AJAX 업로드 (jQuery 사용)
+        $.ajax({
+            type: 'POST',
+            url: "<c:url value='/stock/com/uploadEditorImageAjax.do'/>", // 서버 업로드 URL
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType : 'json',
+            success: function(data) {
+            	if(data.uploaded == 1) {
+                    const range = quill.getSelection();
+                    // 서버에서 보낸 'url' 키값을 사용하여 에디터에 삽입
+                    quill.insertEmbed(range.index, 'image', data.url);
+                } else {
+                    alert("업로드 실패: " + data.error);
+                }
+            },
+            error: function() {
+                alert("이미지 업로드 중 오류가 발생했습니다.");
+            }
+        });
+    };
+}
     
 function Loading() {
     var maskHeight = $(document).height();
@@ -109,6 +161,26 @@ function closeLoading() {
 	  $('#mask, #loadingImg').remove(); 
 }
 	
+function openChartModal(sCode, type) {
+    let typeName = (type === 'day') ? '일봉' : (type === 'week') ? '주봉' : '월봉';
+    
+    // 1. 제목 설정
+    $("#modalTitle").text(sCode + " - " + typeName + " 차트");
+    
+    // 2. 네이버 캔들차트 대형 이미지 URL 설정
+    // 기존 이미지보다 더 상세한 정보를 담은 캔들 URL을 사용합니다.
+    let chartUrl = "https://ssl.pstatic.net/imgfinance/chart/item/candle/" + type + "/" + sCode + ".png";
+    
+    // 3. 이미지 로딩 (캐시 방지 타임스탬프 포함)
+    $("#bigChartImg").attr("src", chartUrl + "?t=" + new Date().getTime());
+    
+    // 4. 모달 표시
+    $("#chartModal").fadeIn(200);
+}
+
+function closeModal() {
+    $("#chartModal").fadeOut(200);
+}
 </script>
 </body>
 </html>

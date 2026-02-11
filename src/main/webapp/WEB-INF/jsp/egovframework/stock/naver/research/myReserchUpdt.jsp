@@ -137,7 +137,7 @@ input[type="number"] {
 		<tr>
 			<th><label for="rm">요약</label></th>
 			<td class="nopd">
-				<input type="hidden" name="userSummary" id="userSummary" value="<c:out value="${infoMap.userSummary}" escapeXml="false"/>">
+				<input type="hidden" name="userSummary" id="userSummary" value="<c:out value="${infoMap.userSummary}"/>">
 				<div id="editor" style="height: 300px;"></div>
 				<div id="byte-count"></div>
 			</td>

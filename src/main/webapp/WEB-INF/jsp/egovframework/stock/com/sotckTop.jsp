@@ -32,16 +32,4 @@
 
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <script>
-var toolbarOptions = [
-    [{ 'font': [] }],                                 	// 폰트 설정
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],	// 텍스트 크기 설정
-    ['bold', 'italic', 'underline', 'strike'],        	// toggled buttons
-    [{ 'color': [] }, { 'background': [] }],       // dropdown with defaults from theme
-    [{ 'align': [] }],                                	// 텍스트 정렬
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],     	// 리스트 항목
-    [{ 'indent': '-1'}, { 'indent': '+1' }],         // outdent/indent
-    ['blockquote', 'code-block'],                   // 코드블럭, 인용 문구
-    ['link', 'image'],                                		// 링크, 이미지 추가
-    ['clean']                                         		// remove formatting button
-];
 </script>

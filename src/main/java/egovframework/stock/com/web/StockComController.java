@@ -1,7 +1,9 @@
 package egovframework.stock.com.web;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -13,10 +15,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.sym.ccm.cca.service.CmmnCodeVO;
 import egovframework.com.sym.ccm.cca.service.EgovCcmCmmnCodeManageService;
 import egovframework.stock.com.StringUtil;
@@ -117,6 +126,50 @@ public class StockComController {
         model.addAttribute("resultList", resultList);
 
         return "egovframework/stock/com/theme/stockComThemeListPop";
+    }
+    
+    @RequestMapping("/stock/com/uploadEditorImageAjax.do")
+    public ModelAndView uploadEditorImageAjax(@RequestParam Map<?, ?> commandMap, final HttpServletRequest request, ModelMap model) {
+    	System.out.println("uploadEditorImage start");
+    	ModelAndView mav = new ModelAndView("jsonView");
+    	// 1. 저장 경로 설정
+    	String uploadWebDir = EgovProperties.getProperty("Globals.fileStorePath")+"upload/images/";
+        String uploadPath = request.getServletContext().getRealPath("upload/images/");
+        File folder = new File(uploadPath);
+        File webfolder = new File(uploadWebDir);
+        if (!folder.exists()) folder.mkdirs();
+        if (!webfolder.exists()) webfolder.mkdirs();
+
+        try {
+        	final MultipartHttpServletRequest multiRequest = WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
+        	// input name="imageFile" (또는 AJAX에서 보낸 이름)로 파일 가져오기
+            MultipartFile file = multiRequest.getFile("imageFile");
+            if (file != null && !file.isEmpty()) {
+                String originalName = file.getOriginalFilename();
+                String fileName = UUID.randomUUID().toString() + "_" + originalName;
+                
+                File destination = new File(uploadPath + File.separator + fileName);
+                file.transferTo(destination);
+                
+                File webdestination = new File(uploadWebDir + File.separator + fileName);
+                file.transferTo(webdestination);
+                
+                String saveUrl = request.getContextPath() + "/upload/images/" + fileName;
+                System.out.println("저장 경로: " + saveUrl);
+                
+                mav.addObject("url", saveUrl);
+                mav.addObject("uploaded", 1);
+            } else {
+                mav.addObject("uploaded", 0);
+                mav.addObject("error", "파일이 전송되지 않았습니다.");
+            }
+        } catch (Exception e) {
+        	e.printStackTrace(); // 로그 확인용
+            mav.addObject("uploaded", 0);
+            mav.addObject("error", e.getMessage());
+        }
+        System.out.println("uploadEditorImage end");
+        return mav;
     }
 	
 }
