@@ -1172,6 +1172,14 @@ public class StockNaverController {
 			}
 		}
 		
+		CmmnDetailCodeVO searchVO = new CmmnDetailCodeVO();
+		searchVO.setFirstIndex(0);
+		searchVO.setRecordCountPerPage(100);
+		searchVO.setSearchCondition("1");
+		searchVO.setSearchKeyword("RPGUB");
+		List<CmmnDetailCodeVO> rpCodeList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("rpCodeList", rpCodeList);
+		
 		model.addAttribute("reserchList", list);
 		model.addAttribute("paramInfo",commandMap);
 		model.addAttribute("naverResearchVO",naverResearchVO);

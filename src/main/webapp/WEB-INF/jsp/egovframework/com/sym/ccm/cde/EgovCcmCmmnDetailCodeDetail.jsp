@@ -80,6 +80,11 @@
 				<c:out value="${fn:replace(result.codeDc , crlf , '<br/>')}" escapeXml="false" />
 			</td>
 		</tr>
+		<!-- 순번 -->
+		<tr>
+			<th><spring:message code="comSymCcmCde.cmmnDetailCodeVO.num" /></th>
+			<td class="left"><c:out value="${result.num}"/></td>
+		</tr>
 		<!-- 사용여부 -->
 		<tr>
 			<th><spring:message code="comSymCcmCde.cmmnDetailCodeVO.useAt" /></th>

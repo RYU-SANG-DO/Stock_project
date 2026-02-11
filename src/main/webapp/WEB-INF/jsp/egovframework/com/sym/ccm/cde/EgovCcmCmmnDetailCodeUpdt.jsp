@@ -122,6 +122,16 @@ function fn_egov_inqire_code() {
 			</td>
 		</tr>
 		
+		<!-- 순번 -->
+		<c:set var="title"><spring:message code="comSymCcmCde.cmmnDetailCodeVO.num"/> </c:set>
+		<tr>
+			<th><label for="num">${title} <span class="pilsu">*</span></label></th>
+			<td class="left">
+			    <form:input path="num" title="${title} ${inputTxt}" size="5" maxlength="2" cssStyle="width:10%; text-align:right;" />
+   				<div><form:errors path="num" cssClass="error" /></div>     
+			</td>
+		</tr>
+		
 		<!-- 사용여부 -->
 		<c:set var="title"><spring:message code="comSymCcmCde.cmmnDetailCodeVO.useAt"/> </c:set>
 		<tr>

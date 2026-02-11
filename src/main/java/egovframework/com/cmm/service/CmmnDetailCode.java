@@ -57,7 +57,7 @@ public class CmmnDetailCode implements Serializable {
      * 사용여부
      */
     private String useAt = "";
-
+    
     /*
      * 최초등록자ID
      */
@@ -67,6 +67,11 @@ public class CmmnDetailCode implements Serializable {
      * 최종수정자ID
      */
     private String lastUpdusrId   = "";
+    
+    /*
+     * 순번
+     */
+    private int num = 1;
 
 
     /**
@@ -211,6 +216,14 @@ public class CmmnDetailCode implements Serializable {
 	 */
 	public void setLastUpdusrId(String lastUpdusrId) {
 		this.lastUpdusrId = lastUpdusrId;
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
 	}
 
 

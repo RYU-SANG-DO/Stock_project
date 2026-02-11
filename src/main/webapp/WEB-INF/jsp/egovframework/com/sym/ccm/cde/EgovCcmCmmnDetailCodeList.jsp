@@ -94,11 +94,12 @@ function fn_egov_inquire_codedetail(codeId, code) {
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle}<spring:message code="title.list" /></caption>
 	<colgroup>
-		<col style="width: 9%;">
-		<col style="width: 40%;">
-		<col style="width: 13%;">
-		<col style="width: 40%;">
-		<col style="width: 13%;">
+		<col>
+		<col>
+		<col>
+		<col>
+		<col>
+		<col>
 	</colgroup>
 	<thead>
 	<tr>
@@ -106,13 +107,14 @@ function fn_egov_inquire_codedetail(codeId, code) {
 		<th><spring:message code="comSymCcmCde.cmmnDetailCodeVO.codeId" /></th><!-- 코드ID -->
 		<th class="board_th_link"><spring:message code="comSymCcmCde.cmmnDetailCodeVO.code" /></th><!-- 코드 -->
 		<th><spring:message code="comSymCcmCde.cmmnDetailCodeVO.codeNm"/></th><!-- 코드명 -->
+		<th>순번</th><!-- 순번 -->
 		<th><spring:message code="comSymCcmCde.cmmnDetailCodeVO.useAt" /></th><!-- 사용여부 -->
 	</tr>
 	</thead>
 	<tbody class="ov">
 	<c:if test="${fn:length(resultList) == 0}">
 	<tr>
-		<td colspan="5"><spring:message code="common.nodata.msg" /></td>
+		<td colspan="6"><spring:message code="common.nodata.msg" /></td>
 	</tr>
 	</c:if>
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
@@ -121,6 +123,7 @@ function fn_egov_inquire_codedetail(codeId, code) {
 		<td><c:out value='${resultInfo.codeId}'/></td>
 		<td><c:out value='${resultInfo.code}'/></td>
 		<td><a href="<c:url value='/sym/ccm/cde/SelectCcmCmmnDetailCodeDetail.do'/>?codeId=${resultInfo.codeId}&amp;code=${resultInfo.code}" onClick="fn_egov_inquire_codedetail('<c:out value="${resultInfo.codeId}"/>','<c:out value="${resultInfo.code}"/>');return false;"><c:out value='${fn:substring(resultInfo.codeNm, 0, 40)}'/></a></td>
+		<td><c:out value='${resultInfo.num}'/></td>
 		<td><c:out value='${resultInfo.useAt}'/></td>
 	</tr>
 	</c:forEach>

@@ -3,8 +3,7 @@
   ===========      ========    =================================================
   2011.10.06		이기하     	 	보안 취약점 점검사항 반영 $->#변경
 --><!--Converted at: Wed May 11 15:50:37 KST 2016-->
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="CmmnDetailCodeManage">
 
 	<select id="selectCmmnDetailCodeList" parameterType="egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO" resultType="egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO">
@@ -19,22 +18,23 @@
 			     ,  A.CODE
 			     ,  A.CODE_NM
 			     ,  A.USE_AT
+			      , A.NUM
 			  FROM  COMTCCMMNDETAILCODE A
 			     ,  COMTCCMMNCODE       B
 			 WHERE 	B.USE_AT  = 'Y'
 			   AND  A.CODE_ID = B.CODE_ID
 			  ]]>
 		
-			<if test="searchCondition == 1">	<![CDATA[	AND
-				A.CODE_ID LIKE '%' || #{searchKeyword} || '%'	]]>
+			<if test="searchCondition == 1">	<![CDATA[	
+				AND A.CODE_ID LIKE '%' || #{searchKeyword} || '%'	]]>
 			</if>
-			<if test="searchCondition == 2">	<![CDATA[	AND
-				A.CODE    LIKE '%' || #{searchKeyword} || '%'	]]>
+			<if test="searchCondition == 2">	<![CDATA[	
+				AND A.CODE    LIKE '%' || #{searchKeyword} || '%'	]]>
 			</if>
-			<if test="searchCondition == 3">	<![CDATA[	AND
-				A.CODE_NM LIKE '%' || #{searchKeyword} || '%'	]]>
+			<if test="searchCondition == 3">	<![CDATA[	
+				AND A.CODE_NM LIKE '%' || #{searchKeyword} || '%'	]]>
 			</if>
-		
+			ORDER BY A.NUM , A.FRST_REGIST_PNTTM
 		<![CDATA[
 			/* 구현 Sql */
 				    ) ALL_LIST
@@ -75,6 +75,7 @@
                  ,  A.CODE_NM    codeNm
                  ,  A.CODE_DC    codeDc
                  ,  A.USE_AT     useAt
+                 ,  A.NUM     num
               FROM  COMTCCMMNDETAILCODE A
                  ,  COMTCCMMNCODE       B
              WHERE  B.USE_AT  = 'Y'
@@ -95,6 +96,7 @@
 		         ,  CODE_NM
 		         ,  CODE_DC
 		         ,  USE_AT
+		         ,  NUM
 		         ,  FRST_REGIST_PNTTM
 		         ,  FRST_REGISTER_ID
 		         ,  LAST_UPDT_PNTTM
@@ -106,6 +108,7 @@
 		         ,  #{codeNm}
 		         ,  #{codeDc}
 		         ,  #{useAt}
+		         ,  #{num}
 		         ,  sysdate
 		         ,  #{frstRegisterId}
 		         ,  sysdate
@@ -122,6 +125,7 @@
                SET  CODE_NM           = #{codeNm}
                  ,  CODE_DC           = #{codeDc}
                  ,  USE_AT            = #{useAt}
+                 ,  NUM            = #{num}
                  ,  LAST_UPDT_PNTTM = sysdate
                  ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
              WHERE  CODE_ID   = #{codeId}
