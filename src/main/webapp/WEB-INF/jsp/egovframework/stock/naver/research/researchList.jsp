@@ -329,8 +329,8 @@ function fnInsertStock(){
 						<c:if test="${'company' eq searchGubun}">
 							<option value="itemCode" <c:if test="${'itemCode' eq searchType}">selected="selected"</c:if>>종목</option>
 						</c:if>
-						<c:if test="${'industry' eq searchGubun}"><!-- 산업분석 리포트 -->
-							<option value="upjong" <c:if test="${'upjong' eq searchType}">selected="selected"</c:if>>업종</option>
+						<c:if test="${'industry' eq searchGubun}">
+							<option value="upjong" <c:if test="${'upjong' eq searchType}">selected="selected"</c:if>>분류</option>
 						</c:if>
 					</select>
 				</li>
@@ -383,7 +383,7 @@ function fnInsertStock(){
 					</select>
 				</li>
 				<c:if test="${'industry' eq searchGubun}"><!-- 산업분석 리포트 -->
-				<li class="stype upjong"><div style="line-height:4px;">&nbsp;</div><div>업종 : </div></li>
+				<li class="stype upjong"><div style="line-height:4px;">&nbsp;</div><div>분류 : </div></li>
 				<li class="stype upjong">
 					<select name="upjong" class="select" title="업종 선택">
 						<option value="" <c:if test="${empty upjong}">selected="selected"</c:if>>선택</option>
