@@ -101,7 +101,7 @@ function fncSelectStocksInfo(stock_code){
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
-		<ul style="margin-bottom: 0px;">
+		<ul style="margin-bottom: 0px;font-size: 11px;">
 			<select name="listType" class="select" title="검색조건구분"><!-- 검색조건구분 -->
 				<option value="" <c:if test="${empty listType}">selected="selected"</c:if>>페이지보기</option>
 				<option value="A" <c:if test="${'A' eq listType}">selected="selected"</c:if>>전체 보기</option>
@@ -167,8 +167,8 @@ function fncSelectStocksInfo(stock_code){
 		<td><c:out value="${item.parameter0}"/></td>
 		<td><a href="#LINK" onclick="javascript:fncSelectThemeDetailList('<c:out value="${item.parameter2}"/>','<c:out value="${item.parameter1}"/>')"><c:out value="${item.parameter1}"/></a></td>
 		<td style="color: ${item.parameter8}"><c:out value="${item.parameter3}"/></td>
-		<td><a href="#LINK" onclick="javascript:fncSelectStocksInfo('<c:out value="${item.parameter5}"/>')"><c:out value="${item.parameter4}"/></a></td>
-		<td><a href="#LINK" onclick="javascript:fncSelectStocksInfo('<c:out value="${item.parameter7}"/>')"><c:out value="${item.parameter6}"/></a></td>
+		<td><a href="https://finance.naver.com/item/main.naver?code=${item.parameter5}" target="_blank"><c:out value="${item.parameter4}"/></a></td>
+		<td><a href="https://finance.naver.com/item/main.naver?code=${item.parameter7}" target="_blank"><c:out value="${item.parameter6}"/></a></td>
 	</tr>
 	</c:forEach>
 	</tbody>
