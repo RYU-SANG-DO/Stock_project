@@ -148,7 +148,7 @@ function fncSelectDetailList(upjongNo , upjongNm){
 	<thead>
 	<tr class="algin-center">
 		<th>순번</th><!-- 0 -->
-		<th>테마명</th><!-- 1 -->
+		<th>업종명</th><!-- 1 -->
 		<th>전일대비</th><!-- 3 -->
 		<th>전체</th>
 		<th>상승</th>

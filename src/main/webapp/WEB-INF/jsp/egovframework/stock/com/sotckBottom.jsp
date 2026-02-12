@@ -32,6 +32,25 @@ div.preloader {
 </style>
 <script type="text/javaScript" defer="defer">
 var quill = null;
+var stockPopup; // 팝업 객체를 담을 변수
+//모달 바깥쪽 클릭 시 닫기
+$(window).on('click', function(event) {
+    if ($(event.target).is('#chartModal')) {
+        closeModal();
+    }
+});
+//ESC 키 바인딩: 사용자가 ESC 키를 눌렀을 때 모달이 닫히
+$(document).keydown(function(e) {
+    if (e.keyCode == 27) {
+        // 1. 모달 닫기 (기존 코드)
+        if(typeof closeModal === 'function') closeModal();
+        
+        // 2. 팝업창이 열려있다면 닫기
+        if (stockPopup && !stockPopup.closed) {
+            stockPopup.close();
+        }
+    }
+});
 //에디터의 HTML 구조를 직접 설정
 function getByteLength(str) {
     let byteCount = 0;
@@ -219,15 +238,15 @@ function stockOpenPopup(url, name, width, height) {
     var left = (window.screen.width / 2) - (width / 2);
     var top  = (window.screen.height / 2) - (height / 2);
 
-    window.open(
-        url,
-        name,
-        "width=" + width +
-        ",height=" + height +
-        ",top=" + top +
-        ",left=" + left +
-        ",resizable=no,scrollbars=yes"
-    );
+    stockPopup = window.open(
+								        url,
+								        name,
+								        "width=" + width +
+								        ",height=" + height +
+								        ",top=" + top +
+								        ",left=" + left +
+								        ",resizable=no,scrollbars=yes"
+								    );
 }
 </script>
 </body>
