@@ -330,7 +330,7 @@ function fnDetail(rpId){
 		<col width="3%">
 		<col width="5%"><!-- 순번 -->
 		<c:if test="${searchGubun eq 'company'}">
-			<col width="10%"><!-- 종목 -->
+			<col><!-- 종목 -->
 		</c:if>
 		<c:if test="${searchGubun eq 'industry'}">
 			<col width="10%"><!-- 분류 -->
@@ -403,7 +403,17 @@ function fnDetail(rpId){
 		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
 		<td><c:out value="${item.rn}"/></td>
 		<c:if test="${searchGubun eq 'company'}">
-			<td><a href="https://finance.naver.com/item/main.naver?code=${item.relStockCode}" target="_blank"><c:out value="${item.stocksName}"/></a></td>
+			<td>
+				<span class="link">
+					<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${item.relStockCode}','${item.stocksName}','1000','600'); return false;" title="네이버 종합정보 이동"><c:out value="${item.stocksName}"/></a>
+					<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/fchart.naver?code=${item.relStockCode}','${item.stocksName}','1000','600'); return false;" title="네이버 챠트보기 이동"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
+			      	<span class="chart-icons" style="cursor:pointer;">
+				        <i class="fa fa-calendar-day" onclick="openChartModal('${item.relStockCode}' , '${item.stocksName}', 'day')" title="일봉차트 이미지팝업">[일]</i>
+				        <i class="fa fa-calendar-week" onclick="openChartModal('${item.relStockCode}' , '${item.stocksName}' , 'week')" title="주봉차트 이미지팝업">[주]</i>
+				        <i class="fa fa-calendar-alt" onclick="openChartModal('${item.relStockCode}' , '${item.stocksName}' , 'month')" title="월봉차트 이미지팝업">[월]</i>
+				    </span>
+			    </span>
+			</td>
 		</c:if>
 		<c:if test="${searchGubun eq 'industry'}">
 			<td><c:out value="${item.rpCl}"/></td>

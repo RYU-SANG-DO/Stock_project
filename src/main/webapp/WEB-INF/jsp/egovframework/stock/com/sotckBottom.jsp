@@ -213,6 +213,22 @@ function openChartModal(sCode , sName , type) {
 function closeModal() {
     $("#chartModal").fadeOut(200);
 }
+
+function stockOpenPopup(url, name, width, height) {
+
+    var left = (window.screen.width / 2) - (width / 2);
+    var top  = (window.screen.height / 2) - (height / 2);
+
+    window.open(
+        url,
+        name,
+        "width=" + width +
+        ",height=" + height +
+        ",top=" + top +
+        ",left=" + left +
+        ",resizable=no,scrollbars=yes"
+    );
+}
 </script>
 </body>
 </html>

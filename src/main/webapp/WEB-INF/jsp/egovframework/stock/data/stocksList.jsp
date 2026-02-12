@@ -170,9 +170,9 @@ label {
 			    </td>
 			    <td>
 			    	<span class="link">
-			      	<a href="https://finance.naver.com/item/main.naver?code=${result.stocksCode}" target="_blank" title="종합정보"><c:out value="${result.stocksName}"/></a>
-			      	<a href="${result.homepage}" target="_blank" title="${result.stocksName} 홈페이지"><img src="/images/egovframework/stock/icon_home.gif"></a>
-			      	<a href="https://finance.naver.com/item/fchart.naver?code=${result.stocksCode}" target="_blank" title="네이버 챠트보기 이동"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
+			      	<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${result.stocksCode}','${result.stocksName}','1000','600'); return false;" title="네이버 종합정보 이동"><c:out value="${result.stocksName}"/></a>
+			      	<a href="#none" onclick="stockOpenPopup('${result.homepage}','${result.stocksName}','1000','600'); return false;" title="${result.stocksName} 홈페이지"><img src="/images/egovframework/stock/icon_home.gif"></a>
+			      	<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/fchart.naver?code=${result.stocksCode}','${result.stocksName}','1000','600'); return false;" title="네이버 챠트보기 이동"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
 			      	<span class="chart-icons" style="cursor:pointer;">
 				        <i class="fa fa-calendar-day" onclick="openChartModal('${result.stocksCode}' , '${result.stocksName}', 'day')" title="일봉차트 이미지팝업">[일]</i>
 				        <i class="fa fa-calendar-week" onclick="openChartModal('${result.stocksCode}' , '${result.stocksName}' , 'week')" title="주봉차트 이미지팝업">[주]</i>

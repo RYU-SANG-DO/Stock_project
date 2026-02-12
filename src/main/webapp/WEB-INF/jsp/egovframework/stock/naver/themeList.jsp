@@ -171,8 +171,28 @@ function fncSelectStocksInfo(stock_code){
 		<td><c:out value="${item.parameter0}"/></td>
 		<td><a href="#LINK" onclick="javascript:fncSelectThemeDetailList('<c:out value="${item.parameter2}"/>','<c:out value="${item.parameter1}"/>')"><c:out value="${item.parameter1}"/></a></td>
 		<td style="color: ${item.parameter8}"><c:out value="${item.parameter3}"/></td>
-		<td><a href="https://finance.naver.com/item/main.naver?code=${item.parameter5}" target="_blank"><c:out value="${item.parameter4}"/></a></td>
-		<td><a href="https://finance.naver.com/item/main.naver?code=${item.parameter7}" target="_blank"><c:out value="${item.parameter6}"/></a></td>
+		<td>
+			<span class="link">
+				<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${item.parameter5}','${item.parameter4}','1000','600'); return false;" title="네이버 종합정보 이동"><c:out value="${item.parameter4}"/></a>
+		      	<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/fchart.naver?code=${item.parameter5}','${item.parameter4}','1000','600'); return false;" title="네이버 챠트보기 이동"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
+		      	<span class="chart-icons" style="cursor:pointer;">
+			        <i class="fa fa-calendar-day" onclick="openChartModal('${item.parameter5}' , '${item.parameter4}', 'day')" title="일봉차트 이미지팝업">[일]</i>
+			        <i class="fa fa-calendar-week" onclick="openChartModal('${item.parameter5}' , '${item.parameter4}' , 'week')" title="주봉차트 이미지팝업">[주]</i>
+			        <i class="fa fa-calendar-alt" onclick="openChartModal('${item.parameter5}' , '${item.parameter4}' , 'month')" title="월봉차트 이미지팝업">[월]</i>
+			    </span>
+		    </span>
+		</td>
+		<td>
+			<span class="link">
+				<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${item.parameter7}','${item.parameter6}','1000','600'); return false;" title="네이버 종합정보 이동"><c:out value="${item.parameter6}"/></a>
+		      	<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/fchart.naver?code=${item.parameter7}','${item.parameter6}','1000','600'); return false;" title="네이버 챠트보기 이동"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
+		      	<span class="chart-icons" style="cursor:pointer;">
+			        <i class="fa fa-calendar-day" onclick="openChartModal('${item.parameter7}' , '${item.parameter6}', 'day')" title="일봉차트 이미지팝업">[일]</i>
+			        <i class="fa fa-calendar-week" onclick="openChartModal('${item.parameter7}' , '${item.parameter6}' , 'week')" title="주봉차트 이미지팝업">[주]</i>
+			        <i class="fa fa-calendar-alt" onclick="openChartModal('${item.parameter7}' , '${item.parameter6}' , 'month')" title="월봉차트 이미지팝업">[월]</i>
+			    </span>
+		    </span>
+		</td>
 	</tr>
 	</c:forEach>
 	</tbody>

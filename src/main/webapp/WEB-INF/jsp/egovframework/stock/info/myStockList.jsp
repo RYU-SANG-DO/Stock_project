@@ -298,8 +298,8 @@ function fnDetail(seq){
 		<td><c:out value="${item.code}"/></td>
 		<td>
 			<span class="link">
-				<a href="https://finance.naver.com/item/main.naver?code=${item.code}" target="_blank"><c:out value="${item.stocksName}"/></a>
-				<a href="https://finance.naver.com/item/fchart.naver?code=${item.code}" target="_blank" title="네이버 챠트보기 이동"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
+				<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${item.code}','${item.stocksName}','1000','600'); return false;" title="네이버 종합정보 이동"><c:out value="${item.stocksName}"/></a>
+		      	<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/fchart.naver?code=${item.code}','${item.stocksName}','1000','600'); return false;" title="네이버 챠트보기 이동"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
 		      	<span class="chart-icons" style="cursor:pointer;">
 			        <i class="fa fa-calendar-day" onclick="openChartModal('${item.code}' , '${item.stocksName}', 'day')" title="일봉차트 이미지팝업">[일]</i>
 			        <i class="fa fa-calendar-week" onclick="openChartModal('${item.code}' , '${item.stocksName}' , 'week')" title="주봉차트 이미지팝업">[주]</i>

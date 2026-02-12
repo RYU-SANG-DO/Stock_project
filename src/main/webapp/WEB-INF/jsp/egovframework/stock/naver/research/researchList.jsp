@@ -516,8 +516,22 @@ function fnInsertStock(){
 					<c:when test="${not empty subject.dhref}">
 							<c:choose>
 								<c:when test="${subject.idx eq '0'}">
-									<a href="https://finance.naver.com${subject.dhref}" target="_blank" title="종합정보"><c:out value="${subject.dcn}"/></a>
-									<a href="https://finance.naver.com/item/fchart.naver?code=${subject.code}" target="_blank" title="챠트보기"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
+									<c:choose>
+										<c:when test="${'company' eq searchGubun}">
+											<span class="link">
+												<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${subject.code}','${subject.dcn}','1000','600'); return false;" target="_blank" title="네이버 종합정보 이동"><c:out value="${subject.dcn}"/></a>
+												<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/fchart.naver?code=${subject.code}','${subject.dcn}','1000','600'); return false;" title="네이버 챠트보기 이동"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
+										      	<span class="chart-icons" style="cursor:pointer;">
+											        <i class="fa fa-calendar-day" onclick="openChartModal('${subject.code}' , '${subject.dcn}', 'day')" title="일봉차트 이미지팝업">[일]</i>
+											        <i class="fa fa-calendar-week" onclick="openChartModal('${subject.code}' , '${subject.dcn}' , 'week')" title="주봉차트 이미지팝업">[주]</i>
+											        <i class="fa fa-calendar-alt" onclick="openChartModal('${subject.code}' , '${subject.dcn}' , 'month')" title="월봉차트 이미지팝업">[월]</i>
+											    </span>
+										    </span>
+										</c:when>
+										<c:otherwise>
+											<a href="https://finance.naver.com/research/${subject.dhref}" target="_blank" ><c:out value="${subject.dcn}"/></a>
+										</c:otherwise>
+									</c:choose>
 								</c:when>
 								<c:when test="${subject.dclass eq 'file'}">
 									<a href="${subject.dhref}" target="_blank" title="리포트 다운로드"><img src="/images/egovframework/com/cmm/down_pdf.gif" alt="pdf" ></a>
