@@ -17,9 +17,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
-<script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
-<script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javaScript">
 $(function(){	
 	 $('#popupStocks').click(function (e) {
@@ -249,46 +246,43 @@ function fnDetail(seq){
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
-		<col width="25px">
-		<col width="40px">
+		<col width="5%">
+		<col width="5%">
+		<col width="5%">
 		<col>
-		<col width="40px">
-		<%-- <col width="40px"> --%>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
+		<col width="5%">
+		<col width="10%">
+		<col width="10%">
+		<col width="5%">
+		<col width="10%">
+		<col width="5%">
+		<col width="5%">
+		<col width="5%">
+		<col width="5%">
+		<col width="5%">
 	</colgroup>
 	<thead>
 	<tr class="algin-center">
 		<th><input type="checkbox" name="checkAll" id="checkAll" class="check2" title="전체선택"/></th>
 		<th>순번</th>
+		<th>코드</th>
 		<th>종목</th>
 		<th>수량</th>
-		<!-- <th>구분</th> -->
-		<th>거래일자</th>
-		<th>수수료</th>
-		<th>거래세/농특세</th>
-		<th>소득세/주민세</th>
 		<th>당일단가</th>
 		<th>현재단가</th>
-		<th>증감률</th>
+		<th>현재증감률</th>
 		<th>금액</th>
 		<th>수익률</th>
 		<th>계좌</th>
+		<th>거래일자</th>
 		<th>등록일자</th>
+		<th>수정</th>
 	</tr>
 	</thead>
 	<tbody class="ov">
 	<c:if test="${fn:length(list) == 0}">
 		<tr>
-			<td colspan="12"><spring:message code="common.nodata.msg" /></td>
+			<td colspan="13"><spring:message code="common.nodata.msg" /></td>
 		</tr>
 	</c:if>
 	<c:forEach var="item" items="${list}" varStatus="status">
@@ -301,13 +295,19 @@ function fnDetail(seq){
 	<tr>
 		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
 		<td><c:out value="${item.rn}"/></td>
-		<td><a href="#none" onclick="fnDetail('${item.seq}');"><c:out value="${item.stocksName}"/></a></td>
+		<td><c:out value="${item.code}"/></td>
+		<td>
+			<span class="link">
+				<a href="https://finance.naver.com/item/main.naver?code=${item.code}" target="_blank"><c:out value="${item.stocksName}"/></a>
+				<a href="https://finance.naver.com/item/fchart.naver?code=${item.code}" target="_blank" title="네이버 챠트보기 이동"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
+		      	<span class="chart-icons" style="cursor:pointer;">
+			        <i class="fa fa-calendar-day" onclick="openChartModal('${item.code}' , '${item.stocksName}', 'day')" title="일봉차트 이미지팝업">[일]</i>
+			        <i class="fa fa-calendar-week" onclick="openChartModal('${item.code}' , '${item.stocksName}' , 'week')" title="주봉차트 이미지팝업">[주]</i>
+			        <i class="fa fa-calendar-alt" onclick="openChartModal('${item.code}' , '${item.stocksName}' , 'month')" title="월봉차트 이미지팝업">[월]</i>
+			    </span>
+		    </span>
+		</td>
 		<td><fmt:formatNumber value="${item.qy}" pattern="#,###" /></td>
-		<%-- <td><c:out value="${item.gubunNm}"/></td> --%>
-		<td><c:out value="${item.delngDe}"/></td>
-		<td><fmt:formatNumber value="${item.fee}" pattern="#,###" />원</td>
-		<td><fmt:formatNumber value="${item.trftax}" pattern="#,###" />원</td>
-		<td><fmt:formatNumber value="${item.incmtax}" pattern="#,###" />원</td>
 		<td><fmt:formatNumber value="${item.unitPrice}" pattern="#,###" />원</td>
 		<td><fmt:formatNumber value="${item.nowPrice}" pattern="#,###" />원</td>
 		<td style="color:${indeColor};"><c:out value="${item.indepercent}"/>%</td>
@@ -316,7 +316,17 @@ function fnDetail(seq){
 		</td>
 		<td style="color:${pColor};"><c:out value="${item.dyaNowPecent}"/>%</td>
 		<td><c:out value="${item.account}"/></td>
+		<td><c:out value="${item.delngDe}"/></td>
 		<td><c:out value="${item.regDate}"/></td>
+		<td>
+			<div class="button_box" style="margin-bottom: 0px;">
+				<ul style="margin-bottom: 0px;">
+					<li style="border: 0px solid #d2d2d2;">
+						<input type="button" class="s_btn" onClick="fnDetail('${item.seq}');" value="수정" title="수정 <spring:message code="input.button" />" />
+					</li>
+				</ul>
+			</div>
+		</td>
 	</tr>
 	</c:forEach>
 	</tbody>
