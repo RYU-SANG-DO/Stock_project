@@ -72,6 +72,9 @@ input[type="number"] {
 <form name="egovFrm" method="post"> 
 <input type="hidden" name="mode" value="update">
 <input type="hidden" name="rpId" value="${infoMap.rpId}">
+<input type="hidden" name="searchGubun" value="${infoMap.rpGubun}">
+<input type="hidden" name="rpGubun" value="${infoMap.rpGubun}">
+
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>
@@ -85,12 +88,22 @@ input[type="number"] {
 	</colgroup>
 	<tbody>
 		<!-- 입력 -->
-		<tr>
-			<th><label for="relStockCode">종목</label></th>
-			<td class="left">
-   				<a href="https://finance.naver.com/item/main.naver?code=${infoMap.relStockCode}" target="_blank"><c:out value="${infoMap.stocksName}"/></a>
-			</td>
-		</tr>
+		<c:if test="${infoMap.rpGubun eq 'company'}">
+			<tr>
+				<th><label for="relStockCode">종목</label></th>
+				<td class="left">
+	   				<a href="https://finance.naver.com/item/main.naver?code=${infoMap.relStockCode}" target="_blank"><c:out value="${infoMap.stocksName}"/></a>
+				</td>
+			</tr>
+		</c:if>
+		<c:if test="${infoMap.rpGubun eq 'industry'}">
+			<tr>
+				<th><label for="rpCl">분류</label></th>
+				<td class="left">
+	   				<c:out value="${infoMap.rpCl}"/>
+				</td>
+			</tr>
+		</c:if>
 		<tr>
 			<th><label for="rpTitle">리포트 제목</label></th>
 			<td class="left">
@@ -103,37 +116,38 @@ input[type="number"] {
    				<c:out value="${infoMap.rpDate}"/>
 			</td>
 		</tr>
-		
-		<tr>
-			<th>투자의견 <span class="stockRecommendation">*</span></th>
-			<td class="left">
-				<select name="stockRecommendation" id="stockRecommendation" title="투자의견">
-				<c:forEach var="item" items="${clCodeList}" varStatus="status">
-					<option value="${item.code}" <c:if test="${infoMap.stockRecommendation eq item.code}">selected="selected"</c:if>><c:out value="${item.codeNm}"/></option> 
-				</c:forEach>
-				</select>
-			</td>
-		</tr>
-		
-		<tr>
-			<th><label for="dayPrice">당일가</label></th>
-			<td class="left">
-   				<input type="text" name="dayPrice"	id="dayPrice" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.dayPrice}" pattern="#,###" />"/>원
-			</td>
-		</tr>
-		
-		<tr>
-			<th><label for="targetPrice">목표가</label></th>
-			<td class="left">			
-   				<input type="text" name="targetPrice"	id="targetPrice" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.targetPrice}" pattern="#,###" />"/>원
-			</td>
-		</tr>
-		<tr>
-			<th><label for="whenRebound">시기</label></th>
-			<td class="left">			
-   				<input type="text" name="whenRebound" id="whenRebound" size="10" maxlength="80" value="<c:out value="${infoMap.whenRebound}"/>"/>
-			</td>
-		</tr>
+		<c:if test="${infoMap.rpGubun eq 'company'}">
+			<tr>
+				<th>투자의견 <span class="stockRecommendation">*</span></th>
+				<td class="left">
+					<select name="stockRecommendation" id="stockRecommendation" title="투자의견">
+					<c:forEach var="item" items="${clCodeList}" varStatus="status">
+						<option value="${item.code}" <c:if test="${infoMap.stockRecommendation eq item.code}">selected="selected"</c:if>><c:out value="${item.codeNm}"/></option> 
+					</c:forEach>
+					</select>
+				</td>
+			</tr>
+		</c:if>
+		<c:if test="${infoMap.rpGubun eq 'company'}">
+			<tr>
+				<th><label for="dayPrice">당일가</label></th>
+				<td class="left">
+	   				<input type="text" name="dayPrice"	id="dayPrice" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.dayPrice}" pattern="#,###" />"/>원
+				</td>
+			</tr>		
+			<tr>
+				<th><label for="targetPrice">목표가</label></th>
+				<td class="left">			
+	   				<input type="text" name="targetPrice"	id="targetPrice" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.targetPrice}" pattern="#,###" />"/>원
+				</td>
+			</tr>
+			<tr>
+				<th><label for="whenRebound">시기</label></th>
+				<td class="left">			
+	   				<input type="text" name="whenRebound" id="whenRebound" size="10" maxlength="80" value="<c:out value="${infoMap.whenRebound}"/>"/>
+				</td>
+			</tr>
+		</c:if>
 		<tr>
 			<th><label for="rm">요약</label></th>
 			<td class="nopd">
@@ -149,7 +163,7 @@ input[type="number"] {
 	<div class="btn">
 		<span class="btn_s"><a href="#none" onClick="fn_egov_updt(); return false;" title="<spring:message code="title.update" /> <spring:message code="input.button" />"><spring:message code="button.update" /></a></span>
 		<span class="btn_s"><a href="#none" onClick="fn_egov_delete(); return false;" title="<spring:message code="title.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
-		<a href="#none" onClick="fn_egov_list();" class="btn_s" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a>
+		<span class="btn_s"><a href="#none" onClick="fn_egov_list(); return false;" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 	

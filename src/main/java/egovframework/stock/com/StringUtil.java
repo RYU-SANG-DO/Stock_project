@@ -55,6 +55,21 @@ public class StringUtil {
 		else
 			return obj.toString();
 	}
+	
+	public static String nvl2(Object obj, String val) {
+
+	    if (obj == null) {
+	        return val;
+	    }
+
+	    String str = obj.toString().trim();
+
+	    if (str.isEmpty() || "null".equalsIgnoreCase(str)) {
+	        return val;
+	    }
+
+	    return str;
+	}
 
 	/**
 	 * 대상 String이 null일 경우 ""을, null이 아닐 경우 대상 String을 return
@@ -62,7 +77,7 @@ public class StringUtil {
 	 *            대상 스트링
 	 */
 	public static String nvl( String str ) {
-		if( str == null )
+		if( str == null  || "null".equals(str))
 			return "";
 		else
 			return str;

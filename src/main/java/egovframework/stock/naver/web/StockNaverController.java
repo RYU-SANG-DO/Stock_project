@@ -848,6 +848,7 @@ public class StockNaverController {
 				map.put("fileYn", fileYn);
 				map.put("codeNid", code_nid);
 				map.put("detailList", detailList);
+				System.out.println(map);
 				researchList.add(map);
 			}
 		}
@@ -1048,6 +1049,7 @@ public class StockNaverController {
 		String searchGubun = StringUtil.nvl(commandMap.get("searchGubun"),"company");
 		String searchType = StringUtil.nvl(commandMap.get("searchType"),"");
 		pageIndex = StringUtil.nvl(pageIndex, "1");
+		System.out.println("searchGubun=>"+searchGubun);
 		
 		List<Map<String, Object>> list = naverUtil.getStockResearchList_V01(commandMap);
 		List<Map<String, Object>> insertList = new ArrayList<>();
@@ -1072,39 +1074,68 @@ public class StockNaverController {
 					if(i == 0) {
 						columsize = Integer.parseInt(StringUtil.nvl(map.get("columsize"),"0"));
 					}else {
-						String code_nid = map.get("code")+"_"+map.get("nid")+"_"+map.get("date")+"_"+page;
+						String code_nid = StringUtil.nvl(map.get("code"),"null")+"_"+map.get("nid")+"_"+map.get("date")+"_"+page;
 						if(params.equals(code_nid)) {
 							System.out.println(i+"["+params+"]=["+code_nid+"]");
-							for(int j = 0 ; j < columsize ; j++) {
-								String dcn = StringUtil.nvl(map.get("parameter"+j),"");
-								String dclass = StringUtil.nvl(map.get("parameter"+j+"_class"),"");
-								String dhref= StringUtil.nvl(map.get("parameter"+j+"_href"),"");
-								if(j == 0) {//종목
-									insertMap.put("relStockCode", map.get("code"));
-									insertMap.put("relStockLink", "https://finance.naver.com"+dhref);
-								}else if(j == 1) {//제목
-									insertMap.put("rpTitle", dcn);
-									insertMap.put("rpTitleLink", "https://finance.naver.com/research/"+dhref);
-								}else if(j == 2) {//증권사
-									insertMap.put("securities", dcn);
-								}else if(j == 3) {//첨부
-									insertMap.put("rpLink", dhref);
-								}else if(j == 4) {//작성일
-									insertMap.put("rpDate", StringUtil.getFormDate(dcn, "yy.MM.dd"));
-								}else if(j == 5) {//조회수
-									
-								}
-							}			
-							
-							insertMap.put("codeNid", code_nid);
-							System.out.println(insertMap);
-							Map<String, Object> stockMap = naverUtil.getStockInfo(StringUtil.nvl(map.get("code"),""), 0);
-							String userSummary = StringUtil.nvl(stockMap.get("parameter10"),"");
-							String dayPrice = StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", "");
-							insertMap.put("dayPrice", dayPrice);
-							insertMap.put("userSummary", userSummary);
-							totcnt += stockNaverService.insertStockResearchData(insertMap);
-							insertList.add(insertMap);
+							if("company".equals(searchGubun)) {//종목분석
+								for(int j = 0 ; j < columsize ; j++) {
+									String dcn = StringUtil.nvl(map.get("parameter"+j),"");
+									String dclass = StringUtil.nvl(map.get("parameter"+j+"_class"),"");
+									String dhref= StringUtil.nvl(map.get("parameter"+j+"_href"),"");
+									if(j == 0) {//종목
+										insertMap.put("relStockCode", map.get("code"));
+										insertMap.put("relStockLink", "https://finance.naver.com"+dhref);
+									}else if(j == 1) {//제목
+										insertMap.put("rpTitle", dcn);
+										insertMap.put("rpTitleLink", "https://finance.naver.com/research/"+dhref);
+									}else if(j == 2) {//증권사
+										insertMap.put("securities", dcn);
+									}else if(j == 3) {//첨부
+										insertMap.put("rpLink", dhref);
+									}else if(j == 4) {//작성일
+										insertMap.put("rpDate", StringUtil.getFormDate(dcn, "yy.MM.dd"));
+									}else if(j == 5) {//조회수
+										
+									}
+								}			
+								
+								insertMap.put("codeNid", code_nid);
+								System.out.println(insertMap);
+								Map<String, Object> stockMap = naverUtil.getStockInfo(StringUtil.nvl(map.get("code"),""), 0);
+								String userSummary = StringUtil.nvl(stockMap.get("parameter10"),"");
+								String dayPrice = StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", "");
+								insertMap.put("dayPrice", dayPrice);
+								insertMap.put("userSummary", userSummary);
+								insertMap.put("rpGubun", searchGubun);
+								totcnt += stockNaverService.insertStockResearchData(insertMap);
+								insertList.add(insertMap);
+							}else if("industry".equals(searchGubun)) {//산업분석
+								for(int j = 0 ; j < columsize ; j++) {
+									String dcn = StringUtil.nvl(map.get("parameter"+j),"");
+									String dclass = StringUtil.nvl(map.get("parameter"+j+"_class"),"");
+									String dhref= StringUtil.nvl(map.get("parameter"+j+"_href"),"");
+									if(j == 0) {//분류
+										insertMap.put("rpCl", dcn);
+									}else if(j == 1) {//제목
+										insertMap.put("rpTitle", dcn);
+										insertMap.put("rpTitleLink", "https://finance.naver.com/research/"+dhref);
+									}else if(j == 2) {//증권사
+										insertMap.put("securities", dcn);
+									}else if(j == 3) {//첨부
+										insertMap.put("rpLink", dhref);
+									}else if(j == 4) {//작성일
+										insertMap.put("rpDate", StringUtil.getFormDate(dcn, "yy.MM.dd"));
+									}else if(j == 5) {//조회수
+										
+									}
+								}			
+								
+								insertMap.put("codeNid", code_nid);
+								insertMap.put("rpGubun", searchGubun);
+								System.out.println(insertMap);
+								totcnt += stockNaverService.insertStockResearchData(insertMap);
+								insertList.add(insertMap);
+							}
 						}
 					}
 				}
@@ -1133,11 +1164,14 @@ public class StockNaverController {
 		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".my.research.title")));
 		System.out.println(commandMap);
 		String searchKeyword = StringUtil.nvl(commandMap.get("searchKeyword"),"");
+		String searchGubun = StringUtil.nvl(commandMap.get("searchGubun"),"company");
 		String listType = StringUtil.nvl(commandMap.get("listType"),"");
 		String gubun = StringUtil.nvl(commandMap.get("gubun"),"");
 		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
 		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		commandMap.put("searchGubun", searchGubun);
 		commandMap.put("today_ko", today_ko);
+		System.out.println("searchGubun=>"+searchGubun);
 		System.out.println("listType=>"+listType);
 		System.out.println("gubun=>"+gubun);
 		System.out.println("searchKeyword=>"+searchKeyword);
@@ -1155,8 +1189,11 @@ public class StockNaverController {
 		List<Map<String, Object>> list = stockNaverService.selectStockResearchDataList(commandMap);
 		double indepercent = 0.0;
 		String dyaNowPecent = "0";
+		if("company".equals(searchGubun)) {
+			
+		}
 		for(Map<String, Object> map : list) {
-			String stockCode = StringUtil.nvl(map.get("relStockCode"),"");
+			String stockCode = StringUtil.nvl2(map.get("relStockCode"),"");
 			if(!"".equals(stockCode)) {
 				Map<String, Object> stockMap = naverUtil.getStockInfoType(stockCode, 0);
 				int nowPrice = Integer.parseInt(StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", ""));//현재단가

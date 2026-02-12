@@ -214,6 +214,14 @@ function fnInsertStock(){
         alert("최소 하나 이상의 항목을 선택해주세요.");
         return;
     }
+    var p_itemCode = "";
+    var p_upjong = "";
+    if(document.listForm.itemCode){
+    	p_itemCode = document.listForm.itemCode.value;
+    }
+    if(document.listForm.upjong){
+    	p_upjong = document.listForm.upjong.value;
+    }
 
     console.log("전송할 데이터:", checkedValues);
 	$.ajax({
@@ -229,7 +237,8 @@ function fnInsertStock(){
 				writeFromDate : document.listForm.writeFromDate.value,
 				writeToDate : document.listForm.writeToDate.value,
 				brokerCode : document.listForm.brokerCode.value,
-				itemCode : document.listForm.itemCode.value,
+				itemCode : p_itemCode,
+				upjong  : p_upjong,
                 stocks: checkedValues // 배열 데이터 전송
             },
          // 배열을 전송할 때 키 값에 '[]'가 붙는 것을 방지하려면 true 설정 (서버 환경에 따라 다름)
@@ -454,8 +463,8 @@ function fnInsertStock(){
 				</li> --%>
 				<!-- 검색키워드 및 조회버튼 -->
 				<li style="border: 0px solid #d2d2d2;">
-					<c:if test="${searchGubun eq 'company'}">
-						<input type="button" class="s_btn" onClick="fnInsertStock()" value="종목 리포트 등록" title="종록 리포트 등록 <spring:message code="input.button" />" />
+					<c:if test="${searchGubun eq 'company' or searchGubun eq 'industry'}"><!-- 종목분석(company) , 산업분석(industry) -->
+						<input type="button" class="s_btn" onClick="fnInsertStock()" value="리포트 등록" title="리포트 등록 <spring:message code="input.button" />" />
 					</c:if>
 					<input type="button" class="s_btn" onClick="excelDown()" value="<spring:message code="stock.com.excelDown.title" />" title="<spring:message code="stock.com.excelDown.title" /> <spring:message code="input.button" />" />
 				</li>

@@ -24,11 +24,14 @@
 				NVL(A.TARGET_PRICE, 0) AS TARGET_PRICE,
 				DBMS_LOB.SUBSTR(A.USER_SUMMARY, 100, 1) AS USER_SUMMARY,
 				A.WHEN_REBOUND,
+				A.RP_GUBUN,
+				A.RP_CL,
 				TO_CHAR(A.UPT_DATE , 'YYYY-MM-DD') AS UPT_DATE,
 				TO_CHAR(A.REG_DATE , 'YYYY-MM-DD') AS REG_DATE
 			FROM STOCK_RESEARCH_DATA A,
 					STOCKS_LIST B
 			WHERE A.REL_STOCK_CODE =  B.STOCKS_CODE(+)
+			AND A.RP_GUBUN = NVL(#{searchGubun},'company')
 			]]>
 			<if test="searchType == 'keyword'">
 				<![CDATA[
@@ -58,6 +61,7 @@
 		FROM STOCK_RESEARCH_DATA A,
 				STOCKS_LIST B
 		WHERE A.REL_STOCK_CODE =  B.STOCKS_CODE(+)
+		AND A.RP_GUBUN = NVL(#{searchGubun},'company')
 		]]>
 			<if test="searchType == 'keyword'">
 				<![CDATA[
@@ -96,6 +100,8 @@
 				REL_STOCK_CODE,
 				DAY_PRICE,
 				USER_SUMMARY,
+				RP_GUBUN,
+				RP_CL,
 				UPT_DATE,
 				REG_DATE
             ) VALUES (
@@ -107,6 +113,8 @@
                 #{relStockCode},
                 #{dayPrice},
                 NVL(#{userSummary},''),
+                NVL(#{rpGubun},'company'),
+                NVL(#{rpCl},''),
                 SYSDATE,
                 SYSDATE
             )
@@ -137,6 +145,8 @@
                 DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1500, 12001) AS USER_SUMMARY9,
                 DBMS_LOB.SUBSTR(A.USER_SUMMARY, 1500, 13501) AS USER_SUMMARY10,
 				A.WHEN_REBOUND,
+				A.RP_GUBUN,
+				A.RP_CL,
 				TO_CHAR(A.UPT_DATE , 'YYYY-MM-DD') AS UPT_DATE,
 				TO_CHAR(A.REG_DATE , 'YYYY-MM-DD') AS REG_DATE
 			FROM STOCK_RESEARCH_DATA A,
@@ -155,6 +165,7 @@
 					TARGET_PRICE = #{targetPrice},
 					USER_SUMMARY = #{userSummary},
 					WHEN_REBOUND = #{whenRebound},
+					RP_CL = #{rpCl},
 					UPT_DATE = SYSDATE
 			WHERE RP_ID = #{rpId}
 		]]>
