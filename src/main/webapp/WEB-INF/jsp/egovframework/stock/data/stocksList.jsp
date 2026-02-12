@@ -138,6 +138,8 @@ label {
 			<col style="width:3%"/>
 			<col style="width:5%"/>
 			<col style="width:20%" />
+			<col style="width:5%"/>
+			<col style="width:5%"/>
 			<col/>
 			<col/>
 			<col style="width:5%" />
@@ -148,6 +150,8 @@ label {
 			   <th scope="col">순번</th>
 			   <th scope="col">종목코드</th>
 			   <th scope="col">종목명</th>
+			    <th scope="col">주가</th>
+			     <th scope="col">등락률</th>
 			   <th scope="col">업종</th>
 			   <th scope="col">주요제품</th>
 			   <th scope="col">이력건수</th>
@@ -157,10 +161,15 @@ label {
 		<tbody>
 			<c:if test="${fn:length(resultList) == 0}">
 				<tr>
-					<td colspan="7"><spring:message code="common.nodata.msg" /></td>
+					<td colspan="9"><spring:message code="common.nodata.msg" /></td>
 				</tr>
 			</c:if>
 			<c:forEach var="result" items="${resultList}" varStatus="status">
+			<c:set var="pClassColore" value="#666"/>
+			<c:choose>
+				<c:when test="${result.risigHnl eq 'H'}"><c:set var="pClassColore" value="red"/></c:when>
+				<c:when test="${result.risigHnl eq 'L'}"><c:set var="pClassColore" value="#007bff"/></c:when>
+			</c:choose>
 			  <tr>
 			  	<td><c:out value="${result.rn}"/></td>
 			    <td>
@@ -180,6 +189,8 @@ label {
 				    </span>
 			      </span>
 			    </td>
+			    <td style="color: ${pClassColore}"><c:out value="${result.nowPrice}"/>원</td>
+			    <td style="color: ${pClassColore}"><c:out value="${result.indepercent}"/></td>
 			    <td style="text-align: left;"><c:out value="${result.upjong}"/></td>
 			    <td style="text-align: left;"><c:out value="${result.mainPrduct}"/></td>
 			    <td>

@@ -328,7 +328,7 @@ function fnDetail(rpId){
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
 		<col width="3%">
-		<col width="5%"><!-- 순번 -->
+		<col width="4%"><!-- 순번 -->
 		<c:if test="${searchGubun eq 'company'}">
 			<col><!-- 종목 -->
 		</c:if>
@@ -340,11 +340,11 @@ function fnDetail(rpId){
 			<col width="5%"><!-- 투자의견 -->
 		</c:if>
 			<col width="3%"><!-- 첨부 -->
-			<col width="6%"><!-- 발행일 -->
+			<col width="5%"><!-- 발행일 -->
 		<c:if test="${searchGubun eq 'company'}">
-			<col width="6%"><!-- 당일가 -->
-			<col width="6%"><!-- 목표가 -->
-			<col width="6%"><!-- 현재가 -->
+			<col width="5%"><!-- 당일가 -->
+			<col width="5%"><!-- 목표가 -->
+			<col width="5%"><!-- 현재가 -->
 			<col width="5%"><!-- 증감률 -->
 			<col><!-- 반등시기 -->
 		</c:if>

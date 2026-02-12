@@ -33,3 +33,12 @@
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <script>
 </script>
+<style>
+body{
+	line-height: 1;
+}
+a{
+	color: #7854ba;
+	font-weight: bold;
+}
+</style>

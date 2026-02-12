@@ -21,6 +21,7 @@ import egovframework.com.cmm.web.PagingManageController;
 import egovframework.com.utl.sec.filter.CertProcessRequestWrapper;
 import egovframework.stock.com.ComDateUtil;
 import egovframework.stock.com.StringUtil;
+import egovframework.stock.com.naver.naverUtil;
 import egovframework.stock.data.service.StockDataService;
 import egovframework.stock.data.service.StocksDataVO;
 
@@ -73,6 +74,28 @@ public class StockDataController {
 		stocksDataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		List<Map<String,Object>> resultList = stockDataService.selectStocksList(stocksDataVO);
+		
+		for(Map<String, Object> map : resultList) {
+			String stockCode = StringUtil.nvl2(map.get("stocksCode"),"");
+			if(!"".equals(stockCode)) {
+				Map<String, Object> stockMap = naverUtil.getStockInfoType(stockCode, 0);
+				String nowPrice = StringUtil.nvl(stockMap.get("parameter1"),"");//현재단가
+				double indepercent = Double.parseDouble(StringUtil.nvl(stockMap.get("parameter2"),"0.0").replace("-", ""));//현재증감률
+				String risigHnl = "N";
+				if("하락".equals(StringUtil.nvl(stockMap.get("parameter7"),""))) {
+					indepercent = indepercent*(-1);
+					risigHnl = "L";
+				}else if("상승".equals(StringUtil.nvl(stockMap.get("parameter7"),""))) {
+					risigHnl = "H";
+				}
+				map.put("risigHnl", risigHnl);
+				map.put("nowPrice", nowPrice);
+				map.put("indepercent", indepercent);
+				
+			}
+			
+		}
+		
         model.addAttribute("resultList", resultList);
         
        int totCnt = stockDataService.selectStocksListTotCnt(stocksDataVO);
