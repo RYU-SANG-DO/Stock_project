@@ -95,15 +95,19 @@ function fncSelectDetailList(upjongNo , upjongNm){
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
-		<ul style="margin-bottom: 0px;">
+		<ul>
+			<li>
 			<select name="listType" class="select" title="검색조건구분"><!-- 검색조건구분 -->
 				<option value="" <c:if test="${empty listType}">selected="selected"</c:if>>페이지보기</option>
 				<option value="A" <c:if test="${'A' eq listType}">selected="selected"</c:if>>전체 보기</option>
 			</select>
+			</li>
+			<li>
 			<select name="gubun" class="select" title="테마,종목 구분"><!-- 테마,종목 구분 -->
 				<option value="" <c:if test="${'S' ne gubun}">selected="selected"</c:if>>업종</option>
 				<option value="S" <c:if test="${'S' eq gubun}">selected="selected"</c:if>>종목</option>
 			</select>
+			</li>
 			<li><div style="line-height:4px;">&nbsp;</div><div>명 : </div></li>
 			<!-- 검색키워드 및 조회버튼 -->
 			<li style="border: 0px solid #d2d2d2;">
@@ -163,10 +167,10 @@ function fncSelectDetailList(upjongNo , upjongNm){
 		<td><c:out value="${item.parameter0}"/></td>
 		<td><a href="#LINK" onclick="javascript:fncSelectDetailList('<c:out value="${item.parameter2}"/>','<c:out value="${item.parameter1}"/>')"><c:out value="${item.parameter1}"/></a></td>
 		<td style="color: ${item.parameter8}"><c:out value="${item.parameter3}"/></td>
-		<td><a href="#LINK"><c:out value="${item.parameter4}"/></a></td>
-		<td><a href="#LINK"><c:out value="${item.parameter5}"/></a></td>
-		<td><a href="#LINK"><c:out value="${item.parameter6}"/></a></td>
-		<td><a href="#LINK"><c:out value="${item.parameter7}"/></a></td>
+		<td><c:out value="${item.parameter4}"/></td>
+		<td><c:out value="${item.parameter5}"/></td>
+		<td><c:out value="${item.parameter6}"/></td>
+		<td><c:out value="${item.parameter7}"/></td>
 	</tr>
 	</c:forEach>
 	</tbody>

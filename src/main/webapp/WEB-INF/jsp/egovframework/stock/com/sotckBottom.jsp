@@ -130,8 +130,40 @@ function imageHandler() {
         });
     };
 }
-    
+var loadingInterval;
+var loadingSeconds = 0;
 function Loading() {
+
+    var maskHeight = $(document).height();
+    var maskWidth  = window.document.body.clientWidth;
+
+    var mask = "<div id='mask' style='position:fixed; z-index:9000; background-color:#000; left:0; top:0;'></div>";
+
+    var loadingHtml  = "";
+    loadingHtml += "<div id='loadingImg' style='position:fixed; z-index:10000; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center;'>";
+    loadingHtml += "   <img src='${pageContext.request.contextPath}/images/loading.gif' style='display:block; margin:0 auto;' />";
+    loadingHtml += "   <div id='loadingTime' style='color:#fff; margin-top:10px; font-size:16px;'>0초</div>";
+    loadingHtml += "</div>";
+
+    $('body').append(mask);
+    $('body').append(loadingHtml);
+
+    $('#mask').css({
+        'width' : maskWidth,
+        'height': maskHeight,
+        'opacity' : '0.3'
+    }).show();
+
+    $('#loadingImg').show();
+
+    // ✅ 초 카운트 시작
+    loadingSeconds = 0;
+    loadingInterval = setInterval(function() {
+        loadingSeconds++;
+        $('#loadingTime').text(loadingSeconds + "초");
+    }, 1000);
+}
+function Loading1() {
     var maskHeight = $(document).height();
     var maskWidth  = window.document.body.clientWidth;
      
