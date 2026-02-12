@@ -72,7 +72,7 @@
 	<!-- 종목 상세 조회 -->
 	<select id="selectStocksDetail"  parameterType="egovframework.stock.data.service.StocksDataVO" resultType="egovMap">
 		<![CDATA[
-			SELECT /*selectStockList*/
+			SELECT /*selectStocksDetail*/
 				 A.STOCKS_CODE
 				,A.STOCKS_NAME
 				,A.STOCKS_GUBUN
