@@ -96,7 +96,7 @@ label {
 				<label for="gubun">구분 : </label>
 				<select name="gubun" id="gubun" class="select" title="구분">
 					<option value="" <c:if test="${empty gubun}">selected="selected"</c:if>>전체</option>
-					<option value="KOSPI" <c:if test="${'KOSPI' eq gubun}">selected="selected"</c:if>>유가</option>
+					<option value="KOSPI" <c:if test="${'KOSPI' eq gubun}">selected="selected"</c:if>>코스피</option>
 					<option value="KOSDAQ" <c:if test="${'KOSDAQ' eq gubun}">selected="selected"</c:if>>코스닥</option>
 				</select>
 			</li>
