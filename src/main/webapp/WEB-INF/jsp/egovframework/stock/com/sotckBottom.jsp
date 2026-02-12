@@ -161,11 +161,11 @@ function closeLoading() {
 	  $('#mask, #loadingImg').remove(); 
 }
 	
-function openChartModal(sCode, type) {
+function openChartModal(sCode , sName , type) {
     let typeName = (type === 'day') ? '일봉' : (type === 'week') ? '주봉' : '월봉';
     
     // 1. 제목 설정
-    $("#modalTitle").text(sCode + " - " + typeName + " 차트");
+    $("#modalTitle").text(sName +"["+ sCode + "] " + typeName + " 차트");
     
     // 2. 네이버 캔들차트 대형 이미지 URL 설정
     // 기존 이미지보다 더 상세한 정보를 담은 캔들 URL을 사용합니다.

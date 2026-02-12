@@ -173,9 +173,9 @@ label {
 			      	<a href="https://finance.naver.com/item/main.naver?code=${result.stocksCode}" target="_blank" title="종합정보"><c:out value="${result.stocksName}"/></a>
 			      	<a href="https://finance.naver.com/item/fchart.naver?code=${result.stocksCode}" target="_blank" title="챠트보기"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
 			      	<span class="chart-icons" style="cursor:pointer; margin-left:10px;">
-				        <i class="fa fa-calendar-day" onclick="openChartModal('${result.stocksCode}', 'day')" title="일봉차트"> [일]</i>
-				        <i class="fa fa-calendar-week" onclick="openChartModal('${result.stocksCode}', 'week')" title="주봉차트"> [주]</i>
-				        <i class="fa fa-calendar-alt" onclick="openChartModal('${result.stocksCode}', 'month')" title="월봉차트"> [월]</i>
+				        <i class="fa fa-calendar-day" onclick="openChartModal('${result.stocksCode}' , '${result.stocksName}', 'day')" title="일봉차트"> [일]</i>
+				        <i class="fa fa-calendar-week" onclick="openChartModal('${result.stocksCode}' , '${result.stocksName}' , 'week')" title="주봉차트"> [주]</i>
+				        <i class="fa fa-calendar-alt" onclick="openChartModal('${result.stocksCode}' , '${result.stocksName}' , 'month')" title="월봉차트"> [월]</i>
 				    </span>
 			      </span>
 			    </td>
