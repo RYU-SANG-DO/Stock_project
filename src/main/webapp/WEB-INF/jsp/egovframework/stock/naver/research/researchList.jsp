@@ -475,24 +475,32 @@ function fnInsertStock(){
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
+		<col style="width: 3%;">
 		<col style="width: 5%;">
-		<col style="width: 5%;">
-		<c:forEach var="subject" items="${titleList}" varStatus="substatus">
+		<c:forEach var="subject" items="${titleList}" varStatus="colstatus">
 			<c:set var="col_style" value=""/>
 			<c:if test="${subject.title eq '분류'}">		<c:set var="col_style" value="10"/></c:if>
-			<c:if test="${subject.title eq '증권사'}">	<c:set var="col_style" value="10"/></c:if>
-			<c:if test="${subject.title eq '첨부'}">		<c:set var="col_style" value="10"/></c:if>
-			<c:if test="${subject.title eq '작성일'}">	<c:set var="col_style" value="10"/></c:if>
-			<c:if test="${subject.title eq '조회수'}">	<c:set var="col_style" value="10"/></c:if>
+			<c:if test="${subject.title eq '증권사'}">	<c:set var="col_style" value="8"/></c:if>
+			<c:if test="${subject.title eq '첨부'}">		<c:set var="col_style" value="5"/></c:if>
+			<c:if test="${subject.title eq '작성일'}">	<c:set var="col_style" value="5"/></c:if>
+			<c:if test="${subject.title eq '조회수'}">	<c:set var="col_style" value="5"/></c:if>
 			<col <c:if test="${not empty col_style}">style="width: ${col_style}%;"</c:if>> 
+			<c:if test="${colstatus.count eq 1 and 'company' eq searchGubun}">
+				<col style="width:5%">
+				<col style="width:5%">
+			</c:if>
 		</c:forEach>
 	</colgroup>
 	<thead>
 	<tr class="algin-center">
 		<th><input type="checkbox" name="checkAll" id="checkAll" class="check2" title="전체선택"/></th>
 		<th>순번</th>
-		<c:forEach var="subject" items="${titleList}" varStatus="substatus">
+		<c:forEach var="subject" items="${titleList}" varStatus="titlestatus">
 			<th>${subject.title}</th>
+			<c:if test="${titlestatus.count eq 1 and 'company' eq searchGubun}">
+				<th>주가</th>
+				<th>등락률</th>
+			</c:if>
 		</c:forEach>
 	</tr>
 	</thead>
@@ -511,7 +519,7 @@ function fnInsertStock(){
 		</td>
 		<td><c:out value="${item.nuidx}"/></td>
 		<c:forEach var="subject" items="${item.detailList}" varStatus="substatus">
-			<td>
+			<td <c:if test="${(subject.idx eq '0' or subject.idx eq '1') and 'company' eq searchGubun}">style="text-align: left;"</c:if>>
 				<c:choose>
 					<c:when test="${not empty subject.dhref}">
 							<c:choose>
@@ -546,6 +554,15 @@ function fnInsertStock(){
 					</c:otherwise>
 				</c:choose>
 			</td>
+			<c:if test="${substatus.count eq 1 and 'company' eq searchGubun}">
+				<c:set var="pClassColore" value="#666"/>
+				<c:choose>
+					<c:when test="${item.risigHnl eq 'H'}"><c:set var="pClassColore" value="red"/></c:when>
+					<c:when test="${item.risigHnl eq 'L'}"><c:set var="pClassColore" value="#007bff"/></c:when>
+				</c:choose>
+				<td style="color: ${pClassColore}"><c:out value="${item.nowPrice}"/>원</td>
+			    <td style="color: ${pClassColore}"><c:out value="${item.indepercent}"/></td>
+			</c:if>
 		</c:forEach>
 	
 	</tr>

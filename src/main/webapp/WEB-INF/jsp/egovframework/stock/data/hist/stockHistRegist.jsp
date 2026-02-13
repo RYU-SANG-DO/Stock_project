@@ -143,15 +143,18 @@ label{
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<span class="btn_s"><a href="#none" onClick="fnInsert(); return false;" title="<spring:message code="title.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
-		<a href="#none" onClick="fnParentList();" class="btn_s" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a>
+		<span class="btn_s"><a href="#none" onClick="fnParentList(); return false;" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 	
 </div>
 
 </form>
-<script>
-//에디터의 HTML 구조를 직접 설정
-quill.root.innerHTML = document.getElementById('userSummary').value;
-</script>
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />
+<script>
+$(function(){
+    if (quill && document.getElementById('userSummary')) {
+        quill.root.innerHTML = document.getElementById('userSummary').value || '';
+    }
+});
+</script>

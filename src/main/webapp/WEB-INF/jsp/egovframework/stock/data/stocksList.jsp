@@ -150,8 +150,8 @@ label {
 			   <th scope="col">순번</th>
 			   <th scope="col">종목코드</th>
 			   <th scope="col">종목명</th>
-			    <th scope="col">주가</th>
-			     <th scope="col">등락률</th>
+			   <th scope="col">주가</th>
+			   <th scope="col">등락률</th>
 			   <th scope="col">업종</th>
 			   <th scope="col">주요제품</th>
 			   <th scope="col">이력건수</th>
@@ -174,7 +174,7 @@ label {
 			  	<td><c:out value="${result.rn}"/></td>
 			    <td>
 			      <span class="link">
-			      	<a href="https://finance.naver.com/item/main.naver?code=${result.stocksCode}" target="_blank" title="종합정보"><c:out value="${result.stocksCode}"/></a>
+			      	<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${result.stocksCode}','${result.stocksName}','1000','600'); return false;" title="네이버 종합정보 이동"><c:out value="${result.stocksCode}"/></a>
 			      </span>
 			    </td>
 			    <td>
