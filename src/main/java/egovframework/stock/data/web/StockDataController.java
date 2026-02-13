@@ -74,7 +74,7 @@ public class StockDataController {
 		stocksDataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		List<Map<String,Object>> resultList = stockDataService.selectStocksList(stocksDataVO);
-		
+		 
 		for(Map<String, Object> map : resultList) {
 			String stockCode = StringUtil.nvl2(map.get("stocksCode"),"");
 			if(!"".equals(stockCode)) {
