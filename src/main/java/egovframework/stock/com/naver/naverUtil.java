@@ -370,7 +370,7 @@ public class naverUtil extends StockDefaultVO{
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-		System.out.println(resultMap);
+//		System.out.println(resultMap);
 		System.out.println("getStockInfoType end");
 		return resultMap;
 	}

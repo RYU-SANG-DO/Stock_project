@@ -16,7 +16,6 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
-<!DOCTYPE html>
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
 <script type="text/javascript">
  /* ********************************************************
@@ -113,8 +112,8 @@ p{
 </div>
 
 </form>
+<jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />
 <script>
 $(function(){
 });
 </script>
-<jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />
