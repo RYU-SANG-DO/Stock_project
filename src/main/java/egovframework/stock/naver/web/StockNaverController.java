@@ -864,7 +864,7 @@ public class StockNaverController {
 				map.put("fileYn", fileYn);
 				map.put("codeNid", code_nid);
 				map.put("detailList", detailList);
-				System.out.println(map);
+//				System.out.println(map);
 				researchList.add(map);
 			}
 		}
@@ -1210,7 +1210,7 @@ public class StockNaverController {
 			String stockCode = StringUtil.nvl2(map.get("relStockCode"),"");
 			if(!"".equals(stockCode)) {
 				Map<String, Object> stockMap = naverUtil.getStockInfoType(stockCode, 0);
-				System.out.println(stockMap);
+//				System.out.println(stockMap);
 				int nowPrice = Integer.parseInt(StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", ""));//현재단가
 				indepercent = Double.parseDouble(StringUtil.nvl(stockMap.get("parameter2"),"0.0"));//현재증감률
 				int dayPrice = Integer.parseInt(StringUtil.nvl(map.get("dayPrice"),"0"));

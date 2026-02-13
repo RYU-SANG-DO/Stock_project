@@ -173,10 +173,10 @@ input[type="number"] {
 			    <td><c:out value="${result.collectionDate}" escapeXml="false"/></td>
 			    <td><c:out value="${result.regDate}"/></td>
 			    <td>
-			    	<div class="button_box">
-						<ul style="margin-bottom: 0px;text-align: center;">
+			    	<div class="button_box1">
+						<ul>
 							<li style="border: 0px solid #d2d2d2;">
-								<input type="button" class="s_btn" onClick="fnStockHistDetail('${result.seq}');" value="<spring:message code="title.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
+								<input type="button" class="btn02" onClick="fnStockHistDetail('${result.seq}');" value="<spring:message code="title.detail" />" title="<spring:message code="title.detail" /> <spring:message code="input.button" />" />
 							</li>
 						</ul>
 					</div>

@@ -434,10 +434,10 @@ function fnDetail(rpId){
 		<td><c:out value="${item.uptDate}"/></td>
 		<td><c:out value="${item.regDate}"/></td>
 		<td>
-			<div class="button_box">
-				<ul style="margin-bottom: 0px;">
-					<li style="border: 0px solid #d2d2d2;">
-						<input type="button" class="s_btn" onClick="fnDetail('${item.rpId}');" value="수정" title="수정 <spring:message code="input.button" />" />
+			<div class="button_box1">
+				<ul>
+					<li>
+						<input type="button" class="btn02" onClick="fnDetail('${item.rpId}');" value="수정" title="수정 <spring:message code="input.button" />" />
 					</li>
 				</ul>
 			</div>

@@ -173,7 +173,7 @@
 	
 </script>
 </head>
-<body onload="init()">
+<body>
 <div id="header">
 	<div class="header_box">
 		<h1>
@@ -191,5 +191,10 @@
 	    </div>
 	</div>
 </div>
+<script>
+$(function(){
+	init();
+});
+</script>
 </body>
 </html>

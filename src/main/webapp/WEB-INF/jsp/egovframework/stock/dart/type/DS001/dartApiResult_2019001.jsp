@@ -164,7 +164,7 @@ function fncSelectList(){
 }
 </script>
 <style>
-.search_box ul li{vertical-align: middle;}
+/*.search_box ul li{vertical-align: middle;}*/
 </style>
 </head>
 <body>

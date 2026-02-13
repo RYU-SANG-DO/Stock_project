@@ -194,19 +194,19 @@ label {
 			    <td style="text-align: left;"><c:out value="${result.upjong}"/></td>
 			    <td style="text-align: left;"><c:out value="${result.mainPrduct}"/></td>
 			    <td>
-			    	<div class="button_box">
-						<ul style="margin-bottom: 0px;text-align: center;">
+			    	<div class="button_box1">
+						<ul>
 							<li style="border: 0px solid #d2d2d2;">
-								<input type="button" class="s_btn" onClick="fnStockHistList('<c:out value="${result.stocksCode}"/>');" value="<c:out value="${result.histCnt}"/>" title="이력" />
+								<input type="button" class="btn02" onClick="fnStockHistList('<c:out value="${result.stocksCode}"/>');" value="<c:out value="${result.histCnt}"/>" title="이력" />
 							</li>
 						</ul>
 					</div>
 			    </td>
 			     <td>
-			    	<div class="button_box">
-						<ul style="margin-bottom: 0px;text-align: center;">
+			    	<div class="button_box1">
+						<ul>
 							<li style="border: 0px solid #d2d2d2;">
-								<input type="button" class="s_btn" onClick="fnUpdateStock('${result.stocksCode}');" value="<spring:message code="title.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
+								<input type="button" class="btn02" onClick="fnUpdateStock('${result.stocksCode}');" value="<spring:message code="title.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
 							</li>
 						</ul>
 					</div>

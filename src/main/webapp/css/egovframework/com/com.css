@@ -248,6 +248,33 @@ table thead tr.algin-center{ text-align: center; }
 .button_box .con input[type=text] {height:22px; }
 .button_box .bt_a {position:absolute; right:10px; top:13px; }	
 
+.button_box1 {position:relative;}
+.button_box1 ul {font-size:0; text-align:center; margin-bottom: 0px;}
+.button_box1 ul li {display:inline-block; margin-left:0px; font-size:11px; vertical-align:middle; border: 1px solid #d2d2d2;}
+.button_box1 ul li img { margin-left:7px; }
+.button_box1 ul li > div {color:#194e73; font-weight:bold; vertical-align:top; }
+.button_box1 ul li > label {display:inline-block; height:24px; color:#194e73; font-size:12px; font-weight:bold; line-height:24px; }
+.button_box1 ul li > input[type=text] {height:22px; } 
+.button_box1 select {height:24px; /*padding:3px 3px 3px 4px;*/ border:1px solid #dedede; }
+.button_box1 input.s_input {width:140px; height:22px; margin-right:3px; padding-left:5px; }
+.button_box1 input.s_input2 {width:140px; height:22px; margin-right:3px; padding-left:5px; }
+.button_box1 input.s_btn { height:24px; padding:0 8px; border:none; color:#fff; background:#4688d2; border-radius:2px; cursor:pointer; }
+.button_box1 input.s_btn:hover { background:#7dabdf; }
+
+.button_box1 span.s_btn { display:inline-block; vertical-align:top; height:13px; font-size:12px; padding:6px 12px 5px 12px; background:#4688d2; border-radius:2px; cursor:pointer; }
+.button_box1 span.s_btn:hover { background:#7dabdf;}
+.button_box1 span.s_btn a { color:#fff;  }
+
+.button_box1 span.btn_b { display:inline-block; vertical-align:top; height:13px; font-size:12px; padding:3px 0 8px 0; background:#4688d2; border-radius:2px; cursor:pointer; }
+.button_box1 span.btn_b:hover { background:#7dabdf;}
+.button_box1 span.btn_b a { vertical-align:text-top; color:#fff; display:block; line-height:19px; padding:0 8px;}
+
+.button_box1 .con {display:inline-block; width:40%; margin-bottom:2px; }
+.button_box1 .con.full {display:inline-block; width:80%; margin-bottom:2px; }
+.button_box1 .con label {display:inline-block; width:70px; height:24px; color:#194e73; font-size:12px; font-weight:bold; line-height:24px; }
+.button_box1 .con input[type=text] {height:22px; }
+.button_box1 .bt_a {position:absolute; right:10px; top:13px; }	
+
 .noScriptTitle {
 font-size :17px;
 color :blue;
