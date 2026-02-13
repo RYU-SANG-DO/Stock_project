@@ -491,8 +491,12 @@ function fnInsertStock(){
 	<tr class="algin-center">
 		<th><input type="checkbox" name="checkAll" id="checkAll" class="check2" title="전체선택"/></th>
 		<th>순번</th>
-		<c:forEach var="subject" items="${titleList}" varStatus="substatus">
+		<c:forEach var="subject" items="${titleList}" varStatus="titlestatus">
 			<th>${subject.title}</th>
+			<c:if test="${titlestatus.count eq 1 and 'company' eq searchGubun}">
+				<th style="width:5%">주가</th>
+				<th style="width:3%">등락률</th>
+			</c:if>
 		</c:forEach>
 	</tr>
 	</thead>
@@ -546,6 +550,15 @@ function fnInsertStock(){
 					</c:otherwise>
 				</c:choose>
 			</td>
+			<c:if test="${substatus.count eq 1 and 'company' eq searchGubun}">
+				<c:set var="pClassColore" value="#666"/>
+				<c:choose>
+					<c:when test="${item.risigHnl eq 'H'}"><c:set var="pClassColore" value="red"/></c:when>
+					<c:when test="${item.risigHnl eq 'L'}"><c:set var="pClassColore" value="#007bff"/></c:when>
+				</c:choose>
+				<td style="color: ${pClassColore}"><c:out value="${item.nowPrice}"/>원</td>
+			    <td style="color: ${pClassColore}"><c:out value="${item.indepercent}"/></td>
+			</c:if>
 		</c:forEach>
 	
 	</tr>

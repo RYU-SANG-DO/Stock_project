@@ -795,6 +795,7 @@ public class StockNaverController {
 		int pgOn = 1;
 		for(int i = 0 ; i < list.size() ; i++) {
 			Map<String, Object> map = list.get(i);
+			String code = StringUtil.nvl2(map.get("code"), "");
 			if(i == 0) {
 				int pgLL =  Integer.parseInt(StringUtil.nvl(map.get("pgLL"),"0"));//맨앞
 				int pgL = Integer.parseInt(StringUtil.nvl(map.get("pgL"),"0"));//이전
@@ -822,7 +823,7 @@ public class StockNaverController {
 				}				
 			}else {
 				List<Map<String, Object>> detailList = new ArrayList<>();
-				String code_nid = map.get("code")+"_"+map.get("nid")+"_"+map.get("date")+"_"+page;
+				String code_nid = code+"_"+map.get("nid")+"_"+map.get("date")+"_"+page;
 				String fileYn = "Y";
 				for(int j = 0 ; j < columsize ; j++) {
 					Map<String, Object> jmap = new HashMap<>();
@@ -834,7 +835,7 @@ public class StockNaverController {
 					jmap.put("dclass", dclass);
 					jmap.put("dhref", dhref);
 					jmap.put("nid", map.get("nid"));
-					jmap.put("code", map.get("code"));
+					jmap.put("code", code);
 					jmap.put("date", map.get("date"));
 					jmap.put("page", page);
 					if("file".equals(dclass) && "".equals(dhref)){
@@ -842,6 +843,21 @@ public class StockNaverController {
 					}
 					detailList.add(jmap);
 				}			
+				if("company".equals(searchGubun) && !"".equals(code)) {					
+					Map<String, Object> stockMap = naverUtil.getStockInfoType(code, 0);
+					String nowPrice = StringUtil.nvl(stockMap.get("parameter1"),"");//현재단가
+					double indepercent = Double.parseDouble(StringUtil.nvl(stockMap.get("parameter2"),"0.0").replace("-", ""));//현재증감률
+					String risigHnl = "N";
+					if("하락".equals(StringUtil.nvl(stockMap.get("parameter7"),""))) {
+						indepercent = indepercent*(-1);
+						risigHnl = "L";
+					}else if("상승".equals(StringUtil.nvl(stockMap.get("parameter7"),""))) {
+						risigHnl = "H";
+					}
+					map.put("risigHnl", risigHnl);
+					map.put("nowPrice", nowPrice);
+					map.put("indepercent", indepercent);
+				}
 				
 				map.put("nuidx", (((pgOn-1)*30)+num));
 				map.put("num", (num++));

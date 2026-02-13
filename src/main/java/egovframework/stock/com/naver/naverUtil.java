@@ -257,14 +257,14 @@ public class naverUtil extends StockDefaultVO{
 	 * @throws Exception
 	 */
 	public static Map<String, Object> getStockInfoType(String stockCode , int startnum) throws Exception{
-		System.out.println("getStockInfo start:"+stockCode+","+startnum);
+		System.out.println("getStockInfoType start:"+stockCode+","+startnum);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		//삼성전자[005930] , 카카오[035720], 한화에어로스페이스[012450],두산중공업[034020],LG에너지솔루션[373220],SK하이닉스[000660]
 		String URL = naver_domain_url+"/item/main.naver?code="+stockCode; //NAVER 주식
-		System.out.println(URL);
+//		System.out.println(URL);
 		SimpleDateFormat format = new SimpleDateFormat ( "HH");
 		int time = Integer.parseInt(format.format(new Date()));
-		System.out.println("time=>"+time);
+//		System.out.println("time=>"+time);
 		String type = "KRX";
 		if(time >=8 && time <= 16) {
 			type = "KRX";
@@ -303,10 +303,10 @@ public class naverUtil extends StockDefaultVO{
 					String juga = nxtElem.select("dd").get(0).text().split(" ")[1];
 					String [] points = nxtElem.select("dd").get(1).text().split(" ");
 					String [] percents = nxtElem.select("dd").get(2).text().split(" ");
-					System.out.println("name=>"+name);
-					System.out.println("juga=>"+juga);
-					System.out.println(Arrays.toString(points));
-					System.out.println(Arrays.toString(percents));
+//					System.out.println("name=>"+name);
+//					System.out.println("juga=>"+juga);
+//					System.out.println(Arrays.toString(points));
+//					System.out.println(Arrays.toString(percents));
 					
 					resultMap.put("parameter"+(startnum++), name);
 					resultMap.put("parameter"+(startnum++), juga);
@@ -371,7 +371,7 @@ public class naverUtil extends StockDefaultVO{
 			e.printStackTrace();
 		} 
 		System.out.println(resultMap);
-		System.out.println("getStockInfo end");
+		System.out.println("getStockInfoType end");
 		return resultMap;
 	}
 	
