@@ -257,7 +257,7 @@ public class naverUtil extends StockDefaultVO{
 	 * @throws Exception
 	 */
 	public static Map<String, Object> getStockInfoType(String stockCode , int startnum) throws Exception{
-		System.out.println("getStockInfoType start:"+stockCode+","+startnum);
+//		System.out.println("getStockInfoType start:"+stockCode+","+startnum);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		//삼성전자[005930] , 카카오[035720], 한화에어로스페이스[012450],두산중공업[034020],LG에너지솔루션[373220],SK하이닉스[000660]
 		String URL = naver_domain_url+"/item/main.naver?code="+stockCode; //NAVER 주식
@@ -371,7 +371,7 @@ public class naverUtil extends StockDefaultVO{
 			e.printStackTrace();
 		} 
 //		System.out.println(resultMap);
-		System.out.println("getStockInfoType end");
+//		System.out.println("getStockInfoType end");
 		return resultMap;
 	}
 	

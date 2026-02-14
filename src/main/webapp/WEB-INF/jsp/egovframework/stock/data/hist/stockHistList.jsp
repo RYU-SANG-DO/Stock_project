@@ -176,7 +176,7 @@ input[type="number"] {
 			    	<div class="button_box1">
 						<ul>
 							<li style="border: 0px solid #d2d2d2;">
-								<input type="button" class="btn02" onClick="fnStockHistDetail('${result.seq}');" value="<spring:message code="title.detail" />" title="<spring:message code="title.detail" /> <spring:message code="input.button" />" />
+								<img src="/images/egovframework/com/cmm/btn/btn_search.gif" class="cursor" onclick="fnStockHistDetail('${result.seq}'); return false;" alt="상세조회" title="상세조회">
 							</li>
 						</ul>
 					</div>
