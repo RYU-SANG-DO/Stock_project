@@ -28,6 +28,8 @@ public class MenuManageVO{
    private   String   menuNm;
    /** 상위메뉴번호 */
    private   int      upperMenuId;
+   /** 상위메뉴명 */
+   private   int      upperMenuNm;
    /** 메뉴설명 */
    private   String   menuDc;
    /** 관련이미지경로 */
@@ -349,5 +351,11 @@ public class MenuManageVO{
 	 */
 	public void setTempInt(int tempInt) {
 		this.tempInt = tempInt;
+	}
+	public int getUpperMenuNm() {
+		return upperMenuNm;
+	}
+	public void setUpperMenuNm(int upperMenuNm) {
+		this.upperMenuNm = upperMenuNm;
 	}
 }

@@ -561,7 +561,7 @@ function fnInsertStock(){
 					<c:when test="${item.risigHnl eq 'L'}"><c:set var="pClassColore" value="#007bff"/></c:when>
 				</c:choose>
 				<td style="color: ${pClassColore}"><c:out value="${item.nowPrice}"/>원</td>
-			    <td style="color: ${pClassColore}"><c:out value="${item.indepercent}"/></td>
+			    <td style="color: ${pClassColore}"><fmt:formatNumber value="${item.indepercent}" pattern="#,##0.00" />%</td>
 			</c:if>
 		</c:forEach>
 	

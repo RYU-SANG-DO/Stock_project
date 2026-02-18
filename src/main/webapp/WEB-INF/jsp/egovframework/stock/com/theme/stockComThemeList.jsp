@@ -209,7 +209,8 @@ function checkNumber(str) {
                 <tr>
                     <th><span class="pilsu">*</span>상위 테마 ID</th>
                     <td class="left">
-                    	<input type="text" name="upThemeId" size="20" class="input_txt" />
+                    	<input type="text" name="upThemeId" size="10" class="input_txt" />
+                    	<input type="text" name="upThemeNm" size="20" class="input_txt" />
                     	<a id="popupUpperMenuId" href="#none" target="_blank" title="상위 테마 ID" style="selector-dummy:expression(this.hideFocus=false);">
                     		<img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />" alt='' width="15" height="15" />(테마선택 검색)
 	         			</a><!-- 메뉴선택 검색 -->

@@ -39,6 +39,7 @@ var imgpath = "<c:url value='/images/egovframework/com/cmm/utl/'/>";
 function choiceNodes(nodeNum) {
 	var nodeValues = treeNodes[nodeNum].split("|");
 	parent.document.menuManageVO.upThemeId.value = nodeValues[0];
+	parent.document.menuManageVO.upThemeNm.value = nodeValues[2];
 	parent.$('.ui-dialog-content').dialog('close');
 }
 /* ********************************************************
