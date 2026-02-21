@@ -197,6 +197,7 @@ function fncSelectList(){
 }
 
 function menuMove(param , name){
+	Loading();
 	document.listForm2.searchGubun.value = param;
 	document.listForm2.searchGubunNm.value = name;
     document.listForm2.action = "<c:url value='/stock/naver/selectNaverResearchList.do'/>";
@@ -359,48 +360,6 @@ function fnInsertStock(){
 						<c:forEach items="${upjoingCodeList}" var="upjongInfo" varStatus="status">
 							<option value="${upjongInfo.codeNm}" <c:if test="${upjong eq upjongInfo.codeNm}">selected="selected"</c:if>>${upjongInfo.codeNm}</option>
 						</c:forEach>
-						<%-- <option value="건설" <c:if test="${'건설' eq upjong}">selected="selected"</c:if>>건설</option>
-						<option value="건자재" <c:if test="${'건자재' eq upjong}">selected="selected"</c:if>>건자재</option>
-						<option value="광고" <c:if test="${'광고' eq upjong}">selected="selected"</c:if>>광고</option>
-						<option value="금융" <c:if test="${'금융' eq upjong}">selected="selected"</c:if>>금융</option>
-						<option value="기계" <c:if test="${'기계' eq upjong}">selected="selected"</c:if>>기계</option>
-						<option value="휴대폰" <c:if test="${'휴대폰' eq upjong}">selected="selected"</c:if>>휴대폰</option>
-						<option value="담배" <c:if test="${'담배' eq upjong}">selected="selected"</c:if>>담배</option>
-						<option value="유통" <c:if test="${'유통' eq upjong}">selected="selected"</c:if>>유통</option>
-						<option value="미디어" <c:if test="${'미디어' eq upjong}">selected="selected"</c:if>>미디어</option>
-						<option value="바이오" <c:if test="${'바이오' eq upjong}">selected="selected"</c:if>>바이오</option>
-						<option value="반도체" <c:if test="${'반도체' eq upjong}">selected="selected"</c:if>>반도체</option>
-						<option value="보험" <c:if test="${'보험' eq upjong}">selected="selected"</c:if>>보험</option>
-						<option value="석유화학" <c:if test="${'석유화학' eq upjong}">selected="selected"</c:if>>석유화학</option>
-						<option value="섬유의류" <c:if test="${'섬유의류' eq upjong}">selected="selected"</c:if>>섬유의류</option>
-						<option value="소프트웨어" <c:if test="${'소프트웨어' eq upjong}">selected="selected"</c:if>>소프트웨어</option>
-						<option value="운수창고" <c:if test="${'운수창고' eq upjong}">selected="selected"</c:if>>운수창고</option>
-						<option value="유틸리티" <c:if test="${'유틸리티' eq upjong}">selected="selected"</c:if>>유틸리티</option>
-						<option value="은행" <c:if test="${'은행' eq upjong}">selected="selected"</c:if>>은행</option>
-						<option value="인터넷포탈" <c:if test="${'인터넷포탈' eq upjong}">selected="selected"</c:if>>인터넷포탈</option>
-						<option value="자동차" <c:if test="${'자동차' eq upjong}">selected="selected"</c:if>>자동차</option>
-						<option value="전기전자" <c:if test="${'전기전자' eq upjong}">selected="selected"</c:if>>전기전자</option>
-						<option value="제약" <c:if test="${'제약' eq upjong}">selected="selected"</c:if>>제약</option>
-						<option value="조선" <c:if test="${'조선' eq upjong}">selected="selected"</c:if>>조선</option>
-						<option value="종이" <c:if test="${'종이' eq upjong}">selected="selected"</c:if>>종이</option>
-						<option value="증권" <c:if test="${'증권' eq upjong}">selected="selected"</c:if>>증권</option>
-						<option value="철강금속" <c:if test="${'철강금속' eq upjong}">selected="selected"</c:if>>철강금속</option>
-						<option value="타이어" <c:if test="${'타이어' eq upjong}">selected="selected"</c:if>>타이어</option>
-						<option value="통신" <c:if test="${'통신' eq upjong}">selected="selected"</c:if>>통신</option>
-						<option value="항공운송" <c:if test="${'항공운송' eq upjong}">selected="selected"</c:if>>항공운송</option>
-						<option value="홈쇼핑" <c:if test="${'홈쇼핑' eq upjong}">selected="selected"</c:if>>홈쇼핑</option>
-						<option value="음식료" <c:if test="${'음식료' eq upjong}">selected="selected"</c:if>>음식료</option>
-						<option value="여행" <c:if test="${'여행' eq upjong}">selected="selected"</c:if>>여행</option>
-						<option value="게임" <c:if test="${'게임' eq upjong}">selected="selected"</c:if>>게임</option>
-						<option value="IT" <c:if test="${'IT' eq upjong}">selected="selected"</c:if>>IT</option>
-						<option value="에너지" <c:if test="${'에너지' eq upjong}">selected="selected"</c:if>>에너지</option>
-						<option value="해운" <c:if test="${'해운' eq upjong}">selected="selected"</c:if>>해운</option>
-						<option value="지주회사" <c:if test="${'지주회사' eq upjong}">selected="selected"</c:if>>지주회사</option>
-						<option value="디스플레이" <c:if test="${'디스플레이' eq upjong}">selected="selected"</c:if>>디스플레이</option>
-						<option value="화장품" <c:if test="${'화장품' eq upjong}">selected="selected"</c:if>>화장품</option>
-						<option value="자동차부품" <c:if test="${'자동차부품' eq upjong}">selected="selected"</c:if>>자동차부품</option>
-						<option value="교육" <c:if test="${'교육' eq upjong}">selected="selected"</c:if>>교육</option>
-						<option value="기타" <c:if test="${'기타' eq upjong}">selected="selected"</c:if>>기타</option> --%>
 					</select>
 				</li>	
 				</c:if>
