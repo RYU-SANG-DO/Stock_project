@@ -24,19 +24,24 @@
 			 WHERE  A.CL_CODE = B.CL_CODE
 			 ]]>
 		
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isNotEmpty(clCode)">	
+				<![CDATA[
+					AND B.CL_CODE = #{clCode}
+				]]>
+			</if>
 			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCondition,'1')">	<![CDATA[	AND
 				A.CODE_ID LIKE '%' || #{searchKeyword} || '%']]>
 			</if>
 			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCondition,'2')">	<![CDATA[	AND
 				A.CODE_ID_NM LIKE '%' || #{searchKeyword} || '%']]>
 			</if>
-			<if test="searchCondition == 'clCode'">	<![CDATA[	AND
-				A.CL_CODE LIKE '%' || #{searchKeyword} || '%']]>
+			<if test="searchCondition == 'clCode'">	
+				<![CDATA[	AND A.CL_CODE LIKE '%' || #{searchKeyword} || '%']]>
 			</if>
-			<if test="searchCondition == 'clCode'">	<![CDATA[AND
-				A.USE_AT = 'Y']]>
+			<if test="searchCondition == 'clCode'">	
+				<![CDATA[AND A.USE_AT = 'Y']]>
 			</if>
-		
+			ORDER BY A.LAST_UPDT_PNTTM DESC
 			/* 구현 Sql */
 				<![CDATA[
 				    ) ALL_LIST
@@ -56,12 +61,20 @@
 			     ,  COMTCCMMNCLCODE B
 			 WHERE  A.CL_CODE = B.CL_CODE
 			 ]]>
-		
-			<if test="searchCondition == 1">	<![CDATA[	AND
-				CODE_ID LIKE '%' || #{searchKeyword} || '%'	]]>
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isNotEmpty(clCode)">	
+				<![CDATA[
+					AND B.CL_CODE = #{clCode}
+				]]>
 			</if>
-			<if test="searchCondition == 2">	<![CDATA[	AND
-				CODE_ID_NM LIKE '%' || #{searchKeyword} || '%'	]]>
+			<if test="searchCondition == 1">	
+				<![CDATA[	
+					AND CODE_ID LIKE '%' || #{searchKeyword} || '%'	
+				]]>
+			</if>
+			<if test="searchCondition == 2">	
+				<![CDATA[	
+					AND CODE_ID_NM LIKE '%' || #{searchKeyword} || '%'	
+				]]>
 			</if>
 	</select>
 

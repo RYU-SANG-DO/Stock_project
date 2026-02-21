@@ -74,6 +74,15 @@ function fn_egov_inquire_codedetail(codeId, code) {
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li>
+				<label for="cl">분류 : </label>
+				<select name="clCode" id="clCode" class="select" title="분류">
+					<option value="" <c:if test="${empty searchVO.clCode}">selected="selected"</c:if>>전체</option>
+					<c:forEach items="${cmmnClCodeList}" var="clInfo" varStatus="clstatus">
+						<option value="${clInfo.clCode}" <c:if test="${searchVO.clCode eq clInfo.clCode}">selected="selected"</c:if>>${clInfo.clCodeNm}</option>
+					</c:forEach>
+				</select>
+			</li>
+			<li>
 				<select name="searchCondition" title="<spring:message code="title.searchCondition" />">
 					<option selected value=''><spring:message code="input.select" /></option><!-- 선택하세요 -->
 					<option value="1"  <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if> ><spring:message code="comSymCcmCde.cmmnDetailCodeVO.codeId" /></option><!-- 코드ID -->
@@ -100,11 +109,14 @@ function fn_egov_inquire_codedetail(codeId, code) {
 		<col>
 		<col>
 		<col>
+		<col>
 	</colgroup>
 	<thead>
 	<tr>
 		<th><spring:message code="table.num" /></th><!-- 번호 -->
+		<th><spring:message code="comSymCcmCca.cmmnCodeVO.clCodeNm" /></th><!-- 분류코드명 -->
 		<th><spring:message code="comSymCcmCde.cmmnDetailCodeVO.codeId" /></th><!-- 코드ID -->
+		<th><spring:message code="comSymCcmCde.cmmnDetailCodeVO.codeIdNm" /></th><!-- 코드ID명 -->
 		<th class="board_th_link"><spring:message code="comSymCcmCde.cmmnDetailCodeVO.code" /></th><!-- 코드 -->
 		<th><spring:message code="comSymCcmCde.cmmnDetailCodeVO.codeNm"/></th><!-- 코드명 -->
 		<th>순번</th><!-- 순번 -->
@@ -114,13 +126,15 @@ function fn_egov_inquire_codedetail(codeId, code) {
 	<tbody class="ov">
 	<c:if test="${fn:length(resultList) == 0}">
 	<tr>
-		<td colspan="6"><spring:message code="common.nodata.msg" /></td>
+		<td colspan="8"><spring:message code="common.nodata.msg" /></td>
 	</tr>
 	</c:if>
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+		<td><c:out value='${resultInfo.clCodeNm}'/></td>
 		<td><c:out value='${resultInfo.codeId}'/></td>
+		<td><c:out value='${resultInfo.codeIdNm}'/></td>
 		<td><c:out value='${resultInfo.code}'/></td>
 		<td><a href="<c:url value='/sym/ccm/cde/SelectCcmCmmnDetailCodeDetail.do'/>?codeId=${resultInfo.codeId}&amp;code=${resultInfo.code}" onClick="fn_egov_inquire_codedetail('<c:out value="${resultInfo.codeId}"/>','<c:out value="${resultInfo.code}"/>');return false;"><c:out value='${fn:substring(resultInfo.codeNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.num}'/></td>

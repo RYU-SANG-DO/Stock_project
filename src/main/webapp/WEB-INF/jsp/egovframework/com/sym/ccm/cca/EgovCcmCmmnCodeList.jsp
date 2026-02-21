@@ -73,6 +73,15 @@ function fn_egov_inquire_codedetail(codeId) {
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li>
+				<label for="cl">분류 : </label>
+				<select name="clCode" id="clCode" class="select" title="분류">
+					<option value="" <c:if test="${empty searchVO.clCode}">selected="selected"</c:if>>전체</option>
+					<c:forEach items="${cmmnClCodeList}" var="clInfo" varStatus="clstatus">
+						<option value="${clInfo.clCode}" <c:if test="${searchVO.clCode eq clInfo.clCode}">selected="selected"</c:if>>${clInfo.clCodeNm}</option>
+					</c:forEach>
+				</select>
+			</li>
+			<li>
 				<select name="searchCondition" title="<spring:message code="title.searchCondition" />">
 					<%-- <option <c:if test="${searchVO.searchCondition == ''}">selected="selected"</c:if>><spring:message code="input.select" /></option><!-- 선택하세요 --> --%>
 					<option selected value=''><spring:message code="input.select" /></option><!-- 선택하세요 -->

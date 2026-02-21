@@ -14,17 +14,27 @@
 			SELECT ROWNUM RNUM, ALL_LIST.*
 			  FROM  (
 			/* 구현 Sql */
-			SELECT  A.CODE_ID
+			SELECT  
+			        C.CL_CODE
+			     ,  C.CL_CODE_NM
+				 ,	B.CODE_ID
+            	 ,	B.CODE_ID_NM
 			     ,  A.CODE
 			     ,  A.CODE_NM
 			     ,  A.USE_AT
 			      , A.NUM
 			  FROM  COMTCCMMNDETAILCODE A
 			     ,  COMTCCMMNCODE       B
+			     ,  COMTCCMMNCLCODE	C
 			 WHERE 	B.USE_AT  = 'Y'
 			   AND  A.CODE_ID = B.CODE_ID
+			   AND B.CL_CODE = C.CL_CODE
 			  ]]>
-		
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isNotEmpty(clCode)">	
+					<![CDATA[
+						AND C.CL_CODE = #{clCode}
+					]]>
+			</if>
 			<if test="searchCondition == 1">	<![CDATA[	
 				AND A.CODE_ID LIKE '%' || #{searchKeyword} || '%'	]]>
 			</if>
@@ -51,18 +61,30 @@
 			SELECT  COUNT(*) totcnt
 			  FROM  COMTCCMMNDETAILCODE A
 			     ,  COMTCCMMNCODE       B
+			     ,  COMTCCMMNCLCODE	C
 			 WHERE 	B.USE_AT  = 'Y'
 			   AND  A.CODE_ID = B.CODE_ID
+			   AND B.CL_CODE = C.CL_CODE
 			   ]]>
-		
-			<if test="searchCondition == 1">	<![CDATA[	AND
-				A.CODE_ID LIKE '%' || #{searchKeyword} || '%'	]]>
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isNotEmpty(clCode)">	
+				<![CDATA[
+					AND C.CL_CODE = #{clCode}
+				]]>
 			</if>
-			<if test="searchCondition == 2">	<![CDATA[	AND
-				A.CODE    LIKE '%' || #{searchKeyword} || '%'	]]>
+			<if test="searchCondition == 1">	
+				<![CDATA[	
+					AND A.CODE_ID LIKE '%' || #{searchKeyword} || '%'	
+				]]>
 			</if>
-			<if test="searchCondition == 3">	<![CDATA[	AND
-				A.CODE_NM LIKE '%' || #{searchKeyword} || '%'	]]>
+			<if test="searchCondition == 2">	
+				<![CDATA[	
+					AND A.CODE    LIKE '%' || #{searchKeyword} || '%'	
+				]]>
+			</if>
+			<if test="searchCondition == 3">	
+				<![CDATA[	
+					AND A.CODE_NM LIKE '%' || #{searchKeyword} || '%'	
+				]]>
 			</if>
 	</select>
 

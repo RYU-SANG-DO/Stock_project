@@ -94,6 +94,13 @@ public class EgovCcmCmmnCodeManageController {
 
 		List<CmmnCodeVO> CmmnCodeList = cmmnCodeManageService.selectCmmnCodeList(searchVO);
 		model.addAttribute("resultList", CmmnCodeList);
+		
+		CmmnClCodeVO clsearchVO = new CmmnClCodeVO();
+		clsearchVO.setFirstIndex(0);
+		clsearchVO.setLastIndex(1);
+		clsearchVO.setRecordCountPerPage(100);
+		List<CmmnClCodeVO> cmmnClCodeList = cmmnClCodeManageService.selectCmmnClCodeList(clsearchVO);
+		model.addAttribute("cmmnClCodeList", cmmnClCodeList);
 
 		int totCnt = cmmnCodeManageService.selectCmmnCodeListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);

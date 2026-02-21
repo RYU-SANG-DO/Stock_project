@@ -878,6 +878,20 @@ public class StockNaverController {
 		int firstIndex = naverResearchVO.getFirstIndex();
 		int recordCountPerPage = naverResearchVO.getRecordCountPerPage();
 		
+		CmmnDetailCodeVO searchVO = new CmmnDetailCodeVO();
+		searchVO.setFirstIndex(0);
+		searchVO.setLastIndex(1);
+		searchVO.setRecordCountPerPage(100);
+		searchVO.setSearchCondition("1");
+		searchVO.setClCode("STK");
+		searchVO.setSearchKeyword("BROKER");
+		List<CmmnDetailCodeVO> brokerCodeList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("brokerCodeList", brokerCodeList);
+		
+		searchVO.setSearchKeyword("UPJONG");
+		List<CmmnDetailCodeVO> upjoingCodeList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("upjoingCodeList", upjoingCodeList);
+		
 		model.addAttribute("titleList", titleList);
 		model.addAttribute("researchList", researchList);
 		model.addAttribute("paramInfo",paramInfo);

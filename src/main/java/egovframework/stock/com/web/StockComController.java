@@ -133,8 +133,8 @@ public class StockComController {
     	System.out.println("uploadEditorImage start");
     	ModelAndView mav = new ModelAndView("jsonView");
     	// 1. 저장 경로 설정
-    	String uploadWebDir = EgovProperties.getProperty("Globals.fileStorePath")+"upload/images/";
-        String uploadPath = request.getServletContext().getRealPath("upload/images/");
+    	String uploadWebDir = EgovProperties.getProperty("Globals.fileStorePath")+"upload/images/editor/";
+        String uploadPath = request.getServletContext().getRealPath("upload/images/editor/");
         File folder = new File(uploadPath);
         File webfolder = new File(uploadWebDir);
         if (!folder.exists()) folder.mkdirs();
@@ -154,7 +154,7 @@ public class StockComController {
                 File webdestination = new File(uploadWebDir + File.separator + fileName);
                 file.transferTo(webdestination);
                 
-                String saveUrl = request.getContextPath() + "/upload/images/" + fileName;
+                String saveUrl = request.getContextPath() + "/upload/images/editor/" + fileName;
                 System.out.println("저장 경로: " + saveUrl);
                 
                 mav.addObject("url", saveUrl);

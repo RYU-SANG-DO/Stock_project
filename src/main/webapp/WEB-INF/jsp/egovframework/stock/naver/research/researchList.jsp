@@ -290,15 +290,15 @@ function fnInsertStock(){
 	</form>
 	<div style="padding-top: 10px; border: 1px solid #b1bbcb; margin-bottom: 7px;">
 		<table summary="원하시는 항목을 선택하여 결과를 보실 수 있습니다." class="item_list" style="margin-bottom: -6px;">
-				<colgroup>
-					<col>
-					<col>
-					<col>
-					<col>
-					<col>
-					<col>
-				</colgroup>
-				<tbody>
+			<colgroup>
+				<col>
+				<col>
+				<col>
+				<col>
+				<col>
+				<col>
+			</colgroup>
+			<tbody>
 				<tr>
 					<td><div class="button_box mainbtn"><ul><li><input type="button" class="s_btn <c:if test="${searchGubun ne 'market_info'}">nosel</c:if>" onClick="menuMove('market_info','시황정보')" value="시황정보"/></li></ul></div></td>
 					<td><div class="button_box mainbtn"><ul><li><input type="button" class="s_btn <c:if test="${searchGubun ne 'invest'}">nosel</c:if>" onClick="menuMove('invest','투자정보')" value="투자정보"/></li></ul></div></td>
@@ -330,7 +330,7 @@ function fnInsertStock(){
 							<option value="itemCode" <c:if test="${'itemCode' eq searchType}">selected="selected"</c:if>>종목</option>
 						</c:if>
 						<c:if test="${'industry' eq searchGubun}">
-							<option value="upjong" <c:if test="${'upjong' eq searchType}">selected="selected"</c:if>>분류</option>
+							<option value="upjong" <c:if test="${'upjong' eq searchType}">selected="selected"</c:if>>업종</option>
 						</c:if>
 					</select>
 				</li>
@@ -346,48 +346,20 @@ function fnInsertStock(){
 				<li class="stype brokerCode">
 					<select name="brokerCode" class="select" title="증권사 선택">
 						<option value="" <c:if test="${empty brokerCode}">selected="selected"</c:if>>선택</option>
-						<option value="60" <c:if test="${'60' eq brokerCode}">selected="selected"</c:if>>BNK투자증권</option>
-						<option value="55" <c:if test="${'55' eq brokerCode}">selected="selected"</c:if>>DB금융투자</option>
-						<option value="66" <c:if test="${'66' eq brokerCode}">selected="selected"</c:if>>DS투자증권</option>
-						<option value="40" <c:if test="${'40' eq brokerCode}">selected="selected"</c:if>>IBK투자증권</option>
-						<option value="61" <c:if test="${'61' eq brokerCode}">selected="selected"</c:if>>iM증권</option>
-						<option value="58" <c:if test="${'58' eq brokerCode}">selected="selected"</c:if>>KB증권</option>
-						<option value="49" <c:if test="${'49' eq brokerCode}">selected="selected"</c:if>>KTB투자증권</option>
-						<option value="9" <c:if test="${'9' eq brokerCode}">selected="selected"</c:if>>NH투자증권</option>
-						<option value="69" <c:if test="${'69' eq brokerCode}">selected="selected"</c:if>>NICE평가정보</option>
-						<option value="64" <c:if test="${'64' eq brokerCode}">selected="selected"</c:if>>SK증권</option>
-						<option value="68" <c:if test="${'68' eq brokerCode}">selected="selected"</c:if>>골든브릿지투자증권</option>
-						<option value="62" <c:if test="${'62' eq brokerCode}">selected="selected"</c:if>>교보증권</option>
-						<option value="72" <c:if test="${'72' eq brokerCode}">selected="selected"</c:if>>나이스디앤비</option>
-						<option value="76" <c:if test="${'76' eq brokerCode}">selected="selected"</c:if>>다올투자증권</option>
-						<option value="15" <c:if test="${'15' eq brokerCode}">selected="selected"</c:if>>대신증권</option>
-						<option value="17" <c:if test="${'17' eq brokerCode}">selected="selected"</c:if>>메리츠증권</option>
-						<option value="56" <c:if test="${'56' eq brokerCode}">selected="selected"</c:if>>미래에셋증권</option>
-						<option value="78" <c:if test="${'78' eq brokerCode}">selected="selected"</c:if>>삼성증권</option>
-						<option value="21" <c:if test="${'21' eq brokerCode}">selected="selected"</c:if>>신한투자증권</option>
-						<option value="41" <c:if test="${'41' eq brokerCode}">selected="selected"</c:if>>에프앤가이드</option>
-						<option value="18" <c:if test="${'18' eq brokerCode}">selected="selected"</c:if>>유안타증권</option>
-						<option value="63" <c:if test="${'63' eq brokerCode}">selected="selected"</c:if>>유진투자증권</option>
-						<option value="26" <c:if test="${'26' eq brokerCode}">selected="selected"</c:if>>이베스트증권</option>
-						<option value="59" <c:if test="${'59' eq brokerCode}">selected="selected"</c:if>>케이프투자증권</option>
-						<option value="39" <c:if test="${'39' eq brokerCode}">selected="selected"</c:if>>키움증권</option>
-						<option value="57" <c:if test="${'57' eq brokerCode}">selected="selected"</c:if>>하나증권</option>
-						<option value="74" <c:if test="${'74' eq brokerCode}">selected="selected"</c:if>>한국IR협의회</option>
-						<option value="79" <c:if test="${'79' eq brokerCode}">selected="selected"</c:if>>한국기술신용평가(주)</option>
-						<option value="71" <c:if test="${'71' eq brokerCode}">selected="selected"</c:if>>한국기업데이터</option>
-						<option value="43" <c:if test="${'43' eq brokerCode}">selected="selected"</c:if>>한국기업평가</option>
-						<option value="67" <c:if test="${'67' eq brokerCode}">selected="selected"</c:if>>한국투자증권</option>
-						<option value="65" <c:if test="${'65' eq brokerCode}">selected="selected"</c:if>>한양증권</option>
-						<option value="16" <c:if test="${'16' eq brokerCode}">selected="selected"</c:if>>한화투자증권</option>
-						<option value="38" <c:if test="${'38' eq brokerCode}">selected="selected"</c:if>>현대차증권</option>
+							<c:forEach items="${brokerCodeList}" var="brokerInfo" varStatus="status">
+								<option value="${brokerInfo.code}" <c:if test="${brokerCode eq brokerInfo.code}">selected="selected"</c:if>>${brokerInfo.codeNm}</option>
+							</c:forEach>
 					</select>
 				</li>
 				<c:if test="${'industry' eq searchGubun}"><!-- 산업분석 리포트 -->
-				<li class="stype upjong"><div style="line-height:4px;">&nbsp;</div><div>분류 : </div></li>
+				<li class="stype upjong"><div style="line-height:4px;">&nbsp;</div><div>업종 : </div></li>
 				<li class="stype upjong">
 					<select name="upjong" class="select" title="업종 선택">
 						<option value="" <c:if test="${empty upjong}">selected="selected"</c:if>>선택</option>
-						<option value="건설" <c:if test="${'건설' eq upjong}">selected="selected"</c:if>>건설</option>
+						<c:forEach items="${upjoingCodeList}" var="upjongInfo" varStatus="status">
+							<option value="${upjongInfo.codeNm}" <c:if test="${upjong eq upjongInfo.codeNm}">selected="selected"</c:if>>${upjongInfo.codeNm}</option>
+						</c:forEach>
+						<%-- <option value="건설" <c:if test="${'건설' eq upjong}">selected="selected"</c:if>>건설</option>
 						<option value="건자재" <c:if test="${'건자재' eq upjong}">selected="selected"</c:if>>건자재</option>
 						<option value="광고" <c:if test="${'광고' eq upjong}">selected="selected"</c:if>>광고</option>
 						<option value="금융" <c:if test="${'금융' eq upjong}">selected="selected"</c:if>>금융</option>
@@ -428,7 +400,7 @@ function fnInsertStock(){
 						<option value="화장품" <c:if test="${'화장품' eq upjong}">selected="selected"</c:if>>화장품</option>
 						<option value="자동차부품" <c:if test="${'자동차부품' eq upjong}">selected="selected"</c:if>>자동차부품</option>
 						<option value="교육" <c:if test="${'교육' eq upjong}">selected="selected"</c:if>>교육</option>
-						<option value="기타" <c:if test="${'기타' eq upjong}">selected="selected"</c:if>>기타</option>
+						<option value="기타" <c:if test="${'기타' eq upjong}">selected="selected"</c:if>>기타</option> --%>
 					</select>
 				</li>	
 				</c:if>

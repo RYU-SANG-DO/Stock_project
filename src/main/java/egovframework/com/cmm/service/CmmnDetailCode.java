@@ -27,6 +27,11 @@ public class CmmnDetailCode implements Serializable {
 	 * 분류코드
 	 */
 	private String clCode = "";
+	
+	/*
+	 * 분류코드명
+	 */
+	private String clCodeNm = "";
 
 	/*
 	 * 코드ID
@@ -224,6 +229,14 @@ public class CmmnDetailCode implements Serializable {
 
 	public void setNum(int num) {
 		this.num = num;
+	}
+
+	public String getClCodeNm() {
+		return clCodeNm;
+	}
+
+	public void setClCodeNm(String clCodeNm) {
+		this.clCodeNm = clCodeNm;
 	}
 
 

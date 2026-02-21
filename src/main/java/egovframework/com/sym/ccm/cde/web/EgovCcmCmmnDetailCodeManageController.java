@@ -103,6 +103,13 @@ public class EgovCcmCmmnDetailCodeManageController {
 		int totCnt = cmmnDetailCodeManageService.selectCmmnDetailCodeListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
+		
+		CmmnClCodeVO clsearchVO = new CmmnClCodeVO();
+		clsearchVO.setFirstIndex(0);
+		clsearchVO.setLastIndex(1);
+		clsearchVO.setRecordCountPerPage(100);
+		List<CmmnClCodeVO> cmmnClCodeList = cmmnClCodeManageService.selectCmmnClCodeList(clsearchVO);
+		model.addAttribute("cmmnClCodeList", cmmnClCodeList);
 
 		return "egovframework/com/sym/ccm/cde/EgovCcmCmmnDetailCodeList";
 	}

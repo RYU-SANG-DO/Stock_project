@@ -18,9 +18,9 @@
 		</property>
 	</bean>
 
-	<aop:config>
+	<!-- <aop:config>
 		<aop:aspect id="privacyLogAspect" ref="privacyLog">
-			<!--  service Method -->
+			 service Method
 			<aop:after-returning returning="returnVal" 
 					pointcut="execution(public * egovframework.com..impl.*Impl.*(..)) 
 				 &amp;&amp; ! execution(public * egovframework.com.cmm.service.impl.EgovUserDetailsSessionServiceImpl.*(..)) 
@@ -29,7 +29,7 @@
 				 &amp;&amp; ! execution(public * egovframework.com.sym.log.lgm.service.impl.EgovSysLogServiceImpl.*(..))"
 				 method="insertLog" />
 			</aop:aspect>
-			<!--  warning : 자체 서비스(EgovPrivacyLogServiceImpl) 및 내부 호출 서비스, 로그 처리 부분  제외 필요 -->
-	</aop:config>
+			 warning : 자체 서비스(EgovPrivacyLogServiceImpl) 및 내부 호출 서비스, 로그 처리 부분  제외 필요
+	</aop:config> -->
 
 </beans>
