@@ -218,7 +218,6 @@ function fnDetail(seq){
 			
 				<li  style="border: 0px solid #d2d2d2;">
 					<input type="button" class="s_btn"  onClick="fncSelectList('1');" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-					<!-- <span class="btn_b"><a href="/sym/ccm/ccc/RegistCcmCmmnClCodeView.do" title="등록 버튼">등록</a></span> -->
 				</li>
 			</ul>
 		</div>
@@ -246,19 +245,21 @@ function fnDetail(seq){
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
+		<col width="3%">
+		<col width="3%">
 		<col width="5%">
-		<col width="5%">
-		<col width="5%">
-		<col>
+		<col><!-- 종목 -->
+		<col width="5%"><!-- 수량 -->
+		<col width="8%">
+		<col width="8%"><!-- 당일합계  -->
+		<col width="8%">
+		<col width="8%"><!-- 현재합계 -->
 		<col width="5%">
 		<col width="10%">
-		<col width="10%">
-		<col width="5%">
-		<col width="10%">
 		<col width="5%">
 		<col width="5%">
 		<col width="5%">
-		<col width="5%">
+		<%-- <col width="5%"> --%>
 		<col width="5%">
 	</colgroup>
 	<thead>
@@ -269,20 +270,22 @@ function fnDetail(seq){
 		<th>종목</th>
 		<th>수량</th>
 		<th>당일단가</th>
+		<th>당일합계</th>
 		<th>현재단가</th>
+		<th>현재합계</th>
 		<th>현재증감률</th>
 		<th>금액</th>
 		<th>수익률</th>
 		<th>계좌</th>
 		<th>거래일자</th>
-		<th>등록일자</th>
+		<!-- <th>등록일자</th> -->
 		<th>수정</th>
 	</tr>
 	</thead>
 	<tbody class="ov">
 	<c:if test="${fn:length(list) == 0}">
 		<tr>
-			<td colspan="13"><spring:message code="common.nodata.msg" /></td>
+			<td colspan="15"><spring:message code="common.nodata.msg" /></td>
 		</tr>
 	</c:if>
 	<c:forEach var="item" items="${list}" varStatus="status">
@@ -309,7 +312,9 @@ function fnDetail(seq){
 		</td>
 		<td><fmt:formatNumber value="${item.qy}" pattern="#,###" /></td>
 		<td><fmt:formatNumber value="${item.unitPrice}" pattern="#,###" />원</td>
+		<td><fmt:formatNumber value="${item.qy * item.unitPrice}" pattern="#,###" />원</td>
 		<td><fmt:formatNumber value="${item.nowPrice}" pattern="#,###" />원</td>
+		<td><fmt:formatNumber value="${item.qy * item.nowPrice}" pattern="#,###" />원</td>
 		<td style="color:${indeColor};"><c:out value="${item.indepercent}"/>%</td>
 		<td style="color:${pColor};">
 			<fmt:formatNumber value="${item.dyaNowPrice}" pattern="#,###" />원
@@ -317,7 +322,7 @@ function fnDetail(seq){
 		<td style="color:${pColor};"><c:out value="${item.dyaNowPecent}"/>%</td>
 		<td><c:out value="${item.account}"/></td>
 		<td><c:out value="${item.delngDe}"/></td>
-		<td><c:out value="${item.regDate}"/></td>
+		<%-- <td><c:out value="${item.regDate}"/></td> --%>
 		<td>
 			<div class="button_box1">
 				<ul>
