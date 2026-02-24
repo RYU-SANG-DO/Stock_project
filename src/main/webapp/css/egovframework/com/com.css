@@ -327,7 +327,7 @@ width:100%;
 
 
 /* table style */
-.wTableFrm {position:relative; width:730px; padding-top:20px; }
+.wTableFrm {position:relative; padding-top:20px; }
 .wTableFrm h1, .wTableFrm h2 {/* float:left;*/ color:#333; font-size:16px; font-weight:600; }
 .wTableFrm h1 { margin-top:15px; }
 .wTableFrm h2 {margin-bottom:10px; padding-left:25px; background:url(../../../images/egovframework/com/cmm/icon/tit_icon.png) no-repeat left top; }

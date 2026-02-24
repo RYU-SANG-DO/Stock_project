@@ -68,8 +68,8 @@ p{
 	<table class="wTable" summary="">
 	<caption>종목 이력 <spring:message code="title.detail" /></caption>
 	<colgroup>
-		<col style="width: 20%;">
-		<col style="width: ;">
+		<col style="width: 10%;">
+		<col>
 	</colgroup>
 	<tbody>
 		<tr>
@@ -77,7 +77,7 @@ p{
 			<td class="left"><c:out value="${histInfo.title}"/></td>
 		</tr>
 		<tr>
-			<th>수입일자</th>
+			<th>수집일자</th>
 			<td class="left"><c:out value="${histInfo.collectionDate}"/></td>
 		</tr>
 		<tr>

@@ -137,14 +137,16 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 			switch (c) {
 			case '<':
 				if ( checkNextWhiteListTag(i, value) == false )
-					strBuff.append("&lt;");
+					//strBuff.append("&lt;");
+					strBuff.append(c);
 				else 
 					strBuff.append(c);
 				//System.out.println("checkNextWhiteListTag = "+checkNextWhiteListTag(i, value));
 				break;
 			case '>':
 				if ( checkPrevWhiteListTag(i, value) == false )
-					strBuff.append("&gt;");
+					//strBuff.append("&gt;");
+					strBuff.append(c);
 				else 
 					strBuff.append(c);
 				//System.out.println("checkPrevWhiteListTag = "+checkPrevWhiteListTag(i, value));
@@ -153,7 +155,7 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 			//	strBuff.append("&amp;");
 			//	break;
 			case '"':
-				strBuff.append("&quot;");
+				//strBuff.append("&quot;");
 				break;
 			case '\'':
 				strBuff.append("&apos;");
