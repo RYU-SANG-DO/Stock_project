@@ -94,8 +94,8 @@ label{
 	<table class="wTable" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle } <spring:message code="title.update" /></caption>
 	<colgroup>
-		<col style="width: 20%;">
-		<col style="width: ;">
+		<col style="width: 10%;">
+		<col>
 	</colgroup>
 	<tbody>
 		<!-- 입력 -->
