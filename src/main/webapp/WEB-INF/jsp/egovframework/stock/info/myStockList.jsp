@@ -242,6 +242,9 @@ function fnDetail(seq){
 		</div>
 	</form>
 	<!-- 목록영역 -->
+	<c:set var="unitPriceTotal" value="0"/><!-- 당일합계 -->
+	<c:set var="nowPriceTotal" value="0"/><!-- 현재합계 -->
+	<c:set var="dyaNowPriceTotal" value="0"/><!-- 합계 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
@@ -312,11 +315,18 @@ function fnDetail(seq){
 		</td>
 		<td><fmt:formatNumber value="${item.qy}" pattern="#,###" /></td>
 		<td><fmt:formatNumber value="${item.unitPrice}" pattern="#,###" />원</td>
-		<td><fmt:formatNumber value="${item.qy * item.unitPrice}" pattern="#,###" />원</td>
+		<td>
+			<c:set var="unitPriceTotal" value="${unitPriceTotal + (item.qy * item.unitPrice) }"/>
+			<fmt:formatNumber value="${item.qy * item.unitPrice}" pattern="#,###" />원
+		</td>
 		<td><fmt:formatNumber value="${item.nowPrice}" pattern="#,###" />원</td>
-		<td><fmt:formatNumber value="${item.qy * item.nowPrice}" pattern="#,###" />원</td>
+		<td>
+			<c:set var="nowPriceTotal" value="${nowPriceTotal + (item.qy * item.nowPrice) }"/>
+			<fmt:formatNumber value="${item.qy * item.nowPrice}" pattern="#,###" />원
+		</td>
 		<td style="color:${indeColor};"><c:out value="${item.indepercent}"/>%</td>
 		<td style="color:${pColor};">
+			<c:set var="dyaNowPriceTotal" value="${dyaNowPriceTotal + (item.dyaNowPrice) }"/>
 			<fmt:formatNumber value="${item.dyaNowPrice}" pattern="#,###" />원
 		</td>
 		<td style="color:${pColor};"><c:out value="${item.dyaNowPecent}"/>%</td>
@@ -334,6 +344,23 @@ function fnDetail(seq){
 		</td>
 	</tr>
 	</c:forEach>
+	<tr style="background-color: #cde1f3; font-weight: bold;">
+		<td>합계</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td><fmt:formatNumber value="${unitPriceTotal}" pattern="#,###" />원</td><!-- 당일 -->
+		<td></td>
+		<td><fmt:formatNumber value="${nowPriceTotal}" pattern="#,###" />원</td><!-- 현재 -->
+		<td></td>
+		<td><fmt:formatNumber value="${dyaNowPriceTotal}" pattern="#,###" />원</td><!-- 합계수익 -->
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
 	</tbody>
 	</table>
 	<c:if test="${!empty paginationInfo}">
