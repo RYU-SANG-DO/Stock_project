@@ -1242,9 +1242,18 @@ public class StockNaverController {
 		searchVO.setFirstIndex(0);
 		searchVO.setRecordCountPerPage(100);
 		searchVO.setSearchCondition("1");
-		searchVO.setSearchKeyword("RPGUB");
+		searchVO.setClCode("STK");
+		searchVO.setSearchKeyword("RPGUB");//분류
 		List<CmmnDetailCodeVO> rpCodeList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
 		model.addAttribute("rpCodeList", rpCodeList);
+		
+		searchVO.setSearchKeyword("UPJONG");//업종
+		List<CmmnDetailCodeVO> upjoingCodeList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("upjoingCodeList", upjoingCodeList);
+		
+		searchVO.setSearchKeyword("STRE");//투자의견
+		List<CmmnDetailCodeVO> streCodeList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("streCodeList", streCodeList);
 		
 		model.addAttribute("reserchList", list);
 		model.addAttribute("paramInfo",commandMap);

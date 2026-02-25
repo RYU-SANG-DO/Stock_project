@@ -33,6 +33,9 @@
 			WHERE A.REL_STOCK_CODE =  B.STOCKS_CODE(+)
 			AND A.RP_GUBUN = NVL(#{searchGubun},'company')
 			]]>
+			<if test="searchStockRecommendation != null and searchStockRecommendation != ''">
+				AND A.STOCK_RECOMMENDATION = #{searchStockRecommendation}
+			</if>
 			<if test="searchType == 'keyword'">
 				<![CDATA[
 					AND A.RP_TITLE LIKE '%'||#{keyword}||'%'
@@ -63,6 +66,9 @@
 		WHERE A.REL_STOCK_CODE =  B.STOCKS_CODE(+)
 		AND A.RP_GUBUN = NVL(#{searchGubun},'company')
 		]]>
+			<if test="searchStockRecommendation != null and searchStockRecommendation != ''">
+				AND A.STOCK_RECOMMENDATION = #{searchStockRecommendation}
+			</if>
 			<if test="searchType == 'keyword'">
 				<![CDATA[
 					AND A.RP_TITLE LIKE '%'||#{keyword}||'%'
