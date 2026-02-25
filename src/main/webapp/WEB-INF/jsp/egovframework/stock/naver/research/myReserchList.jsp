@@ -294,7 +294,7 @@ function fnDetail(rpId){
 		</div>
 	</form>
 	<!-- 목록영역 -->
-	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
+	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />" >
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
 		<col width="3%">
@@ -363,13 +363,20 @@ function fnDetail(rpId){
 	</c:if>
 	<c:forEach var="item" items="${reserchList}" varStatus="status">
 		<c:set var="pColor" value="#666"/>
+		<c:set var="stre_color" value="#ffffff"/>
 		<c:if test="${item.dyaNowPrice lt 0}">
 			<c:set var="pColor" value="blue"/>
 		</c:if>
 		<c:if test="${item.dyaNowPrice gt 0}">
 			<c:set var="pColor" value="red"/>
 		</c:if>
-	<tr >
+		<c:choose>
+			<c:when test="${item.stockRecommendation eq 'HOLD'}"><!-- 보유 -->
+				<c:set var="stre_color" value="#dbefdb"/>
+			</c:when>
+		</c:choose>
+		
+	<tr style="background-color: ${stre_color}">
 		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
 		<td><c:out value="${item.rn}"/></td>
 		<c:if test="${searchGubun eq 'company'}">
