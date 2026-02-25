@@ -344,6 +344,8 @@ function fnDetail(seq){
 		</td>
 	</tr>
 	</c:forEach>
+	<c:set var="pColor" value="blue"/>
+	<c:if test="${dyaNowPriceTotal gt 0}"><c:set var="pColor" value="red"/></c:if>
 	<tr style="background-color: #cde1f3; font-weight: bold;">
 		<td>합계</td>
 		<td></td>
@@ -355,7 +357,7 @@ function fnDetail(seq){
 		<td></td>
 		<td><fmt:formatNumber value="${nowPriceTotal}" pattern="#,###" />원</td><!-- 현재 -->
 		<td></td>
-		<td><fmt:formatNumber value="${dyaNowPriceTotal}" pattern="#,###" />원</td><!-- 합계수익 -->
+		<td style="color:${pColor};"><fmt:formatNumber value="${dyaNowPriceTotal}" pattern="#,###" />원</td><!-- 합계수익 -->
 		<td></td>
 		<td></td>
 		<td></td>
