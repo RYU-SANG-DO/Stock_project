@@ -37,6 +37,7 @@ link:hover { color: #000000; text-decoration: none; }
 <c:set var="isCom" value="false"/>
 <c:set var="isExt" value="false"/>
 <c:set var="isStock" value="false"/>
+<c:set var="isBeauty" value="false"/>
 <ul class="lnb_title">
 	<c:forEach var="result" items="${resultList}" varStatus="status">
 	
@@ -83,6 +84,13 @@ link:hover { color: #000000; text-decoration: none; }
 				<strong class="left_title_strong"><strong class="top_title_strong"><spring:message code="${mess_code}"/></strong></strong><!-- 주식 정보 컴포넌트 -->
 			</li>
 			<c:set var="isStock" value="true"/>
+		</c:if>
+		<c:if test="${isBeauty == 'false' && result.gid == '600'}">
+			<li>
+				<c:set var="mess_code" value="comCmm.${result.keyL1}.title"/>
+				<strong class="left_title_strong"><strong class="top_title_strong"><spring:message code="${mess_code}"/></strong></strong><!-- 미용실 정보 컴포넌트 -->
+			</li>
+			<c:set var="isBeauty" value="true"/>
 		</c:if>
 		
 	

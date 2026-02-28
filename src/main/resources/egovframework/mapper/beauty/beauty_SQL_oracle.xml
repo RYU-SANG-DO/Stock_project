@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	수정일				수정내용
+  ========= 		=================================================
+  2026.02.28		미용실 정보
+-->
+<mapper namespace="BeautyDAO">
+
+		<select id="selectBeautyPaymanetList"  parameterType="java.util.HashMap" resultType="egovMap">
+		<![CDATA[
+		 SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT /*selectBeautyPaymanetList*/
+				 A.SEQ
+				,A.PM_DATE
+				,A.STYLE_TYPE
+				,A.PM_TYPE
+				,A.PM_PRICE
+				,A.REG_DATE
+			FROM BEAUTY_SALON_PAYMANET_INFO A
+			WHERE 1=1
+			]]>
+			<if test="styleType != null and styleType != ''">
+				AND A.STYLE_TYPE = #{styleType}
+			</if>
+			<if test="pmType != null and pmType != ''">
+				AND A.PM_TYPE = #{pmType}
+			</if>
+			<![CDATA[
+			ORDER BY A.PM_DATE DESC
+			 ) TB 
+			 )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+			]]> 
+	</select>
+	
+	<select id="selectBeautyPaymanetListTotCnt" parameterType="java.util.Map" resultType="int">
+		<![CDATA[
+		SELECT /*selectBeautyPaymanetListTotCnt*/
+				COUNT(A.SEQ) AS CNT
+			FROM BEAUTY_SALON_PAYMANET_INFO A
+			WHERE 1=1
+			]]>
+			<if test="styleType != null and styleType != ''">
+				AND A.STYLE_TYPE = #{styleType}
+			</if>
+			<if test="pmType != null and pmType != ''">
+				AND A.PM_TYPE = #{pmType}
+			</if>
+	</select>
+	
+	<select id="selectBeautyPaymanetInfo"  parameterType="java.util.HashMap" resultType="egovMap">
+		<![CDATA[
+			SELECT /*selectBeautyPaymanetInfo*/
+				  A.SEQ
+				,A.PM_DATE
+				,A.STYLE_TYPE
+				,A.PM_TYPE
+				,A.PM_PRICE
+				,A.REG_DATE
+			FROM BEAUTY_SALON_PAYMANET_INFO A
+			WHERE A.SEQ = #{seq}
+			]]>
+	</select>
+	
+	<insert id="insertBeautyPaymanet" parameterType="java.util.Map">
+	<![CDATA[
+            INSERT INTO BEAUTY_SALON_PAYMANET_INFO(
+                SEQ,
+				PM_DATE,
+				STYLE_TYPE,
+				PM_TYPE,
+				PM_PRICE,
+				REG_DATE
+
+            ) VALUES (
+                SEQ_BEAUTY_SALON_PAYMANET_INFO_ID.NEXTVAL,
+                #{pmDate},
+                #{styleType},
+                #{pmType},
+                #{pmPrice},
+                SYSDATE
+            )
+	]]>
+    </insert>
+    
+    <update id="updateBeautyPaymanet" parameterType="java.util.Map">
+		<![CDATA[/*updateBeautyPaymanet*/
+			UPDATE BEAUTY_SALON_PAYMANET_INFO
+			SET 	PM_DATE = #{pmDate},
+					STYLE_TYPE = #{styleType},
+					PM_TYPE = #{pmType},
+					PM_PRICE = #{pmPrice}
+			WHERE SEQ = #{seq}
+		]]>
+	</update>
+	
+	<delete id="deleteBeautyPaymanet" parameterType="java.util.Map">
+		<![CDATA[/*deleteBeautyPaymanet*/
+			DELETE FROM BEAUTY_SALON_PAYMANET_INFO
+			WHERE SEQ = #{seq}		
+		]]>
+	</delete>
+
+</mapper>
