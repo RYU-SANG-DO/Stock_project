@@ -34,5 +34,9 @@ public class BeautyDAO extends EgovComAbstractDAO {
 		return selectOne("BeautyDAO.selectBeautyPaymanetInfo", commandMap);
 	}
 
+	public List<Map<String, Object>> selectBeautyPaymanetYearList(Map<String, Object> commandMap) throws Exception{
+		return selectList("BeautyDAO.selectBeautyPaymanetYearList", commandMap);
+	}
+
 	
 }

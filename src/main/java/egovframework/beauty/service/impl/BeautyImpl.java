@@ -46,6 +46,11 @@ public class BeautyImpl extends EgovAbstractServiceImpl implements BeautyService
 		return beautyDao.selectBeautyPaymanetInfo(commandMap);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectBeautyPaymanetYearList(Map<String, Object> commandMap) throws Exception {
+		return beautyDao.selectBeautyPaymanetYearList(commandMap);
+	}
+
 
 
 }

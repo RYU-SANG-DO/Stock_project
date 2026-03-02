@@ -59,6 +59,10 @@ public class BeautyController {
 		beautyVO = pagingManageController.PagingManageVo(beautyVO, model, totCnt);
 		System.out.println("FirstIndex=>"+beautyVO.getFirstIndex());
 		System.out.println("RecordCountPerPage=>"+beautyVO.getRecordCountPerPage());
+		String year = ComDateUtil.getToday_v01("yyyy");
+		System.out.println("year=>"+year);
+		String searchYear = StringUtil.nvl(commandMap.get("searchYear"),year);
+		commandMap.put("searchYear", searchYear);
 		
 		int firstIndex = beautyVO.getFirstIndex();
 		int recordCountPerPage = beautyVO.getRecordCountPerPage();
@@ -66,6 +70,9 @@ public class BeautyController {
 		commandMap.put("recordCountPerPage", recordCountPerPage);
 		List<Map<String, Object>> list = beautyService.selectBeautyPaymanetList(commandMap);
 		model.addAttribute("reserchList", list);
+		
+		List<Map<String, Object>> yearList = beautyService.selectBeautyPaymanetYearList(commandMap);
+		model.addAttribute("yearList", yearList);
         
 		model.addAttribute("paramInfo",commandMap);
 		model.addAttribute("beautyVO",beautyVO);
@@ -135,7 +142,7 @@ public class BeautyController {
 		model.addAttribute("paramInfo",commandMap);
 		model.addAllAttributes(commandMap);
 		System.out.println("미용실 결제 내역 수정/삭제 종료");
-		return "forward:/beauty/paymanet/selectBeautyPaymanetList.do";
+		return "redirect:/beauty/paymanet/selectBeautyPaymanetList.do";
     }
     
 }

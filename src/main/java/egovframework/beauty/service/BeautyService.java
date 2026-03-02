@@ -28,5 +28,7 @@ public interface BeautyService{
 
 	Map<String, Object> selectBeautyPaymanetInfo(Map<String, Object> commandMap) throws Exception;
 
+	List<Map<String, Object>> selectBeautyPaymanetYearList(Map<String, Object> commandMap) throws Exception;
+
 
 }

@@ -7,16 +7,20 @@
 -->
 <mapper namespace="BeautyDAO">
 
-		<select id="selectBeautyPaymanetList"  parameterType="java.util.HashMap" resultType="egovMap">
+	<select id="selectBeautyPaymanetList"  parameterType="java.util.HashMap" resultType="egovMap">
 		<![CDATA[
 		 SELECT * FROM ( SELECT rownum rn, TB.* FROM (
 			SELECT /*selectBeautyPaymanetList*/
 				 A.SEQ
-				,A.PM_DATE
+				,TO_CHAR(TO_DATE(A.PM_DATE,'yyyy-mm-dd'),'yyyy') AS PM_YEAR
+				,TO_CHAR(TO_DATE(A.PM_DATE,'yyyy-mm-dd'),'mm') AS PM_MONTH
+				,TO_CHAR(TO_DATE(A.PM_DATE,'yyyy-mm-dd'),'yyyy-mm-dd') AS PM_DATE
 				,A.STYLE_TYPE
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE CODE_ID='STYLE' AND CODE=A.STYLE_TYPE) AS STYLE_TYPE_NM
 				,A.PM_TYPE
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE CODE_ID='PMTYPE' AND CODE=A.PM_TYPE) AS PM_TYPE_NM
 				,A.PM_PRICE
-				,A.REG_DATE
+				,TO_CHAR(A.REG_DATE,'yyyy-mm-dd') AS REG_DATE
 			FROM BEAUTY_SALON_PAYMANET_INFO A
 			WHERE 1=1
 			]]>
@@ -48,15 +52,38 @@
 			</if>
 	</select>
 	
+	<select id="selectBeautyPaymanetYearList"  parameterType="java.util.HashMap" resultType="egovMap">
+		<![CDATA[
+		 SELECT /*selectBeautyPaymanetYearList*/
+             Z.PM_YEAR
+         FROM(
+            SELECT
+                TO_CHAR(TO_DATE(A.PM_DATE,'yyyy-mm-dd'),'yyyy') AS PM_YEAR
+			FROM BEAUTY_SALON_PAYMANET_INFO A
+			WHERE 1=1
+            UNION
+            SELECT 
+            TO_CHAR(SYSDATE,'yyyy') AS PM_YEAR
+            FROM DUAL
+         ) Z   
+         GROUP BY PM_YEAR
+         ORDER BY PM_YEAR DESC
+		]]> 
+	</select>
+	
 	<select id="selectBeautyPaymanetInfo"  parameterType="java.util.HashMap" resultType="egovMap">
 		<![CDATA[
 			SELECT /*selectBeautyPaymanetInfo*/
 				  A.SEQ
-				,A.PM_DATE
+				,TO_CHAR(TO_DATE(A.PM_DATE,'yyyy-mm-dd'),'yyyy') AS PM_YEAR
+				,TO_CHAR(TO_DATE(A.PM_DATE,'yyyy-mm-dd'),'mm') AS PM_MONTH
+				,TO_CHAR(TO_DATE(A.PM_DATE,'yyyy-mm-dd'),'yyyy-mm-dd') AS PM_DATE
 				,A.STYLE_TYPE
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE CODE_ID='STYLE' AND CODE=A.STYLE_TYPE) AS STYLE_TYPE_NM
 				,A.PM_TYPE
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE CODE_ID='PMTYPE' AND CODE=A.PM_TYPE) AS PM_TYPE_NM
 				,A.PM_PRICE
-				,A.REG_DATE
+				,TO_CHAR(A.REG_DATE,'yyyy-mm-dd') AS REG_DATE
 			FROM BEAUTY_SALON_PAYMANET_INFO A
 			WHERE A.SEQ = #{seq}
 			]]>

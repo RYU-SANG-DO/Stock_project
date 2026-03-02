@@ -98,33 +98,17 @@ $(function(){
 });
 //검색
 function fncSelectList(pageNo){
-	let searchType = $("select[name=searchType]").val();
-	 if(searchType == "keyword" && $("#keyword").val() == ""){
-		alert("제목+내용은 필수입니다.");
-		return;
-	}else if(searchType == "brokerCode" && $("select[name=brokerCode]").val() == ""){	
-		alert("증권사를 선택해 주세요.");
-		return;
-	}else if(searchType == "writeDate" && ($("#writeFromDate").val() == "" || $("#writeToDate").val() == "")){	
-		alert("기간을 선택해 주세요.");
-		return;	
-	}else if(searchType == "itemCode" && $("input[name=itemCode]").val() == ""){	
-		alert("종목을 선택해 주세요.");
-		return;
-	}else if(searchType == "upjong" && $("select[name=upjong]").val() == ""){	
-		alert("업종을 선택해 주세요.");
-		return;	
-	}
+
 		Loading();
 	    document.listForm.pageIndex.value = pageNo;
-	    document.listForm.action = "<c:url value='/stock/info/selectMyStockList.do'/>";
+	    document.listForm.action = "<c:url value='/beauty/paymanet/selectBeautyPaymanetList.do'/>";
 	    document.listForm.submit();
 }
 
 function linkPage(pageNo){
 	Loading();
     document.listForm.pageIndex.value = pageNo;
-    document.listForm.action = "<c:url value='/stock/info/selectMyStockList.do'/>";
+    document.listForm.action = "<c:url value='/beauty/paymanet/selectBeautyPaymanetList.do'/>";
     document.listForm.submit();
 }
 
@@ -203,17 +187,18 @@ function fnDetail(seq){
 		<!-- 검색영역11 -->
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />" style="padding: 10px;">
 			<ul style="margin-bottom: 0px;">
-				<li><div style="line-height:4px;">&nbsp;</div><div>검색구분 : </div></li>
+				<li><div style="line-height:4px;">&nbsp;</div><div>년도 : </div></li>
 				<li>
-					<select name="searchType" id="searchType" class="select" title="검색구분">
-						<%-- <option value="" <c:if test="${empty searchType}">selected="selected"</c:if>>선택</option> --%>
-						<option value="stockNm" <c:if test="${'stockNm' eq searchType}">selected="selected"</c:if>>종목</option>
-						<option value="account" <c:if test="${'account' eq searchType}">selected="selected"</c:if>>계좌</option>
+					<select name="searchYear" id="searchYear" class="select" title="검색구분">						
+						<%-- <option value="" <c:if test="${empty searchYear}">selected="selected"</c:if>>선택</option> --%>
+						<c:forEach items="${yearList}" var="info" varStatus="status">
+							<option value="${info.pmYear}" <c:if test="${searchYear eq info.pmYear}">selected="selected"</c:if>>${info.pmYear}</option>
+						</c:forEach>
 					</select>
 				</li>
-				<li class="stype keyword" style="border: 0px solid #d2d2d2;">
+				<%-- <li class="stype keyword" style="border: 0px solid #d2d2d2;">
 					<input class="s_input" name="keyword" id="keyword" type="text"  size="10" style="width: 150px;" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${keyword}"/>'>
-				</li>
+				</li> --%>
 			
 				<li  style="border: 0px solid #d2d2d2;">
 					<input type="button" class="s_btn"  onClick="fncSelectList('1');" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
@@ -265,21 +250,21 @@ function fnDetail(seq){
 	</tr>
 	</thead>
 	<tbody class="ov">
-	<c:if test="${fn:length(list) == 0}">
+	<c:if test="${fn:length(reserchList) == 0}">
 		<tr>
 			<td colspan="6"><spring:message code="common.nodata.msg" /></td>
 		</tr>
 	</c:if>
-	<c:forEach var="item" items="${list}" varStatus="status">
+	<c:forEach var="item" items="${reserchList}" varStatus="status">
 		<c:set var="pColor" value="#666"/>
 		<c:set var="indeColor" value="#666"/>
 	<tr>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><c:out value="${item.rn}"/></td>
+		<td><c:out value="${item.styleTypeNm}"/></td>
+		<td><c:out value="${item.pmDate}"/></td>
+		<td><c:out value="${item.pmTypeNm}"/></td>
+		<td><fmt:formatNumber value="${item.pmPrice}" pattern="#,###" />원</td>
+		<td><c:out value="${item.regDate}"/></td>
 	</tr>
 	</c:forEach>
 	</tbody>
