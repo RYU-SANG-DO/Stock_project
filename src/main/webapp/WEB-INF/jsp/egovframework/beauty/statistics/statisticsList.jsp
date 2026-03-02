@@ -1,6 +1,6 @@
 <%
  /**
-  * @Description : 미용실 결재 List 화면
+  * @Description : 미용실 통계 화면
   * @Modification Information
   * @  수정일			수정내용
   * @ -----------		---------------------------
@@ -18,6 +18,7 @@
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
 <script type="text/javaScript">
 $(function(){	
+	
 	 $.datepicker.setDefaults({
 		  dateFormat: 'yy-mm-dd',
 		  closeText: "닫기",
@@ -218,7 +219,6 @@ function fnDetail(seq){
 				<!-- 검색키워드 및 조회버튼 -->
 				<li style="border: 0px solid #d2d2d2;">
 					<input type="button" class="s_btn" onClick="fnInsert()" value="등록" title="등록 <spring:message code="input.button" />" />
-					<input type="button" class="s_btn" onClick="excelDown('L')" value="<spring:message code="stock.com.excelDown.title" />" title="<spring:message code="stock.com.excelDown.title" /> <spring:message code="input.button" />" />
 				</li>
 			</ul>
 		</div>

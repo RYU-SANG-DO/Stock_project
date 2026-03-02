@@ -73,8 +73,22 @@ public class BeautyController {
 		
 		List<Map<String, Object>> yearList = beautyService.selectBeautyPaymanetYearList(commandMap);
 		model.addAttribute("yearList", yearList);
+		
+		CmmnDetailCodeVO searchVO = new CmmnDetailCodeVO();
+		searchVO.setFirstIndex(0);
+		searchVO.setRecordCountPerPage(100);
+		searchVO.setSearchCondition("1");
+		searchVO.setClCode("BTY");
+		searchVO.setSearchKeyword("STYLE");//스타일
+		List<CmmnDetailCodeVO> styleList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("styleList", styleList);
+		
+		searchVO.setSearchKeyword("PMTYPE");//결재타입
+		List<CmmnDetailCodeVO> pmtypeList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("pmtypeList", pmtypeList);
         
 		model.addAttribute("paramInfo",commandMap);
+		model.addAttribute("totCnt",totCnt);
 		model.addAttribute("beautyVO",beautyVO);
         model.addAllAttributes(commandMap);
         return "egovframework/beauty/paymanet/paymanetList";
@@ -143,6 +157,56 @@ public class BeautyController {
 		model.addAllAttributes(commandMap);
 		System.out.println("미용실 결제 내역 수정/삭제 종료");
 		return "redirect:/beauty/paymanet/selectBeautyPaymanetList.do";
+    }
+    
+    /**
+	 * 미용실 통계 내역
+	 * @return
+	 * @throws Exception
+	 */
+    @IncludedInfo(name="미용실 통계",order = 60200 ,gid = 600 ,keyL1="beauty" ,keyL2="statistics" , lv=0)
+    @RequestMapping("/beauty/paymanet/selectBeautyStatisticsList.do")
+    public String selectBeautyStatisticsList(@RequestParam Map<String, Object> commandMap , @ModelAttribute("stocksDataVO") BeautyVO beautyVO,  HttpServletRequest request, ModelMap model) throws Exception {
+		System.out.println("selectBeautyStatisticsList start");
+    	System.out.println(commandMap);
+    	commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("beauty.com.title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("beauty.statistics.title")));
+		int totCnt = beautyService.selectBeautyPaymanetListTotCnt(commandMap);
+		beautyVO = pagingManageController.PagingManageVo(beautyVO, model, totCnt);
+		System.out.println("FirstIndex=>"+beautyVO.getFirstIndex());
+		System.out.println("RecordCountPerPage=>"+beautyVO.getRecordCountPerPage());
+		String year = ComDateUtil.getToday_v01("yyyy");
+		System.out.println("year=>"+year);
+		String searchYear = StringUtil.nvl(commandMap.get("searchYear"),year);
+		commandMap.put("searchYear", searchYear);
+		
+		int firstIndex = beautyVO.getFirstIndex();
+		int recordCountPerPage = beautyVO.getRecordCountPerPage();
+		commandMap.put("firstIndex", firstIndex);
+		commandMap.put("recordCountPerPage", recordCountPerPage);
+		List<Map<String, Object>> list = beautyService.selectBeautyPaymanetList(commandMap);
+		model.addAttribute("reserchList", list);
+		
+		List<Map<String, Object>> yearList = beautyService.selectBeautyPaymanetYearList(commandMap);
+		model.addAttribute("yearList", yearList);
+		
+		CmmnDetailCodeVO searchVO = new CmmnDetailCodeVO();
+		searchVO.setFirstIndex(0);
+		searchVO.setRecordCountPerPage(100);
+		searchVO.setSearchCondition("1");
+		searchVO.setClCode("BTY");
+		searchVO.setSearchKeyword("STYLE");//스타일
+		List<CmmnDetailCodeVO> styleList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("styleList", styleList);
+		
+		searchVO.setSearchKeyword("PMTYPE");//결재타입
+		List<CmmnDetailCodeVO> pmtypeList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("pmtypeList", pmtypeList);
+        
+		model.addAttribute("paramInfo",commandMap);
+		model.addAttribute("totCnt",totCnt);
+		model.addAttribute("beautyVO",beautyVO);
+        model.addAllAttributes(commandMap);
+        return "egovframework/beauty/statistics/statisticsList";
     }
     
 }

@@ -20,6 +20,20 @@
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
 <script type="text/javascript">
 $(function(){
+	 $.datepicker.setDefaults({
+		  dateFormat: 'yy-mm-dd',
+		  closeText: "닫기",
+		  currentText: "오늘",
+		  prevText: '이전 달',
+		  nextText: '다음 달',
+		  monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		  monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		  dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+		  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+		  dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+		  showMonthAfterYear: true,
+		  yearSuffix: '년'
+		});
 	$("#pmDate").datepicker( 
 	        {dateFormat:'yy-mm-dd'
 	         , showOn: 'button'
@@ -157,6 +171,12 @@ input[type="number"] {
    				<input type="text" name="pmPrice"	id="pmPrice" size="12" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${beautyInfo.pmPrice}" pattern="#,###" />"/>원
 			</td>
 		</tr>		
+		<tr>
+			<th><label for="pmPrice">순번</label></th>
+			<td class="left">
+   				<input type="text" name="idx"	id="idx" size="5" maxlength="2" style="width:auto;" value="${beautyInfo.idx}"/>
+			</td>
+		</tr>	
 	</tbody>
 	</table>
 
@@ -168,7 +188,7 @@ input[type="number"] {
 		</c:if>
 		<c:if test="${move ne 'update'}">
 			<span class="btn_s"><a href="#none" onClick="fn_egov_insert(); return false;" title="<spring:message code="title.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
-		</c:if>>
+		</c:if>
 		<span class="btn_s"><a href="#none" onClick="fn_egov_list(); return false;" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
