@@ -214,6 +214,7 @@ public class BeautyController {
     @RequestMapping(value = "/beauty/stats/getChartData.do")
     @ResponseBody // 리턴값을 HTTP 응답 본문(JSON)으로 직접 전송
     public Map<String, Object> getBeautystatsChartData(@RequestParam Map<String, Object> commandMap) throws Exception {
+    	System.out.println(commandMap);
     	Map<String, Object> resultMap = new HashMap<>();
     	String year = ComDateUtil.getToday_v01("yyyy");
     	String cl = StringUtil.nvl(commandMap.get("searchCl"),"");
@@ -222,11 +223,17 @@ public class BeautyController {
         // 예: [{DATE: '2026-01', VAL: 10}, {DATE: '2026-02', VAL: 25}]
         List<Map<String, Object>> yearMonthData = beautyService.selectBeautyStatsYearMonthly(commandMap);
         
-        List<Map<String, Object>> styleTypeData = beautyService.selectBeautyStatsStyleType(commandMap);     
+        List<Map<String, Object>> styleTypeData = beautyService.selectBeautyStatsStyleType(commandMap);  
+        
+     // 연도 전체 합계 계산 (Java 8 스트림 활용)
+        long totalYearPrice = yearMonthData.stream()
+                .mapToLong(m -> Long.parseLong(String.valueOf(m.get("statValue"))))
+                .sum();
         
      // 하나의 Map에 합치기
         resultMap.put("monthly", yearMonthData);
         resultMap.put("style", styleTypeData);
+        resultMap.put("totalYearPrice", totalYearPrice);
         return resultMap; // { "monthly": [...], "style": [...] } 형태의 JSON 반환
     }
     

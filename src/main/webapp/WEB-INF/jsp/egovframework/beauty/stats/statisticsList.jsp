@@ -68,7 +68,7 @@ $(function(){
 });
 //검색
 function fncSelectList(){
-	 loadAllStats(document.listForm.searchYear.value);
+	 loadAllStats();
 }
 
 
@@ -123,23 +123,45 @@ function fnDetail(seq){
     document.listForm.submit();
 }
 
-function loadAllStats(targetYear) {
+//전역 변수로 차트 객체를 선언하여 상태를 유지합니다.
+let monthlyChart = null;
+let styleChart = null;
+function loadAllStats() {
+	var searchYear = document.listForm.searchYear.value;
+	var searchMonth = document.listForm.searchMonth.value;
+	var searchStyle = document.listForm.searchStyle.value;
+	var searchPmType = document.listForm.searchPmType.value;
     $.ajax({
         url: "<c:url value='/beauty/stats/getChartData.do'/>",
         type: "GET",
-        data: { year: targetYear },
+        data: { 
+        		year: searchYear,
+        		month: searchMonth,
+        		style: searchStyle,
+        		pmType: searchPmType
+        	},
         success: function(response) {
+        	
+        	// 1. 전체 금액 표시 로직 추가
+            const formattedPrice = response.totalYearPrice.toLocaleString(); // 1,000,000 형식
+            $('#selectedYear').text(searchYear);
+            $('#totalPriceDisplay').text(formattedPrice);
+        	
             // response.monthly -> 월별 데이터
             // response.style   -> 스타일 데이터
 
             // --- 1. 월별 매출 차트 (Line) ---
             const ctx1 = document.getElementById('monthlySalesChart').getContext('2d');
-            new Chart(ctx1, {
+         // 기존에 생성된 차트가 있다면 파괴(destroy)합니다.
+            if (monthlyChart !== null) {
+                monthlyChart.destroy();
+            }
+            monthlyChart = new Chart(ctx1, {
                 type: 'line',
                 data: {
-                    labels: response.monthly.map(d => d.dateLabel),
+                    labels: response.monthly.map(d => d.dateLabel+"월"),
                     datasets: [{
-                        label: targetYear + '년 매출액',
+                        label: searchYear + '년 매출액',
                         data: response.monthly.map(d => d.statValue),
                         borderColor: '#36a2eb',
                         fill: false
@@ -149,7 +171,11 @@ function loadAllStats(targetYear) {
 
             // --- 2. 스타일별 비중 차트 (Pie) ---
             const ctx2 = document.getElementById('styleTypeChart').getContext('2d');
-            new Chart(ctx2, {
+         // 기존 차트 파괴
+            if (styleChart !== null) {
+                styleChart.destroy();
+            }
+            styleChart = new Chart(ctx2, {
                 type: 'pie',
                 data: {
                     labels: response.style.map(d => d.styleTypeNm),
@@ -261,6 +287,10 @@ function loadAllStats(targetYear) {
 	<div class="chart-container">
     <div class="chart-box">
         <h3>월별 매출 현황</h3>
+	    <p style="font-size: 1.2em; font-weight: bold; color: #2c3e50;">
+	        <span id="selectedYear">2026</span>년 총 매출액: 
+	        <span id="totalPriceDisplay" style="color: #e74c3c;">0</span>원
+	    </p>
         <canvas id="monthlySalesChart"></canvas>
     </div>
 

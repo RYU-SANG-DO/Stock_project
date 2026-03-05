@@ -150,7 +150,7 @@
 	<select id="selectBeautyStatsYearMonthly" resultType="egovMap">
 		<![CDATA[
 	    SELECT 
-	        SUBSTR(T.MONTH, 6, 2) AS "dateLabel",
+	        TO_NUMBER(SUBSTR(T.MONTH, 6, 2)) AS "dateLabel",
 	        NVL(SUM(S.PM_PRICE), 0) AS "statValue"
 	    FROM (
 	        /* 01~12월까지 가상 테이블 생성 */
@@ -159,6 +159,14 @@
 	    ) T
 	    LEFT OUTER JOIN BEAUTY_SALON_PAYMANET_INFO S ON SUBSTR(S.PM_DATE, 1, 7) = T.MONTH
 	    WHERE TO_CHAR(TO_DATE(S.PM_DATE,'YYYY-MM-DD'),'YYYY') = #{year}
+	    ]]>
+	    <if test="month != null and month != ''">
+			AND TO_NUMBER(TO_CHAR(TO_DATE(S.PM_DATE,'YYYY-MM-DD'),'MM')) = #{month}
+		</if>
+		<if test="style != null and style != ''">
+			AND S.STYLE_TYPE = #{style}
+		</if>
+		<![CDATA[
 	    GROUP BY T.MONTH
 	    ORDER BY T.MONTH ASC
 	    ]]>
@@ -173,6 +181,14 @@
 	        SUM(PM_PRICE) AS "totalPrice"
 	    FROM BEAUTY_SALON_PAYMANET_INFO A
 	     WHERE PM_DATE LIKE #{year} || '%'         -- 특정 년도 검색 시
+	    ]]>
+	    <if test="month != null and month != ''">
+			AND TO_NUMBER(TO_CHAR(TO_DATE(A.PM_DATE,'YYYY-MM-DD'),'MM')) = #{month}
+		</if>
+		<if test="style != null and style != ''">
+			AND A.STYLE_TYPE = #{style}
+		</if>
+		<![CDATA[
 	    GROUP BY STYLE_TYPE
 	    ORDER BY STYLE_TYPE
 	    ]]>
