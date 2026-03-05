@@ -166,6 +166,9 @@
 		<if test="style != null and style != ''">
 			AND S.STYLE_TYPE = #{style}
 		</if>
+		<if test="searchDate != null and searchDate != ''">
+			AND S.PM_DATE = #{searchDate}
+		</if>
 		<![CDATA[
 	    GROUP BY T.MONTH
 	    ORDER BY T.MONTH ASC
@@ -187,6 +190,9 @@
 		</if>
 		<if test="style != null and style != ''">
 			AND A.STYLE_TYPE = #{style}
+		</if>
+		<if test="searchDate != null and searchDate != ''">
+			AND A.PM_DATE = #{searchDate}
 		</if>
 		<![CDATA[
 	    GROUP BY STYLE_TYPE

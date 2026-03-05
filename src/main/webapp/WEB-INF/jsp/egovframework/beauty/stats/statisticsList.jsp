@@ -130,15 +130,17 @@ function loadAllStats() {
 	var searchYear = document.listForm.searchYear.value;
 	var searchMonth = document.listForm.searchMonth.value;
 	var searchStyle = document.listForm.searchStyle.value;
-	var searchPmType = document.listForm.searchPmType.value;
+	var searchDate = document.listForm.searchDate.value;
+	//var searchPmType = document.listForm.searchPmType.value;
     $.ajax({
         url: "<c:url value='/beauty/stats/getChartData.do'/>",
         type: "GET",
         data: { 
-        		year: searchYear,
-        		month: searchMonth,
-        		style: searchStyle,
-        		pmType: searchPmType
+        		year: searchYear
+        		,month: searchMonth
+        		,style: searchStyle
+        		,searchDate: searchDate
+        		//,pmType: searchPmType
         	},
         success: function(response) {
         	
@@ -201,7 +203,9 @@ function loadAllStats() {
 .item_list .button_box ul{
 	text-align: center;
 }
-
+select {
+text-align: center;
+}
 .chart-container {
         display: flex;
         justify-content: space-around;
@@ -250,7 +254,7 @@ function loadAllStats() {
 						</c:forEach>
 					</select>
 				</li>
-				<li><div style="line-height:4px;">&nbsp;</div><div>결재타입 : </div></li>
+				<%-- <li><div style="line-height:4px;">&nbsp;</div><div>결재타입 : </div></li>
 				<li>
 					<select name="searchPmType" id="searchPmType" class="select" title="결재타입">
 						<option value="" <c:if test="${empty searchPmType}">selected="selected"</c:if>>선택</option>
@@ -258,7 +262,7 @@ function loadAllStats() {
 								<option value="${info.code}" <c:if test="${searchPmType eq info.code}">selected="selected"</c:if>>${info.codeNm}</option>
 							</c:forEach>
 					</select>
-				</li>
+				</li> --%>
 				<li><div style="line-height:4px;">&nbsp;</div><div>스타일 : </div></li>
 				<li>
 					<select name="searchStyle" id="searchStyle" class="select" title="결재타입">
@@ -268,7 +272,7 @@ function loadAllStats() {
 							</c:forEach>
 					</select>
 				</li>
-				<li><div style="line-height:4px;">&nbsp;</div><div>검색일자 : </div></li>
+				<li><div style="line-height:4px;">&nbsp;</div><div>결재일자 : </div></li>
 				<li>
 					<input class="s_input" name="searchDate" id="searchDate" type="text"  size="10" style="width: auto;" title="검색일자 <spring:message code="input.input" />" value='<c:out value="${searchDate}"/>'>
 				</li>
