@@ -18,6 +18,7 @@
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
 <%-- <script src="<c:url value='/webjars/chartjs/4.4.3/chart.umd.js'/>"></script> --%>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 <script type="text/javaScript">
 $(function(){	
 	
@@ -159,15 +160,32 @@ function loadAllStats() {
                 monthlyChart.destroy();
             }
             monthlyChart = new Chart(ctx1, {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels: response.monthly.map(d => d.dateLabel+"월"),
                     datasets: [{
                         label: searchYear + '년 매출액',
                         data: response.monthly.map(d => d.statValue),
-                        borderColor: '#36a2eb',
-                        fill: false
+                     	// 막대 색상 설정
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)', // 막대 안쪽 색상
+                        borderColor: 'rgba(54, 162, 235, 1)',      // 테두리 색상
+                        borderWidth: 1
+                        //borderColor: '#36a2eb',
+                        //fill: false
                     }]
+                },
+                options: {
+                    plugins: {
+                        datalabels: {
+                            anchor: 'end', // 막대 끝에 위치
+                            align: 'top',  // 막대 위쪽에 표시
+                            formatter: function(value) {
+                                return value.toLocaleString() + '원'; // 금액 포맷팅
+                            },
+                            font: { weight: 'bold' }
+                        }
+                    },
+                    scales: { y: { beginAtZero: true } }
                 }
             });
 
@@ -185,6 +203,20 @@ function loadAllStats() {
                         data: response.style.map(d => d.totalPrice),
                         backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0']
                     }]
+                },
+                options: {
+                    plugins: {
+                        datalabels: {
+                            color: '#fff', // 글자색 흰색
+                            formatter: function(value, context) {
+                                // 항목 이름 + 금액 표시
+                                const label = context.chart.data.labels[context.dataIndex];
+                                return label + '\n' + value.toLocaleString() + '원';
+                            },
+                            textAlign: 'center',
+                            font: { size: 12, weight: 'bold' }
+                        }
+                    }
                 }
             });
         },
