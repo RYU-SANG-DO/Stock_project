@@ -216,9 +216,10 @@ public class BeautyController {
     public Map<String, Object> getBeautystatsChartData(@RequestParam Map<String, Object> commandMap) throws Exception {
     	System.out.println(commandMap);
     	Map<String, Object> resultMap = new HashMap<>();
-    	String year = ComDateUtil.getToday_v01("yyyy");
-    	String cl = StringUtil.nvl(commandMap.get("searchCl"),"");
-		System.out.println("year=>"+year);
+    	String nowYear = ComDateUtil.getToday_v01("yyyy");
+    	String cl = StringUtil.nvl(commandMap.get("year"),"");
+		System.out.println("nowYear=>"+nowYear);
+		commandMap.put("year", StringUtil.nvl(commandMap.get("year"), nowYear));
         // 서비스에서 List<Map<String, Object>> 형태로 데이터 조회
         // 예: [{DATE: '2026-01', VAL: 10}, {DATE: '2026-02', VAL: 25}]
         List<Map<String, Object>> yearMonthData = beautyService.selectBeautyStatsYearMonthly(commandMap);

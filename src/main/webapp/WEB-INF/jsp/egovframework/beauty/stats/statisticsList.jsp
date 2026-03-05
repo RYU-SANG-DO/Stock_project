@@ -65,6 +65,7 @@ $(function(){
 		        // 개별 체크박스 전체 개수와 체크된 개수가 같으면 전체 선택 체크
 		        $('#checkAll').prop('checked', total === checked);
 		    });
+		        loadAllStats();
 		    
 });
 //검색
@@ -282,7 +283,7 @@ text-align: center;
 					<select name="searchMonth" id="searchMonth" class="select" title="검색구분">						
 						<option value="" <c:if test="${empty searchMonth}">selected="selected"</c:if>>선택</option>
 						<c:forEach var="m" begin="01" end="12" varStatus="status">
-							<option value="${m}" <c:if test="${searchMonth eq m}">selected="selected"</c:if>>${m}</option>
+							<option value="${m}" <c:if test="${searchMonth eq m}">selected="selected"</c:if>>${m}월</option>
 						</c:forEach>
 					</select>
 				</li>
@@ -324,7 +325,7 @@ text-align: center;
     <div class="chart-box">
         <h3>월별 매출 현황</h3>
 	    <p style="font-size: 1.2em; font-weight: bold; color: #2c3e50;">
-	        <span id="selectedYear">2026</span>년 총 매출액: 
+	        <span id="selectedYear"></span>년 총 매출액: 
 	        <span id="totalPriceDisplay" style="color: #e74c3c;">0</span>원
 	    </p>
         <canvas id="monthlySalesChart"></canvas>
