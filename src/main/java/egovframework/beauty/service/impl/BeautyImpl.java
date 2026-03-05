@@ -51,6 +51,16 @@ public class BeautyImpl extends EgovAbstractServiceImpl implements BeautyService
 		return beautyDao.selectBeautyPaymanetYearList(commandMap);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectBeautyStatsYearMonthly(Map<String, Object> commandMap) throws Exception {
+		return beautyDao.selectBeautyStatsYearMonthly(commandMap);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectBeautyStatsStyleType(Map<String, Object> commandMap) throws Exception {
+		return beautyDao.selectBeautyStatsStyleType(commandMap);
+	}
+
 
 
 }

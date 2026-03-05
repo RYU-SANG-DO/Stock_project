@@ -16,6 +16,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
+<%-- <script src="<c:url value='/webjars/chartjs/4.4.3/chart.umd.js'/>"></script> --%>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javaScript">
 $(function(){	
 	
@@ -62,28 +64,19 @@ $(function(){
 		        // 개별 체크박스 전체 개수와 체크된 개수가 같으면 전체 선택 체크
 		        $('#checkAll').prop('checked', total === checked);
 		    });
+		    
 });
 //검색
-function fncSelectList(pageNo){
-
-		Loading();
-	    document.listForm.pageIndex.value = pageNo;
-	    document.listForm.action = "<c:url value='/beauty/paymanet/selectBeautyPaymanetList.do'/>";
-	    document.listForm.submit();
+function fncSelectList(){
+	 loadAllStats(document.listForm.searchYear.value);
 }
 
-function linkPage(pageNo){
-	Loading();
-    document.listForm.pageIndex.value = pageNo;
-    document.listForm.action = "<c:url value='/beauty/paymanet/selectBeautyPaymanetList.do'/>";
-    document.listForm.submit();
-}
 
 
 function press() {
 	//Loading();
     if (event.keyCode==13) {
-    	fncSelectList('1');
+    	fncSelectList();
     }
 }
 
@@ -129,6 +122,49 @@ function fnDetail(seq){
 	document.listForm.action = "<c:url value='/beauty/paymanet/moveBeautyPaymanet.do'/>";
     document.listForm.submit();
 }
+
+function loadAllStats(targetYear) {
+    $.ajax({
+        url: "<c:url value='/beauty/stats/getChartData.do'/>",
+        type: "GET",
+        data: { year: targetYear },
+        success: function(response) {
+            // response.monthly -> 월별 데이터
+            // response.style   -> 스타일 데이터
+
+            // --- 1. 월별 매출 차트 (Line) ---
+            const ctx1 = document.getElementById('monthlySalesChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: response.monthly.map(d => d.dateLabel),
+                    datasets: [{
+                        label: targetYear + '년 매출액',
+                        data: response.monthly.map(d => d.statValue),
+                        borderColor: '#36a2eb',
+                        fill: false
+                    }]
+                }
+            });
+
+            // --- 2. 스타일별 비중 차트 (Pie) ---
+            const ctx2 = document.getElementById('styleTypeChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'pie',
+                data: {
+                    labels: response.style.map(d => d.styleTypeNm),
+                    datasets: [{
+                        data: response.style.map(d => d.totalPrice),
+                        backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0']
+                    }]
+                }
+            });
+        },
+        error: function(err) {
+            alert("데이터를 불러오는 중 오류가 발생했습니다.");
+        }
+    });
+}
 </script>
 <style>
 .search_box ul li{vertical-align: middle;}
@@ -139,6 +175,22 @@ function fnDetail(seq){
 .item_list .button_box ul{
 	text-align: center;
 }
+
+.chart-container {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+    }
+    .chart-box {
+        width: 45%;  /* 한 줄에 두 개 배치 */
+        min-width: 400px;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #fff;
+    }
 </style>
 </head>
 <body>
@@ -204,88 +256,19 @@ function fnDetail(seq){
 			</ul>
 		</div>
 		
-		<div class="button_box">
-				<ul style="margin-bottom: 0px;">
-				<li style="float:left;">
-				<span>전체건수 : </span><span style="margin-right: 5px;"><fmt:formatNumber value="${totCnt}" pattern="#,###" /></span>
-					페이지 사이즈:
-					<select name="pageUnit" class="select" title="페이지">
-						<option value="10" <c:if test="${'10' eq paramInfo.pageUnit}">selected="selected"</c:if>>10</option>
-						<option value="30" <c:if test="${'30' eq paramInfo.pageUnit}">selected="selected"</c:if>>30</option>
-						<option value="60" <c:if test="${'60' eq paramInfo.pageUnit}">selected="selected"</c:if>>60</option>
-						<option value="100" <c:if test="${'100' eq paramInfo.pageUnit}">selected="selected"</c:if>>100</option>
-					</select>
-				</li>
-				<!-- 검색키워드 및 조회버튼 -->
-				<li style="border: 0px solid #d2d2d2;">
-					<input type="button" class="s_btn" onClick="fnInsert()" value="등록" title="등록 <spring:message code="input.button" />" />
-				</li>
-			</ul>
-		</div>
 	</form>
-	<!-- 목록영역 -->
-	<c:set var="unitPriceTotal" value="0"/><!-- 당일합계 -->
-	<c:set var="nowPriceTotal" value="0"/><!-- 현재합계 -->
-	<c:set var="dyaNowPriceTotal" value="0"/><!-- 합계 -->
-	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
-	<caption>${pageTitle} <spring:message code="title.list" /></caption>
-	<colgroup>
-		<col width="3%">
-		<col>
-		<col>
-		<col>
-		<col>
-		<col>
-		<col width="5%">
-	</colgroup>
-	<thead>
-	<tr class="algin-center">
-		<th>순번</th>
-		<th>스타일</th>
-		<th>결재일자</th>
-		<th>결재타입</th>
-		<th>결재금액</th>
-		<th>등록일자</th>
-		<th>수정</th>
-	</tr>
-	</thead>
-	<tbody class="ov">
-	<c:if test="${fn:length(reserchList) == 0}">
-		<tr>
-			<td colspan="7"><spring:message code="common.nodata.msg" /></td>
-		</tr>
-	</c:if>
-	<c:forEach var="item" items="${reserchList}" varStatus="status">
-		<c:set var="pColor" value="#666"/>
-		<c:set var="indeColor" value="#666"/>
-	<tr>
-		<td><c:out value="${item.rn}"/></td>
-		<td>
-			<a href="#none" onclick="fnDetail('${item.seq}');"><c:out value="${item.styleTypeNm}"/></a>
-		</td>
-		<td><c:out value="${item.pmDate}"/></td>
-		<td><c:out value="${item.pmTypeNm}"/></td>
-		<td><fmt:formatNumber value="${item.pmPrice}" pattern="#,###" />원</td>
-		<td><c:out value="${item.regDate}"/></td>
-		<td>
-			<div class="button_box1">
-				<ul>
-					<li>
-						<input type="button" class="btn02" onClick="fnDetail('${item.seq}');" value="수정" title="수정 <spring:message code="input.button" />" />
-					</li>
-				</ul>
-			</div>
-		</td>
-	</tr>
-	</c:forEach>
-	</tbody>
-	</table>
-	<c:if test="${!empty paginationInfo}">
-		<!-- paging navigation -->
-		<div class="pagination">
-			<ul><ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/></ul>
-		</div>
-	</c:if>
+	
+	<div class="chart-container">
+    <div class="chart-box">
+        <h3>월별 매출 현황</h3>
+        <canvas id="monthlySalesChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <h3>스타일별 인기 순위</h3>
+        <canvas id="styleTypeChart"></canvas>
+    </div>
+</div>
 </div>
 
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />

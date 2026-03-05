@@ -1,5 +1,6 @@
 package egovframework.beauty.web;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.beauty.service.BeautyVO;
 import egovframework.beauty.service.BeautyService;
@@ -165,27 +167,27 @@ public class BeautyController {
 	 * @throws Exception
 	 */
     @IncludedInfo(name="미용실 통계",order = 60200 ,gid = 600 ,keyL1="beauty" ,keyL2="statistics" , lv=0)
-    @RequestMapping("/beauty/paymanet/selectBeautyStatisticsList.do")
+    @RequestMapping("/beauty/stats/selectBeautyStatisticsList.do")
     public String selectBeautyStatisticsList(@RequestParam Map<String, Object> commandMap , @ModelAttribute("stocksDataVO") BeautyVO beautyVO,  HttpServletRequest request, ModelMap model) throws Exception {
 		System.out.println("selectBeautyStatisticsList start");
     	System.out.println(commandMap);
     	commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("beauty.com.title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("beauty.statistics.title")));
-		int totCnt = beautyService.selectBeautyPaymanetListTotCnt(commandMap);
-		beautyVO = pagingManageController.PagingManageVo(beautyVO, model, totCnt);
-		System.out.println("FirstIndex=>"+beautyVO.getFirstIndex());
-		System.out.println("RecordCountPerPage=>"+beautyVO.getRecordCountPerPage());
+//		int totCnt = beautyService.selectBeautyPaymanetListTotCnt(commandMap);
+//		beautyVO = pagingManageController.PagingManageVo(beautyVO, model, totCnt);
+//		System.out.println("FirstIndex=>"+beautyVO.getFirstIndex());
+//		System.out.println("RecordCountPerPage=>"+beautyVO.getRecordCountPerPage());
 		String year = ComDateUtil.getToday_v01("yyyy");
 		System.out.println("year=>"+year);
 		String searchYear = StringUtil.nvl(commandMap.get("searchYear"),year);
 		commandMap.put("searchYear", searchYear);
 		
-		int firstIndex = beautyVO.getFirstIndex();
-		int recordCountPerPage = beautyVO.getRecordCountPerPage();
-		commandMap.put("firstIndex", firstIndex);
-		commandMap.put("recordCountPerPage", recordCountPerPage);
-		List<Map<String, Object>> list = beautyService.selectBeautyPaymanetList(commandMap);
-		model.addAttribute("reserchList", list);
-		
+//		int firstIndex = beautyVO.getFirstIndex();
+//		int recordCountPerPage = beautyVO.getRecordCountPerPage();
+//		commandMap.put("firstIndex", firstIndex);
+//		commandMap.put("recordCountPerPage", recordCountPerPage);
+//		List<Map<String, Object>> list = beautyService.selectBeautyPaymanetList(commandMap);
+//		model.addAttribute("reserchList", list);
+//		
 		List<Map<String, Object>> yearList = beautyService.selectBeautyPaymanetYearList(commandMap);
 		model.addAttribute("yearList", yearList);
 		
@@ -203,10 +205,29 @@ public class BeautyController {
 		model.addAttribute("pmtypeList", pmtypeList);
         
 		model.addAttribute("paramInfo",commandMap);
-		model.addAttribute("totCnt",totCnt);
+//		model.addAttribute("totCnt",totCnt);
 		model.addAttribute("beautyVO",beautyVO);
         model.addAllAttributes(commandMap);
-        return "egovframework/beauty/statistics/statisticsList";
+        return "egovframework/beauty/stats/statisticsList";
+    }
+    
+    @RequestMapping(value = "/beauty/stats/getChartData.do")
+    @ResponseBody // 리턴값을 HTTP 응답 본문(JSON)으로 직접 전송
+    public Map<String, Object> getBeautystatsChartData(@RequestParam Map<String, Object> commandMap) throws Exception {
+    	Map<String, Object> resultMap = new HashMap<>();
+    	String year = ComDateUtil.getToday_v01("yyyy");
+    	String cl = StringUtil.nvl(commandMap.get("searchCl"),"");
+		System.out.println("year=>"+year);
+        // 서비스에서 List<Map<String, Object>> 형태로 데이터 조회
+        // 예: [{DATE: '2026-01', VAL: 10}, {DATE: '2026-02', VAL: 25}]
+        List<Map<String, Object>> yearMonthData = beautyService.selectBeautyStatsYearMonthly(commandMap);
+        
+        List<Map<String, Object>> styleTypeData = beautyService.selectBeautyStatsStyleType(commandMap);     
+        
+     // 하나의 Map에 합치기
+        resultMap.put("monthly", yearMonthData);
+        resultMap.put("style", styleTypeData);
+        return resultMap; // { "monthly": [...], "style": [...] } 형태의 JSON 반환
     }
     
 }

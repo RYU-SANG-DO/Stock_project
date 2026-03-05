@@ -30,5 +30,9 @@ public interface BeautyService{
 
 	List<Map<String, Object>> selectBeautyPaymanetYearList(Map<String, Object> commandMap) throws Exception;
 
+	List<Map<String, Object>> selectBeautyStatsYearMonthly(Map<String, Object> commandMap) throws Exception;
+
+	List<Map<String, Object>> selectBeautyStatsStyleType(Map<String, Object> commandMap) throws Exception;
+
 
 }
