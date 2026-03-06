@@ -84,6 +84,8 @@ public class StockNaverController {
 		String gubun = StringUtil.nvl(commandMap.get("gubun"),"");
 		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
 		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		int pageUnit =  Integer.parseInt(StringUtil.nvl(naverThemeVO.getPageUnit()+"","30"));
+		naverThemeVO.setPageUnit(pageUnit);
 		commandMap.put("today_ko", today_ko);
 		List<Map<String, Object>> allList = new ArrayList<Map<String, Object>>();
 		System.out.println("listType=>"+listType);
@@ -139,6 +141,16 @@ public class StockNaverController {
 				int num = Integer.parseInt(StringUtil.nvl(map.get("parameter0"),"1"));
 				if(num > firstIndex && num <= (firstIndex + recordCountPerPage)) {
 				//if((i+1) > firstIndex && (i+1) <= (firstIndex + recordCountPerPage)) {
+					
+					String stockCode5 = StringUtil.nvl(map.get("parameter5"),"");
+					Map<String, Object> stockMap5 = naverUtil.getStockInfoType(stockCode5, 0);
+					map.put("parameter5_stock_nm", stockMap5.get("parameter0"));
+					map.put("parameter5_stock_price", stockMap5.get("parameter4"));
+					
+					String stockCode7 = StringUtil.nvl(map.get("parameter7"),"");
+					Map<String, Object> stockMap7 = naverUtil.getStockInfoType(stockCode7, 0);
+					map.put("parameter7_stock_nm", stockMap7.get("parameter0"));
+					map.put("parameter7_stock_price", stockMap7.get("parameter4"));
 					themeList.add(map);
 				}
 			}

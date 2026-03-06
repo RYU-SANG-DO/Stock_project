@@ -130,6 +130,7 @@ function fncSelectStocksInfo(stock_code){
 				<select name="pageUnit" class="select" title="페이지">
 					<option value="10" <c:if test="${'10' eq naverThemeVO.pageUnit}">selected="selected"</c:if>>10</option>
 					<option value="30" <c:if test="${'30' eq naverThemeVO.pageUnit}">selected="selected"</c:if>>30</option>
+					<option value="40" <c:if test="${'40' eq naverThemeVO.pageUnit}">selected="selected"</c:if>>40</option>
 					<option value="60" <c:if test="${'60' eq naverThemeVO.pageUnit}">selected="selected"</c:if>>60</option>
 					<option value="100" <c:if test="${'100' eq naverThemeVO.pageUnit}">selected="selected"</c:if>>100</option>
 				</select>
@@ -153,9 +154,12 @@ function fncSelectStocksInfo(stock_code){
 	</colgroup>
 	<thead>
 	<tr class="algin-center">
-		<th>순번</th><!-- 0 -->
-		<th>테마명</th><!-- 1 -->
-		<th>전일대비</th><!-- 3 -->
+		<th rowspan="2">순번</th><!-- 0 -->
+		<th rowspan="2">테마명</th><!-- 1 -->
+		<th rowspan="2">전일대비</th><!-- 3 -->
+		<th colspan="2">주도주</th>
+	</tr>
+	<tr class="algin-center">
 		<th>종목명1</th><!-- 4 -->
 		<th>종목명2</th><!-- 6 -->
 	</tr>
@@ -171,9 +175,9 @@ function fncSelectStocksInfo(stock_code){
 		<td><c:out value="${item.parameter0}"/></td>
 		<td><a href="#LINK" onclick="javascript:fncSelectThemeDetailList('<c:out value="${item.parameter2}"/>','<c:out value="${item.parameter1}"/>')"><c:out value="${item.parameter1}"/></a></td>
 		<td style="color: ${item.parameter8}"><c:out value="${item.parameter3}"/></td>
-		<td>
+		<td style="text-align: left;">
 			<span class="link">
-				<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${item.parameter5}','${item.parameter4}','1000','600'); return false;" title="네이버 종합정보 이동"><c:out value="${item.parameter4}"/></a>
+				<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${item.parameter5}','${item.parameter4}','1000','600'); return false;" title="네이버 종합정보 이동"><c:out value="${item.parameter5_stock_nm}"/></a>
 		      	<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/fchart.naver?code=${item.parameter5}','${item.parameter4}','1000','600'); return false;" title="네이버 챠트보기 이동"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
 		      	<span class="chart-icons" style="cursor:pointer;">
 			        <i class="fa fa-calendar-day" onclick="openChartModal('${item.parameter5}' , '${item.parameter4}', 'day')" title="일봉차트 이미지팝업">[일]</i>
@@ -182,9 +186,9 @@ function fncSelectStocksInfo(stock_code){
 			    </span>
 		    </span>
 		</td>
-		<td>
+		<td  style="text-align: left;">
 			<span class="link">
-				<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${item.parameter7}','${item.parameter6}','1000','600'); return false;" title="네이버 종합정보 이동"><c:out value="${item.parameter6}"/></a>
+				<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${item.parameter7}','${item.parameter6}','1000','600'); return false;" title="네이버 종합정보 이동"><c:out value="${item.parameter7_stock_nm}"/></a>
 		      	<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/fchart.naver?code=${item.parameter7}','${item.parameter6}','1000','600'); return false;" title="네이버 챠트보기 이동"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
 		      	<span class="chart-icons" style="cursor:pointer;">
 			        <i class="fa fa-calendar-day" onclick="openChartModal('${item.parameter7}' , '${item.parameter6}', 'day')" title="일봉차트 이미지팝업">[일]</i>
