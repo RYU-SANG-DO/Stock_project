@@ -140,17 +140,40 @@ public class StockNaverController {
 				map.put("parameter0", (i+1));
 				int num = Integer.parseInt(StringUtil.nvl(map.get("parameter0"),"1"));
 				if(num > firstIndex && num <= (firstIndex + recordCountPerPage)) {
-				//if((i+1) > firstIndex && (i+1) <= (firstIndex + recordCountPerPage)) {
 					
 					String stockCode5 = StringUtil.nvl(map.get("parameter5"),"");
 					Map<String, Object> stockMap5 = naverUtil.getStockInfoType(stockCode5, 0);
 					map.put("parameter5_stock_nm", stockMap5.get("parameter0"));
 					map.put("parameter5_stock_price", stockMap5.get("parameter4"));
+					String nowPrice5 = StringUtil.nvl(stockMap5.get("parameter1"),"");//현재단가
+					double indepercent5 = Double.parseDouble(StringUtil.nvl(stockMap5.get("parameter2"),"0.0").replace("-", ""));//현재증감률
+					String risigHnl5 = "#666";
+					if("하락".equals(StringUtil.nvl(stockMap5.get("parameter7"),""))) {
+						indepercent5 = indepercent5*(-1);
+						risigHnl5 = "#007bff";
+					}else if("상승".equals(StringUtil.nvl(stockMap5.get("parameter7"),""))) {
+						risigHnl5 = "red";
+					}
+					map.put("parameter5_color", risigHnl5);
+					map.put("parameter5_nowPrice", nowPrice5);
+					map.put("parameter5_indepercent", indepercent5);
 					
 					String stockCode7 = StringUtil.nvl(map.get("parameter7"),"");
 					Map<String, Object> stockMap7 = naverUtil.getStockInfoType(stockCode7, 0);
 					map.put("parameter7_stock_nm", stockMap7.get("parameter0"));
 					map.put("parameter7_stock_price", stockMap7.get("parameter4"));
+					String nowPrice7 = StringUtil.nvl(stockMap7.get("parameter1"),"");//현재단가
+					double indepercent7 = Double.parseDouble(StringUtil.nvl(stockMap7.get("parameter2"),"0.0").replace("-", ""));//현재증감률
+					String risigHnl7 = "#666";
+					if("하락".equals(StringUtil.nvl(stockMap7.get("parameter7"),""))) {
+						indepercent7 = indepercent7*(-1);
+						risigHnl7 = "#007bff";
+					}else if("상승".equals(StringUtil.nvl(stockMap7.get("parameter7"),""))) {
+						risigHnl7 = "red";
+					}
+					map.put("parameter7_color", risigHnl7);
+					map.put("parameter7_nowPrice", nowPrice7);
+					map.put("parameter7_indepercent", indepercent7);
 					themeList.add(map);
 				}
 			}
