@@ -17,7 +17,18 @@ function leftMenuMove(){
         console.log("아직 페이지가 로드되지 않았거나 함수가 없습니다.");
     }
 }
+function moveContent(url){
+    // content frame 이동
+    parent.frames['_content'].location.href = url;
+    // 주소창 변경 (reload 없음)
+    parent.history.replaceState(
+        null,
+        "",
+        //parent.location.pathname + "?url=" + encodeURIComponent(url)
+        parent.location.pathname + "?url=" + url
+    );
 
+}
 </script>
 <style type="text/css">
 link { color: #666666; text-decoration: none; }
@@ -99,12 +110,18 @@ link:hover { color: #000000; text-decoration: none; }
 		<c:choose>
 			<c:when test="${result.gid eq '200'}">
 				<ul class="2depth" style="margin-left: ${margin_left}px;">
-					<li><a href="<c:url value='${result.listUrl}'/>" onclick="leftMenuMove();" target="_content" class="link" title="${result}"> <c:out value="${result.order}"/>. <c:out value="${result.name}"/></a></li>
+					<li>
+						<%-- <a href="<c:url value='${result.listUrl}'/>" onclick="leftMenuMove();" target="_content" class="link" title="${result}"> <c:out value="${result.order}"/>. <c:out value="${result.name}"/></a> --%>
+						<a href="javascript:moveContent('<c:url value="${result.listUrl}" />')" class="link"><c:out value="${result.order}"/>. <c:out value="${result.name}"/></a>
+					</li>
 				</ul>
 			</c:when>
 			<c:otherwise>
 				<ul class="2depth" style="margin-left: ${margin_left}px;">
-					<li><a href="${pageContext.request.contextPath}<c:out value="${result.listUrl}"/>" target="_content" class="link" title="${result}"> <c:out value="${result.order}"/>. <c:out value="${result.name}"/></a></li>
+					<li>
+						<%-- <a href="${pageContext.request.contextPath}<c:out value="${result.listUrl}"/>" target="_content" class="link" title="${result}"> <c:out value="${result.order}"/>. <c:out value="${result.name}"/></a> --%>
+						<a href="javascript:moveContent('<c:url value="${result.listUrl}" />')" class="link"><c:out value="${result.order}"/>. <c:out value="${result.name}"/></a>
+					</li>
 				</ul>
 			</c:otherwise>
 		</c:choose>

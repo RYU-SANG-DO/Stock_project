@@ -153,7 +153,8 @@ function loadAllStats() {
         	
             // response.monthly -> 월별 데이터
             // response.style   -> 스타일 데이터
-
+			// [중요] 플러그인을 전역으로 등록합니다.
+			Chart.register(ChartDataLabels);
             // --- 1. 월별 매출 차트 (Line) ---
             const ctx1 = document.getElementById('monthlySalesChart').getContext('2d');
          // 기존에 생성된 차트가 있다면 파괴(destroy)합니다.
@@ -165,12 +166,13 @@ function loadAllStats() {
                 data: {
                     labels: response.monthly.map(d => d.dateLabel+"월"),
                     datasets: [{
-                        label: searchYear + '년 매출액',
+                        //label: searchYear + '년 매출액',
+                        label: '',
                         data: response.monthly.map(d => d.statValue),
                      	// 막대 색상 설정
-                        backgroundColor: 'rgba(54, 162, 235, 0.5)', // 막대 안쪽 색상
-                        borderColor: 'rgba(54, 162, 235, 1)',      // 테두리 색상
-                        borderWidth: 1
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)' // 막대 안쪽 색상
+                        //borderColor: 'rgba(54, 162, 235, 1)',      // 테두리 색상
+                        //borderWidth: 1
                         //borderColor: '#36a2eb',
                         //fill: false
                     }]
@@ -178,15 +180,27 @@ function loadAllStats() {
                 options: {
                     plugins: {
                         datalabels: {
+                        	display: true,      // 항상 표시
                             anchor: 'end', // 막대 끝에 위치
                             align: 'top',  // 막대 위쪽에 표시
+                            offset: 4,          // 막대와 숫자 사이 간격
                             formatter: function(value) {
-                                return value.toLocaleString() + '원'; // 금액 포맷팅
+                                return value.toLocaleString(); // 금액 포맷팅
                             },
-                            font: { weight: 'bold' }
+                            font: { 
+                            			weight: 'bold',
+                            			size: 10 
+                            		},
+                            		color: '#333'       // 글자 색상
                         }
                     },
-                    scales: { y: { beginAtZero: true } }
+                    scales: { 
+                    				y: { 
+                    						beginAtZero: true,
+                    						// 차트 상단에 숫자가 잘리지 않도록 여유 공간 설정
+                    		                grace: '10%'
+                    					} 
+                    			}
                 }
             });
 
@@ -206,19 +220,44 @@ function loadAllStats() {
                     }]
                 },
                 options: {
+                	responsive: true,
+                	layout: {
+                        padding: 30 // 숫자가 차트 영역 밖으로 잘리지 않도록 여백 확보
+                    },
                     plugins: {
+                    	legend: {
+                            display: true,
+                            position: 'bottom' // 범례는 아래로 이동
+                        },
                         datalabels: {
-                            color: '#fff', // 글자색 흰색
+                        	display: function(context) {
+                                const dataset = context.dataset;
+                                const value = dataset.data[context.dataIndex];
+                                const total = dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                const percentage = (value / total) * 100;
+
+                                // 비중이 5% 이상인 경우에만 라벨을 표시함
+                                return percentage >= 1; 
+                            },
+                            anchor: 'end',    // 조각의 끝 지점을 기준으로
+                            align: 'end',     // 바깥쪽 방향으로 배치
+                            offset: 1,       // 조각과 숫자 사이의 간격(픽셀)
+                            color: '#333',    // 바깥쪽이므로 어두운 색상 권장
                             formatter: function(value, context) {
                                 // 항목 이름 + 금액 표시
                                 const label = context.chart.data.labels[context.dataIndex];
-                                return label + '\n' + value.toLocaleString() + '원';
+                                return label + '\n' + value.toLocaleString();
+                                //return label + ": " + value.toLocaleString() + "원";
                             },
                             textAlign: 'center',
-                            font: { size: 12, weight: 'bold' }
+                            font: { 
+                            			size: 10, 
+                            			weight: 'bold' 
+                            		}
                         }
                     }
-                }
+                },
+                plugins: [ChartDataLabels] // 플러그인 활성화
             });
         },
         error: function(err) {
@@ -245,9 +284,10 @@ text-align: center;
         flex-wrap: wrap;
         gap: 20px;
         padding: 20px;
+        text-align: center;
     }
     .chart-box {
-        width: 45%;  /* 한 줄에 두 개 배치 */
+        width: 49%;  /* 한 줄에 두 개 배치 */
         min-width: 400px;
         border: 1px solid #ddd;
         padding: 15px;
@@ -321,6 +361,7 @@ text-align: center;
 		
 	</form>
 	
+</div>
 	<div class="chart-container">
     <div class="chart-box">
         <h3>월별 매출 현황</h3>
@@ -335,7 +376,6 @@ text-align: center;
         <h3>스타일별 인기 순위</h3>
         <canvas id="styleTypeChart"></canvas>
     </div>
-</div>
 </div>
 
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />
