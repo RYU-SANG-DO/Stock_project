@@ -187,7 +187,7 @@ function checkNumber(str) {
 		            Tree[${status.index}] = "${result.themeId}|${result.upThemeId}|${result.themeName}|${result.themeDesc}|${result.themeLevel}|${result.themeCode}|";
 		        </c:forEach>
         
-        		createTree(Tree, true);
+        		createTree(Tree, false);
         	</script>
         </div>
     </div>

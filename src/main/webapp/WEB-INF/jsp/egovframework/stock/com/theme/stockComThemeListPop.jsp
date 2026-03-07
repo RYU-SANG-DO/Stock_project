@@ -91,7 +91,7 @@ function selectMenuListTmp() {
 				for (var j = 0; j < document.searchUpperMenuIdForm.tmp_themeNmVal.length; j++) {
 					Tree[j] = document.searchUpperMenuIdForm.tmp_themeNmVal[j].value;
 			    }
-				createTree(Tree, true);
+				createTree(Tree, false);
             }else{
             	alert("<spring:message code="comSymMnuMpm.menuMvmn.validate.alert.menu"/>");
             	window.close();
