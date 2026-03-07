@@ -147,9 +147,10 @@ function loadAllStats() {
         success: function(response) {
         	
         	// 1. 전체 금액 표시 로직 추가
-            const formattedPrice = response.totalYearPrice.toLocaleString(); // 1,000,000 형식
+           const kiloTotal = Math.floor(response.totalYearPrice / 1000);
+			$('#totalPriceDisplay').text(kiloTotal.toLocaleString());
             $('#selectedYear').text(searchYear);
-            $('#totalPriceDisplay').text(formattedPrice);
+            //$('#totalPriceDisplay').text(formattedPrice);
         	
             // response.monthly -> 월별 데이터
             // response.style   -> 스타일 데이터
@@ -179,19 +180,45 @@ function loadAllStats() {
                 },
                 options: {
                     plugins: {
+                    	// 1. 화면에 항상 보이는 라벨 (천원 단위)
                         datalabels: {
                         	display: true,      // 항상 표시
                             anchor: 'end', // 막대 끝에 위치
                             align: 'top',  // 막대 위쪽에 표시
                             offset: 4,          // 막대와 숫자 사이 간격
                             formatter: function(value) {
-                                return value.toLocaleString(); // 금액 포맷팅
+                                // 1. 숫자를 1,000으로 나눔
+                                const kiloValue = Math.floor(value / 1000); 
+                                
+                                // 2. 3자리 콤마 적용 후 '천원' 결합
+                                return kiloValue.toLocaleString();
                             },
                             font: { 
                             			weight: 'bold',
-                            			size: 10 
+                            			size: 11
                             		},
                             		color: '#333'       // 글자 색상
+                        },
+                     // 2. 마우스 오버 시 나타나는 툴팁 (원 단위)
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    // 항목명(label) 가져오기
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    // 원본 데이터(Raw Value)를 원 단위로 표시
+                                    if (context.parsed.y !== undefined) { // 막대 차트인 경우
+                                    	let kiloValue = Math.floor(context.parsed.y / 1000); 
+                                        label = context.parsed.y.toLocaleString()+ '원';
+                                    } else { // 파이 차트인 경우
+                                    	let kiloValue = Math.floor(context.parsed / 1000); 
+                                        label = context.parsed.toLocaleString() + '원';
+                                    }
+                                    return label;
+                                }
+                            }
                         }
                     },
                     scales: { 
@@ -246,7 +273,8 @@ function loadAllStats() {
                             formatter: function(value, context) {
                                 // 항목 이름 + 금액 표시
                                 const label = context.chart.data.labels[context.dataIndex];
-                                return label + '\n' + value.toLocaleString();
+                                const kiloValue = Math.floor(value / 1000); 
+                                return label + '\n' + kiloValue.toLocaleString();
                                 //return label + ": " + value.toLocaleString() + "원";
                             },
                             textAlign: 'center',
@@ -254,6 +282,27 @@ function loadAllStats() {
                             			size: 10, 
                             			weight: 'bold' 
                             		}
+                        },
+                     // 2. 마우스 오버 시 나타나는 툴팁 (원 단위)
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    // 항목명(label) 가져오기
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    // 원본 데이터(Raw Value)를 원 단위로 표시
+                                    if (context.parsed.y !== undefined) { // 막대 차트인 경우
+                                    	let kiloValue = Math.floor(context.parsed.y / 1000); 
+                                        label = context.parsed.y.toLocaleString()+ '원';
+                                    } else { // 파이 차트인 경우
+                                    	let kiloValue = Math.floor(context.parsed / 1000); 
+                                        label = context.parsed.toLocaleString() + '원';
+                                    }
+                                    return label;
+                                }
+                            }
                         }
                     }
                 },
@@ -362,12 +411,13 @@ text-align: center;
 	</form>
 	
 </div>
+	<div style="padding-left: 20px;font-weight: bold;">단위 : 천원</div>
 	<div class="chart-container">
     <div class="chart-box">
         <h3>월별 매출 현황</h3>
 	    <p style="font-size: 1.2em; font-weight: bold; color: #2c3e50;">
 	        <span id="selectedYear"></span>년 총 매출액: 
-	        <span id="totalPriceDisplay" style="color: #e74c3c;">0</span>원
+	        <span id="totalPriceDisplay" style="color: #e74c3c;">0</span>천원
 	    </p>
         <canvas id="monthlySalesChart"></canvas>
     </div>
