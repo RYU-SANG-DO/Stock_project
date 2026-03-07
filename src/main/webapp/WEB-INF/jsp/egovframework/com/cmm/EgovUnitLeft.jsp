@@ -18,6 +18,9 @@ function leftMenuMove(){
     }
 }
 function moveContent(url){
+	if (parent._content && typeof parent._content.Loading === 'function') {
+        parent._content.Loading();
+    }
     // content frame 이동
     parent.frames['_content'].location.href = url;
     // 주소창 변경 (reload 없음)
