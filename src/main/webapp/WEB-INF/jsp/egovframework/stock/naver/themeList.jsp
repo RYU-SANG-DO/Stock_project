@@ -184,7 +184,9 @@ function fncSelectStocksInfo(stock_code){
 			        <i class="fa fa-calendar-day" onclick="openChartModal('${item.parameter5}' , '${item.parameter4}', 'day')" title="일봉차트 이미지팝업">[일]</i>
 			        <i class="fa fa-calendar-week" onclick="openChartModal('${item.parameter5}' , '${item.parameter4}' , 'week')" title="주봉차트 이미지팝업">[주]</i>
 			        <i class="fa fa-calendar-alt" onclick="openChartModal('${item.parameter5}' , '${item.parameter4}' , 'month')" title="월봉차트 이미지팝업">[월]</i>
-			        <front style="color: ${item.parameter5_color}"><c:out value="${item.parameter5_nowPrice}"/></front>
+			        <front style="color: ${item.parameter5_color}">
+			        	<c:out value="${item.parameter5_nowPrice}"/>[<c:out value="${item.parameter5_indepercent}"/>%]
+			        </front>
 			    </span>
 		    </span>
 		</td>
@@ -196,7 +198,9 @@ function fncSelectStocksInfo(stock_code){
 			        <i class="fa fa-calendar-day" onclick="openChartModal('${item.parameter7}' , '${item.parameter6}', 'day')" title="일봉차트 이미지팝업">[일]</i>
 			        <i class="fa fa-calendar-week" onclick="openChartModal('${item.parameter7}' , '${item.parameter6}' , 'week')" title="주봉차트 이미지팝업">[주]</i>
 			        <i class="fa fa-calendar-alt" onclick="openChartModal('${item.parameter7}' , '${item.parameter6}' , 'month')" title="월봉차트 이미지팝업">[월]</i>
-			        <front style="color: ${item.parameter7_color}"><c:out value="${item.parameter7_nowPrice}"/></front>
+			        <front style="color: ${item.parameter7_color}">
+			        	<c:out value="${item.parameter7_nowPrice}"/>[<c:out value="${item.parameter7_indepercent}"/>%]
+			        </front>
 			    </span>
 		    </span>
 		</td>
