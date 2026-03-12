@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery-3.7.1.min.js'/>" ></script> --%>
 <!-- <div class="preloader"></div> -->
 <div id="map" class="loadingImg"></div>
 <div id="chartModal" class="modal" tabindex="-1" role="dialog" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7);">

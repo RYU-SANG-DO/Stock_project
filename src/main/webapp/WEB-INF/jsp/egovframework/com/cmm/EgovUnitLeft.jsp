@@ -20,6 +20,10 @@ function leftMenuMove(){
 function moveContent(url){
 	if (parent._content && typeof parent._content.Loading === 'function') {
         parent._content.Loading();
+	}else if (parent._bottom && typeof parent._bottom.Loading === 'function') {
+            parent._bottom.Loading();
+    }else {
+        console.log("아직 페이지가 로드되지 않았거나 함수가 없습니다.");
     }
     // content frame 이동
     parent.frames['_content'].location.href = url;
