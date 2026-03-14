@@ -38,6 +38,27 @@ public class StockInfoDAO extends EgovComAbstractDAO {
 		return selectOne("StockInfoDAO.selectMyStockDetail", commandMap);
 	}
 
+	public List<Map<String, Object>> selectMyStockHistList(Map<String, Object> commandMap) throws Exception{
+		return selectList("StockInfoDAO.selectMyStockHistList", commandMap);
+	}
+
+	//거내 이력 상세 조회
+	public Map<String, Object> selectMyStockHistDetail(Map<String, Object> commandMap) throws Exception{
+		return selectOne("StockInfoDAO.selectMyStockHistDetail", commandMap);
+	}
+
+	public void insertMyStockHist(Map<String, Object> commandMap) throws Exception{
+		insert("StockInfoDAO.insertMyStockHist", commandMap);
+	}
+
+	public int updateMyStockHist(Map<String, Object> commandMap) throws Exception{
+		return update("StockInfoDAO.updateMyStockHist", commandMap);
+	}
+
+	public int deleteMyStockHist(Map<String, Object> commandMap) throws Exception{
+		return delete("StockInfoDAO.deleteMyStockHist", commandMap);
+	}
+
 
 
 

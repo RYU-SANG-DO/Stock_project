@@ -32,4 +32,16 @@ public interface StockInfoService{
 	//거래내역 상세 조회
 	Map<String, Object> selectMyStockDetail(Map<String, Object> commandMap) throws Exception;
 
+	//거내 이력 조회
+	List<Map<String, Object>> selectMyStockHistList(Map<String, Object> commandMap) throws Exception;
+
+	//거내 이력 상세 조회
+	Map<String, Object> selectMyStockHistDetail(Map<String, Object> commandMap) throws Exception;
+
+	void insertMyStockHist(Map<String, Object> commandMap) throws Exception;
+
+	int updateMyStockHist(Map<String, Object> commandMap) throws Exception;
+
+	int deleteMyStockHist(Map<String, Object> commandMap) throws Exception;
+
 }

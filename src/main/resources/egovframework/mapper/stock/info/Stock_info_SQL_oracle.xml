@@ -6,7 +6,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="StockInfoDAO">
 
-		<select id="selectMyStockList"  parameterType="egovframework.stock.data.service.StocksDataVO" resultType="egovMap">
+		<select id="selectMyStockList"  parameterType="java.util.Map" resultType="egovMap">
 		<![CDATA[
 		 SELECT * FROM ( SELECT rownum rn, TB.* FROM (
 			SELECT /*selectMyStockList*/
@@ -21,6 +21,7 @@
 				,A.TRFTAX
 				,A.INCMTAX
 				,A.UNIT_PRICE
+				,A.SELL_PRICE
 				,A.ACCOUNT
 				,(A.QY*A.UNIT_PRICE)-(A.FEE+A.TRFTAX+A.INCMTAX) AS TOTAL_PRICE
 				,A.RM
@@ -29,6 +30,9 @@
 					STOCKS_LIST B
 			WHERE A.CODE =  B.STOCKS_CODE(+)
 			]]>
+			<if test="searchBubun != null and searchBubun != ''">
+				AND A.GUBUN = #{searchBubun}
+			</if>
 			<if test="keyword != null and keyword != ''">
 				<if test="searchType == 'stockNm'">
 					AND B.STOCKS_NAME LIKE  '%'||#{keyword}||'%'
@@ -38,7 +42,7 @@
 				</if>
 			</if>
 			<![CDATA[
-			ORDER BY A.DELNG_DE DESC
+			ORDER BY A.CODE , A.DELNG_DE DESC
 			  ) TB )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 			]]> 
 	</select>
@@ -51,6 +55,9 @@
 				STOCKS_LIST B
 		WHERE A.CODE =  B.STOCKS_CODE(+)
 		]]>
+		<if test="searchBubun != null and searchBubun != ''">
+			AND A.GUBUN = #{searchBubun}
+		</if>
 		<if test="keyword != null and keyword != ''">
 			<if test="searchType == 'stockNm'">
 				AND B.STOCKS_NAME LIKE  '%'||#{keyword}||'%'
@@ -62,7 +69,7 @@
 		
 	</select>
 	
-	<select id="selectMyStockDetail"  parameterType="egovframework.stock.data.service.StocksDataVO" resultType="egovMap">
+	<select id="selectMyStockDetail"  parameterType="java.util.Map" resultType="egovMap">
 		<![CDATA[
 			SELECT /*selectMyStockDetail*/
 				 A.SEQ
@@ -76,6 +83,7 @@
 				,A.TRFTAX
 				,A.INCMTAX
 				,A.UNIT_PRICE
+				,A.SELL_PRICE
 				,A.ACCOUNT
 				,(A.QY*A.UNIT_PRICE)-(A.FEE+A.TRFTAX+A.INCMTAX) AS TOTAL_PRICE
 				,A.RM
@@ -83,7 +91,7 @@
 			FROM STOCKS_TRANSACTION_INFO A,
 					STOCKS_LIST B
 			WHERE A.CODE =  B.STOCKS_CODE(+)
-			AND A.SEQ = #{seq}
+			AND A.SEQ = #{pSeq}
 			]]> 
 	</select>
 	
@@ -101,6 +109,7 @@
 				TRFTAX,
 				INCMTAX,
 				UNIT_PRICE,
+				SELL_PRICE,
 				ACCOUNT,
 				RM,
 				REG_DATE
@@ -114,6 +123,7 @@
 							  NVL(#{trftax},'0'), 
 							  NVL(#{incmtax},'0'), 
 							  NVL(#{unitPrice},'0'), 
+							  NVL(#{sellPrice},'0'), 
 							  NVL(#{account},''), 
 							  NVL(#{rm},''), 
 							  SYSDATE 
@@ -133,6 +143,7 @@
 				TRFTAX = NVL(#{trftax},'0'),
 				INCMTAX = NVL(#{incmtax},'0'),
 				UNIT_PRICE = NVL(#{unitPrice},'0'),
+				SELL_PRICE = NVL(#{sellPrice},'0'),
 				ACCOUNT = NVL(#{account},''),
 				RM = #{rm}
 			WHERE SEQ = #{seq}
@@ -143,7 +154,120 @@
 	<delete id="deleteMyStock" parameterType="java.util.Map">
 		<![CDATA[/*deleteMyStock*/
 			DELETE FROM STOCKS_TRANSACTION_INFO
-			WHERESEQ = #{seq}		
+			WHERE SEQ = #{seq}		
+		]]>
+	</delete>
+	
+	<!-- 거래 이력 내역 -->
+	<select id="selectMyStockHistList"  parameterType="java.util.Map" resultType="egovMap">
+	<![CDATA[
+		 SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT /*selectMyStockHistList*/
+				 B.SEQ
+				,B.P_SEQ 
+				,A.CODE
+				,C.STOCKS_NAME
+				,B.QY
+				,B.GUBUN
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='STRE' AND CODE=B.GUBUN) AS GUBUN_NM
+				,B.DELNG_DE
+				,B.UNIT_PRICE
+				,(B.QY * B.UNIT_PRICE) AS TOTAL_PRICE
+				,B.RM
+				,TO_CHAR(B.UPD_DATE,'YYYY-MM-DD') AS UPD_DATE
+				,TO_CHAR(B.REG_DATE,'YYYY-MM-DD') AS REG_DATE
+			FROM STOCKS_TRANSACTION_INFO A,
+					STOCKS_TRANSACTION_HIST B,
+					STOCKS_LIST C
+			WHERE A.SEQ = B.P_SEQ 
+			AND A.CODE =  C.STOCKS_CODE(+)
+			AND B.P_SEQ = #{pSeq}
+			]]>
+			<if test="keyword != null and keyword != ''">
+				<if test="searchType == 'stockNm'">
+					AND C.STOCKS_NAME LIKE  '%'||#{keyword}||'%'
+				</if>
+			</if>
+			<![CDATA[
+				ORDER BY B.DELNG_DE DESC
+				) TB 
+			)
+	]]> 
+	</select>
+	
+	<!-- 거래 이력 상세 -->
+	<select id="selectMyStockHistDetail"  parameterType="java.util.Map" resultType="egovMap">
+	<![CDATA[
+			SELECT /*selectMyStockHistDetail*/
+				 B.SEQ
+				,B.P_SEQ 
+				,A.CODE
+				,C.STOCKS_NAME
+				,B.QY
+				,B.GUBUN
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='STRE' AND CODE=B.GUBUN) AS GUBUN_NM
+				,B.DELNG_DE
+				,B.UNIT_PRICE
+				,(B.QY * B.UNIT_PRICE) AS TOTAL_PRICE
+				,B.RM
+				,TO_CHAR(B.UPD_DATE,'YYYY-MM-DD') AS UPD_DATE
+				,TO_CHAR(B.REG_DATE,'YYYY-MM-DD') AS REG_DATE
+			FROM STOCKS_TRANSACTION_INFO A,
+					STOCKS_TRANSACTION_HIST B,
+					STOCKS_LIST C
+			WHERE A.SEQ = B.P_SEQ 
+			AND A.CODE =  C.STOCKS_CODE(+)
+			AND B.SEQ = #{seq}
+			AND B.P_SEQ = #{pSeq}
+	]]> 
+	</select>
+	
+	<!-- 거래 이력 등록 -->
+	<insert id="insertMyStockHist" parameterType="java.util.Map">
+		<![CDATA[/*insertMyStockHist*/
+			INSERT INTO STOCKS_TRANSACTION_HIST ( 
+				SEQ,
+				P_SEQ,
+				QY,
+				GUBUN,
+				DELNG_DE,
+				UNIT_PRICE,
+				RM,
+				UPD_DATE,
+				REG_DATE
+			  ) VALUES ( 
+							  SEQ_STOCKS_TRANSACTION_HIST.NEXTVAL , 
+							  #{pSeq}, 
+							  NVL(#{qy},'0'), 
+							  #{gubun}, 
+							  NVL(#{delngDe},''), 
+							  NVL(#{unitPrice},'0'), 
+							  NVL(#{rm},''), 
+							  SYSDATE,
+							  SYSDATE 
+							  )			
+		]]>
+	</insert>	
+	
+	<!-- 거래 이력 수정 -->
+	<update id="updateMyStockHist" parameterType="java.util.Map">
+		<![CDATA[/*updateMyStockHist*/
+			UPDATE STOCKS_TRANSACTION_HIST
+			SET QY = NVL(#{qy},'1'),
+				GUBUN = #{gubun},
+				DELNG_DE = #{delngDe},
+				UNIT_PRICE = NVL(#{unitPrice},'0'),
+				RM = #{rm},
+				UPD_DATE= SYSDATE
+			WHERE SEQ = #{seq}
+		]]>
+	</update>
+	
+	<!-- 거래 이력 삭제 -->
+	<delete id="deleteMyStockHist" parameterType="java.util.Map">
+		<![CDATA[/*deleteMyStockHist*/
+			DELETE FROM STOCKS_TRANSACTION_HIST
+			WHER ESEQ = #{seq}		
 		]]>
 	</delete>
 	

@@ -1,7 +1,6 @@
 <%
  /**
-  * @Class Name : StockNaverController.java
-  * @Description : NAVER 리서치 List 화면
+  * @Description : My 주식 이력 List 화면
   * @Modification Information
   * @  수정일			수정내용
   * @ -----------		---------------------------
@@ -117,14 +116,14 @@ function fncSelectList(pageNo){
 	}
 		Loading();
 	    document.listForm.pageIndex.value = pageNo;
-	    document.listForm.action = "<c:url value='/stock/info/selectMyStockList.do'/>";
+	    document.listForm.action = "<c:url value='/stock/info/selectMyStockHistList.do'/>";
 	    document.listForm.submit();
 }
 
 function linkPage(pageNo){
 	Loading();
     document.listForm.pageIndex.value = pageNo;
-    document.listForm.action = "<c:url value='/stock/info/selectMyStockList.do'/>";
+    document.listForm.action = "<c:url value='/stock/info/selectMyStockHistList.do'/>";
     document.listForm.submit();
 }
 
@@ -141,7 +140,7 @@ function excelDown(gubun){
 	$("#downGubun").val(gubun);
 	$.ajax({
 		type : "POST",
-		url : "<c:url value='/stock/info/selectMyStockListExclDownAjax.do'/>",
+		url : "<c:url value='/stock/info/selectMyStockHistListExclDownAjax.do'/>",
 		//data : { "knoTypeCd": $("#knoTypeCd").val() },
 		data: $("#listForm").serialize(),
 		dataType : 'json',
@@ -168,20 +167,19 @@ function excelDown(gubun){
 
 function fnInsert(){
 	$("#mode").val("insert");
-	document.listForm.action = "<c:url value='/stock/info/moveMyStock.do'/>";
+	document.listForm.action = "<c:url value='/stock/info/moveMyStockHist.do'/>";
     document.listForm.submit();
 }
 
 function fnDetail(seq){
 	$("#seq").val(seq);
 	$("#mode").val("update");
-	document.listForm.action = "<c:url value='/stock/info/moveMyStock.do'/>";
+	document.listForm.action = "<c:url value='/stock/info/moveMyStockHist.do'/>";
     document.listForm.submit();
 }
 
-function fncSelectHistList(p_seq){
-	$("#pSeq").val(p_seq);
-	document.listForm.action = "<c:url value='/stock/info/selectMyStockHistList.do'/>";
+function fnParentSelectList(){
+	document.listForm.action = "<c:url value='/stock/info/selectMyStockList.do'/>";
     document.listForm.submit();
 }
 </script>
@@ -199,19 +197,19 @@ function fncSelectHistList(p_seq){
 <body>
 	<noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 	<div class="board">
-	<h1>${pageTitle}</h1>
+	<h1>${pageTitle} [${infoMap.stocksName}]</h1>
 	
 	<form name="listForm" method="post">
 		<input type="hidden" name="pageIndex"	id="pageIndex"/>
 		<input type="hidden" name="stockSite"	value="${stockSite}"/>
+		<input type="hidden" name="pSeq"	id="pSeq" value="${pSeq}"/>
 		<input type="hidden" name="seq"	id="seq" />
-		<input type="hidden" name="pSeq"	id="pSeq" />
 		<input type="hidden" name="mode"	id="mode" />
 		
 		<!-- 검색영역11 -->
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />" style="padding: 10px;">
 			<ul style="margin-bottom: 0px;">
-				<li><div style="line-height:4px;">&nbsp;</div><div>구분 : </div></li>
+				<li><div style="line-height:4px;">&nbsp;</div><div>검색구분 : </div></li>
 				<li>
 					<select name="searchBubun" id="searchBubun" class="select" title="구분">
 						<option value="" <c:if test="${empty searchBubun}">selected="selected"</c:if>>선택</option>
@@ -219,18 +217,9 @@ function fncSelectHistList(p_seq){
 						<option value="SELL" <c:if test="${'SELL' eq searchBubun}">selected="selected"</c:if>>매도</option>
 					</select>
 				</li>
-				<li><div style="line-height:4px;">&nbsp;</div><div>검색구분 : </div></li>
-				<li>
-					<select name="searchType" id="searchType" class="select" title="검색구분">
-						<%-- <option value="" <c:if test="${empty searchType}">selected="selected"</c:if>>선택</option> --%>
-						<option value="stockNm" <c:if test="${'stockNm' eq searchType}">selected="selected"</c:if>>종목</option>
-						<option value="account" <c:if test="${'account' eq searchType}">selected="selected"</c:if>>계좌</option>
-					</select>
-				</li>
 				<li class="stype keyword" style="border: 0px solid #d2d2d2;">
 					<input class="s_input" name="keyword" id="keyword" type="text"  size="10" style="width: 150px;" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${keyword}"/>'>
 				</li>
-			
 				<li  style="border: 0px solid #d2d2d2;">
 					<input type="button" class="s_btn"  onClick="fncSelectList('1');" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
 				</li>
@@ -250,6 +239,7 @@ function fncSelectHistList(p_seq){
 				</li>
 				<!-- 검색키워드 및 조회버튼 -->
 				<li style="border: 0px solid #d2d2d2;">
+					<input type="button" class="s_btn" onClick="fnParentSelectList()" value="목록" title="목록 <spring:message code="input.button" />" />
 					<input type="button" class="s_btn" onClick="fnInsert()" value="등록" title="등록 <spring:message code="input.button" />" />
 					<input type="button" class="s_btn" onClick="excelDown('L')" value="<spring:message code="stock.com.excelDown.title" />" title="<spring:message code="stock.com.excelDown.title" /> <spring:message code="input.button" />" />
 				</li>
@@ -267,17 +257,10 @@ function fncSelectHistList(p_seq){
 		<col width="3%">
 		<col width="5%">
 		<col><!-- 종목 -->
+		<col width="5%">
 		<col width="5%"><!-- 수량 -->
 		<col width="8%">
 		<col width="8%"><!-- 당일합계  -->
-		<col width="8%">
-		<col width="8%"><!-- 현재합계 -->
-		<col width="5%">
-		<col width="10%">
-		<col width="5%">
-		<col width="5%">
-		<col width="5%">
-		<col width="5%">
 		<col width="5%">
 		<col width="5%">
 	</colgroup>
@@ -287,97 +270,44 @@ function fncSelectHistList(p_seq){
 		<th>순번</th>
 		<th>코드</th>
 		<th>종목</th>
-		<th>수량</th>
-		<th>매수가</th>
-		<th>매수합계</th>
-		<th>현재/매도<br/>단가</th>
-		<th>현재/매도<br/>합계</th>
-		<th>현재/매도<br/>증감률</th>
-		<th>금액</th>
-		<th>수익률</th>
 		<th>구분</th>
-		<th>계좌</th>
+		<th>수량</th>
+		<th>당일단가</th>
+		<th>당일합계</th>
 		<th>거래일자</th>
-		<th>이력</th>
 		<th>수정</th>
 	</tr>
 	</thead>
 	<tbody class="ov">
 	<c:if test="${fn:length(list) == 0}">
 		<tr>
-			<td colspan="16"><spring:message code="common.nodata.msg" /></td>
+			<td colspan="10"><spring:message code="common.nodata.msg" /></td>
 		</tr>
 	</c:if>
 	<c:forEach var="item" items="${list}" varStatus="status">
 		<c:set var="pColor" value="#666"/>
 		<c:set var="indeColor" value="#666"/>
-		<c:set var="gubunColor" value="#fff"/>
 		<c:if test="${item.dyaNowPrice lt 0}"><c:set var="pColor" value="blue"/></c:if>
 		<c:if test="${item.dyaNowPrice gt 0}"><c:set var="pColor" value="red"/></c:if>
 		<c:if test="${item.indepercent lt 0}"><c:set var="indeColor" value="blue"/></c:if>
 		<c:if test="${item.indepercent gt 0}"><c:set var="indeColor" value="red"/></c:if>
-		<c:if test="${item.gubun eq 'SELL'}"><c:set var="gubunColor" value="#cdcbcb"/></c:if>
-	<tr style="background-color: ${gubunColor};">
+	<tr>
 		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
 		<td><c:out value="${item.rn}"/></td>
 		<td><c:out value="${item.code}"/></td>
 		<td>
 			<span class="link">
 				<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${item.code}','${item.stocksName}','1000','600'); return false;" title="네이버 종합정보 이동"><c:out value="${item.stocksName}"/></a>
-		      	<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/fchart.naver?code=${item.code}','${item.stocksName}','1000','600'); return false;" title="네이버 챠트보기 이동"><img src="/images/egovframework/stock/chart.png" style="width: 14px;"></a>
-		      	<span class="chart-icons" style="cursor:pointer;">
-			        <i class="fa fa-calendar-day" onclick="openChartModal('${item.code}' , '${item.stocksName}', 'day')" title="일봉차트 이미지팝업">[일]</i>
-			        <i class="fa fa-calendar-week" onclick="openChartModal('${item.code}' , '${item.stocksName}' , 'week')" title="주봉차트 이미지팝업">[주]</i>
-			        <i class="fa fa-calendar-alt" onclick="openChartModal('${item.code}' , '${item.stocksName}' , 'month')" title="월봉차트 이미지팝업">[월]</i>
-			    </span>
 		    </span>
 		</td>
+		<td><c:out value="${item.gubunNm}"/></td>
 		<td><fmt:formatNumber value="${item.qy}" pattern="#,###" /></td>
-		<td><fmt:formatNumber value="${item.unitPrice}" pattern="#,###" />원</td><!-- 매수단가 -->
-		<td><!-- 매수합계 -->
+		<td><fmt:formatNumber value="${item.unitPrice}" pattern="#,###" />원</td>
+		<td>
 			<c:set var="unitPriceTotal" value="${unitPriceTotal + (item.qy * item.unitPrice) }"/>
 			<fmt:formatNumber value="${item.qy * item.unitPrice}" pattern="#,###" />원
 		</td>
-		<td><!-- 현재/매도 단가 -->
-			<c:choose>
-				<c:when test="${item.gubun eq 'SELL'}"><fmt:formatNumber value="${item.sellPrice}" pattern="#,###" />원</c:when>
-				<c:otherwise><fmt:formatNumber value="${item.nowPrice}" pattern="#,###" />원</c:otherwise>
-			</c:choose>
-		</td>
-		<td><!-- 현재/매도 합계 -->
-			<c:choose>
-				<c:when test="${item.gubun eq 'SELL'}">
-					<c:set var="nowPriceTotal" value="${nowPriceTotal + (item.qy * item.sellPrice)}"/>
-					<fmt:formatNumber value="${item.qy * item.sellPrice}" pattern="#,###" />원
-				</c:when>
-				<c:otherwise>
-					<c:set var="nowPriceTotal" value="${nowPriceTotal + (item.qy * item.nowPrice) }"/>
-					<fmt:formatNumber value="${item.qy * item.nowPrice}" pattern="#,###" />원
-				</c:otherwise>
-			</c:choose>
-		</td>
-		<td style="color:${indeColor};">
-			<c:if test="${item.gubun ne 'SELL'}">
-				<c:out value="${item.indepercent}"/>%
-			</c:if>
-		</td>
-		<td style="color:${pColor};">
-			<c:set var="dyaNowPriceTotal" value="${dyaNowPriceTotal + (item.dyaNowPrice)}"/>
-			<fmt:formatNumber value="${item.dyaNowPrice}" pattern="#,###" />원
-		</td>
-		<td style="color:${pColor};"><c:out value="${item.dyaNowPecent}"/>%</td>
-		<td><c:out value="${item.gubunNm}"/></td>
-		<td><c:out value="${item.account}"/></td>
 		<td><c:out value="${item.delngDe}"/></td>
-		<td>
-			<div class="button_box1">
-				<ul>
-					<li>
-						<input type="button" class="btn02" onClick="fncSelectHistList('${item.seq}');" value="이력" title="이력 <spring:message code="input.button" />" />
-					</li>
-				</ul>
-			</div>
-		</td>
 		<td>
 			<div class="button_box1">
 				<ul>
@@ -389,35 +319,8 @@ function fncSelectHistList(p_seq){
 		</td>
 	</tr>
 	</c:forEach>
-	<c:set var="pColor" value="blue"/>
-	<c:if test="${dyaNowPriceTotal gt 0}"><c:set var="pColor" value="red"/></c:if>
-	<tr style="background-color: #cde1f3; font-weight: bold;">
-		<td>합계</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td><fmt:formatNumber value="${unitPriceTotal}" pattern="#,###" />원</td><!-- 당일 -->
-		<td></td>
-		<td><fmt:formatNumber value="${nowPriceTotal}" pattern="#,###" />원</td><!-- 현재 -->
-		<td></td>
-		<td style="color:${pColor};"><fmt:formatNumber value="${dyaNowPriceTotal}" pattern="#,###" />원</td><!-- 합계수익 -->
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
 	</tbody>
 	</table>
-	<c:if test="${!empty paginationInfo}">
-		<!-- paging navigation -->
-		<div class="pagination">
-			<ul><ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/></ul>
-		</div>
-	</c:if>
 </div>
 
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckBottom.jsp" flush="true" />

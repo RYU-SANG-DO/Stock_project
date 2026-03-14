@@ -49,7 +49,7 @@ public class StockInfoController {
     }
 	
 	/**
-	 * 네이버 주식 정보(테마)
+	 * My 주식 내역
 	 * @return
 	 * @throws Exception
 	 */
@@ -83,10 +83,19 @@ public class StockInfoController {
 					if("하락".equals(StringUtil.nvl(stockMap.get("parameter7"),""))) {
 						indepercent = indepercent * (-1);
 					}
-					int unitPrice = Integer.parseInt(StringUtil.nvl(map.get("unitPrice"),"0"));
+					String gubun = StringUtil.nvl(map.get("gubun"),"");
+					int unitPrice = Integer.parseInt(StringUtil.nvl(map.get("unitPrice"),"0"));//매수
+					int sellPrice = Integer.parseInt(StringUtil.nvl(map.get("sellPrice"),"0"));//매도
 					int qy = Integer.parseInt(StringUtil.nvl(map.get("qy"),"0"));
-					dyaNowPrice = (nowPrice*qy)-(unitPrice*qy);
-					dyaNowPecent = String.format("%.2f",(nowPrice-unitPrice)/(float)unitPrice*100);
+					System.out.println(qy+":"+unitPrice+":"+sellPrice);
+					if("SELL".equals(gubun)){
+						dyaNowPrice = (sellPrice*qy)-(unitPrice*qy);
+						dyaNowPecent = String.format("%.2f",(sellPrice-unitPrice)/(float)unitPrice*100);
+					}else {
+						dyaNowPrice = (nowPrice*qy)-(unitPrice*qy);
+						dyaNowPecent = String.format("%.2f",(nowPrice-unitPrice)/(float)unitPrice*100);
+					}
+					System.out.println(dyaNowPrice+":"+dyaNowPrice);
 				}
 				map.put("nowPrice", nowPrice);
 				map.put("dyaNowPrice", dyaNowPrice);
@@ -149,7 +158,7 @@ public class StockInfoController {
 	
 	
 	/**
-	 * 등록 , 수정
+	 * 등록 , 수정 화면
 	 * @return
 	 * @throws Exception
 	 */
@@ -166,6 +175,7 @@ public class StockInfoController {
 		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
 		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
 		commandMap.put("today_ko", today_ko);
+		commandMap.put("pSeq", seq);
 		
 		if("insert".equals(move)){
 			returnUrl="egovframework/stock/info/myStockRegist";
@@ -211,6 +221,127 @@ public class StockInfoController {
 		model.addAllAttributes(commandMap);
 		System.out.println("등록/수정 종료");
 		return "forward:/stock/info/selectMyStockList.do";
+    }
+    
+    /**
+	 * My 주식 이력 내역
+	 * @return
+	 * @throws Exception
+	 */
+    @RequestMapping("/stock/info/selectMyStockHistList.do")
+    public String selectMyStockHistList(@RequestParam Map<String, Object> reqParamMap, 
+    		HttpServletRequest request,
+    		ModelMap model) throws Exception {
+		System.out.println("거래 이력 내역 시작");
+		Map<String, Object> commandMap = StringUtil.mapToMap(request);
+		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".hist.list.title")));
+		System.out.println(commandMap);
+		String searchKeyword = StringUtil.nvl(commandMap.get("searchKeyword"),"");
+		String seq = StringUtil.nvl(commandMap.get("seq"),"");
+		String pSeq = StringUtil.nvl(commandMap.get("pSeq"),"");
+		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		commandMap.put("today_ko", today_ko);
+		
+		int nowPrice = 0;
+		int dyaNowPrice = 0;
+		String dyaNowPecent = "0";
+		double indepercent = 0.0;
+		Map<String, Object> infoMap = stockInfoService.selectMyStockDetail(commandMap);
+		String stockCode = StringUtil.nvl(infoMap.get("stocksCode"),"");
+		Map<String, Object> stockMap = naverUtil.getStockInfoType(stockCode, 0);
+		if(stockMap != null) {
+			nowPrice = Integer.parseInt(StringUtil.nvl(stockMap.get("parameter1"),"").replaceAll(",", ""));//현재단가
+			indepercent = Double.parseDouble(StringUtil.nvl(stockMap.get("parameter2"),"0.0"));//현재증감률
+			if("하락".equals(StringUtil.nvl(stockMap.get("parameter7"),""))) {
+				indepercent = indepercent * (-1);
+			}
+			int unitPrice = Integer.parseInt(StringUtil.nvl(infoMap.get("unitPrice"),"0"));
+			int qy = Integer.parseInt(StringUtil.nvl(infoMap.get("qy"),"0"));
+			dyaNowPrice = (nowPrice*qy)-(unitPrice*qy);
+			dyaNowPecent = String.format("%.2f",(nowPrice-unitPrice)/(float)unitPrice*100);
+		}
+		infoMap.put("nowPrice", nowPrice);
+		infoMap.put("dyaNowPrice", dyaNowPrice);
+		infoMap.put("dyaNowPecent", dyaNowPecent);
+		infoMap.put("indepercent", indepercent);
+		model.addAttribute("infoMap",infoMap);
+		
+		List<Map<String, Object>> histList = stockInfoService.selectMyStockHistList(commandMap);
+		
+		model.addAttribute("paramInfo",commandMap);
+		model.addAttribute("list",histList);
+		model.addAllAttributes(commandMap);
+		System.out.println("거래 이력 내역 종료");
+        return "egovframework/stock/info/myStockHistList";
+    }
+    
+    /**
+	 * My 주식 이력 등록 , 수정 화면
+	 * @return
+	 * @throws Exception
+	 */
+    @RequestMapping("/stock/info/moveMyStockHist.do")
+    public String moveMyStockHist(@RequestParam Map<String, Object> reqParamMap, 
+    		HttpServletRequest request,
+    		ModelMap model) throws Exception {
+		System.out.println("My 주식 이력 등록/수정 화면 시작");
+		String returnUrl="egovframework/stock/info/myStockHistUpdt";
+		Map<String, Object> commandMap = StringUtil.mapToMap(request);
+		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".title"))+" "+StringUtil.nvl(egovMessageSource.getMessage("stock."+ commandMap.get("stockSite")+".hist.detail.title")));
+		System.out.println(commandMap);
+		String seq = StringUtil.nvl(commandMap.get("seq"),"");
+		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(seq)?"insert":"update"));
+		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		commandMap.put("today_ko", today_ko);
+		
+		Map<String, Object> infoMap = stockInfoService.selectMyStockDetail(commandMap);
+		model.addAttribute("infoMap",infoMap);
+		if("insert".equals(move)){
+			returnUrl="egovframework/stock/info/myStockHistRegist";
+		}else {
+			Map<String, Object> infoHistMap = stockInfoService.selectMyStockHistDetail(commandMap);
+			model.addAttribute("infoHistMap",infoHistMap);
+		}
+		System.out.println("returnUrl=>"+returnUrl);
+		model.addAttribute("paramInfo",commandMap);
+		model.addAllAttributes(commandMap);
+		System.out.println("My 주식 이력 등록/수정 화면 종료");
+		return returnUrl;
+    }
+    
+    /**
+	 * 등록 , 수정
+	 * @return
+	 * @throws Exception
+	 */
+    @RequestMapping("/stock/info/saveMyStockHist.do")
+    public String saveMyStockHist(@RequestParam Map<String, Object> reqParamMap, 
+    		HttpServletRequest request,
+    		ModelMap model) throws Exception {
+		System.out.println("등록/수정 시작");
+
+		Map<String, Object> commandMap = StringUtil.mapToMap(request);
+		System.out.println(commandMap);
+		String seq = StringUtil.nvl(commandMap.get("seq"),"");
+		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(seq)?"insert":"update"));
+		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		commandMap.put("today_ko", today_ko);
+		 int cnt = 0;
+		if("insert".equals(move)){
+			 stockInfoService.insertMyStockHist(commandMap);
+		}else if("update".equals(move)){
+			cnt =stockInfoService.updateMyStockHist(commandMap);
+		}else if("delete".equals(move)){
+			cnt = stockInfoService.deleteMyStockHist(commandMap);
+		}
+		
+		model.addAttribute("paramInfo",commandMap);
+		model.addAllAttributes(commandMap);
+		System.out.println("등록/수정 종료");
+		return "forward:/stock/info/selectMyStockHistList.do";
     }
 
 }

@@ -1,13 +1,7 @@
 <%
  /**
-  * @Class Name : myStockRegist.jsp
-  * @Description : 공통분류코드 등록 화면
+  * @Description : My 주식 이력 수정 및 등록 화면
   * @Modification Information
-  * @
-  * @  수정일             수정자                   수정내용
-  * @ -------    --------    ---------------------------
-  * @ 2009.02.01   박정규              최초 생성
-  *  @see
   *  
   */
 %>
@@ -73,7 +67,7 @@ function fn_egov_regist(form){
 	//	return;
   	 }else{
   		if(confirm("<spring:message code="common.regist.msg" />")){	
-  			form.action="/stock/info/saveMyStock.do";	
+  			form.action="/stock/info/saveMyStockHist.do";	
 			form.submit();	
 		}
   	 }
@@ -91,7 +85,7 @@ function fncShowMessg(){
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list() {
-	document.egovFrm.action = "<c:url value='/stock/info/selectMyStockList.do'/>";
+	document.egovFrm.action = "<c:url value='/stock/info/selectMyStockHistList.do'/>";
 	document.egovFrm.mode.value="list";
 	document.egovFrm.submit();
 }
@@ -111,6 +105,8 @@ input[type="number"] {
 
 <form name="egovFrm" method="post" onSubmit="fn_egov_regist(document.forms[0]); return false;"> 
 <input type="hidden" name="mode" value="insert">
+<input type="hidden" name="seq" value="">
+<input type="hidden" name="pSeq" value="${pSeq}">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>
@@ -127,11 +123,8 @@ input[type="number"] {
 		<tr>
 			<th><label for="code">종목코드 <span class="pilsu">*</span></label></th>
 			<td class="left">
-   				<input type="text" name="code"	id="stock_code"/>
-   				<input type="text" name="codeNm" id="searchKeyword" size="30" maxlength="100" style="width: auto;" readonly="readonly"/>
-   				<a id="popupStocks" href="#none" target="_blank" title="종목 검색" style="selector-dummy:expression(this.hideFocus=false);">
-						<img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />" alt='' width="15" height="15" />(종목검색)
-					</a>
+   				<input type="hidden" name="code"	id="stock_code" value="<c:out value="${infoMap.stocksCode}"/>"/>
+   				<input type="text" name="codeNm" id="searchKeyword" size="30" maxlength="100" style="width: auto;" readonly="readonly" value="<c:out value="${infoMap.stocksName}"/>"/>
 			</td>
 		</tr>
 		
@@ -152,7 +145,7 @@ input[type="number"] {
 			</td>
 		</tr>
 		<tr>
-			<th><label for="unitPrice">매수가 <span class="pilsu">*</span></label></th>
+			<th><label for="unitPrice">단가 <span class="pilsu">*</span></label></th>
 			<td class="left">			
    				<input type="number" name="unitPrice"	id="unitPrice" size="10" maxlength="10" class="cssright"/>원
 			</td>

@@ -1,12 +1,7 @@
 <%
  /**
-  * @Class Name :  myStockUpdt.jsp
-  * @Description :  My 거래내역 수정하는 화면
+  * @Description :  My 거래 이력 수정하는 화면
   * @Modification Information
-  * @
-  * @  수정일				수정내용
-  * @ --------------	---------------------------
-  * @ 2026.01.30			최초 생성
   *  
   */
 %>
@@ -42,30 +37,23 @@ $(function(){
 function fn_egov_updt(){
 	let form = document.egovFrm;
 	form.mode.value = "update";	
-	 if($("#stock_code").val() == ""){
-	  		alert("종목은 필수입니다.");
-			return;
-	  	 }else if($("#qy").val() == ""){
-	  		alert("수량은 필수입니다.");
-			return;
-	  	 }else if($("#unitPrice").val() == ""){
-	  		alert("단가는 필수입니다.");
-			return;
-	  	 //}else if($("#delngDe").val() == ""){
-	  	//	alert("거래일자는 필수입니다.");
-		//	return;
-	  	 }else{
-	  		$('#qy').val($('#qy').val().replace(/,/g, ""));
-	  		$('#fee').val($('#fee').val().replace(/,/g, ""));
-	  		$('#trftax').val($('#trftax').val().replace(/,/g, ""));
-	  		$('#incmtax').val($('#incmtax').val().replace(/,/g, ""));
-	  		$('#unitPrice').val($('#unitPrice').val().replace(/,/g, ""));
-	  		$('#sellPrice').val($('#sellPrice').val().replace(/,/g, ""));
-	  		if(confirm("<spring:message code="common.update.msg" />")){	
-	  			form.action="/stock/info/saveMyStock.do";	
-				form.submit();	
-			}
-	  	 }
+	if($("#qy").val() == ""){
+  		alert("수량은 필수입니다.");
+		return;
+  	 }else if($("#unitPrice").val() == ""){
+  		alert("단가는 필수입니다.");
+		return;
+  	 //}else if($("#delngDe").val() == ""){
+  	//	alert("거래일자는 필수입니다.");
+	//	return;
+  	 }else{
+  		$('#qy').val($('#qy').val().replace(/,/g, ""));
+  		$('#unitPrice').val($('#unitPrice').val().replace(/,/g, ""));
+  		if(confirm("<spring:message code="common.update.msg" />")){	
+  			form.action="/stock/info/saveMyStockHist.do";	
+			form.submit();	
+		}
+  	 }
 }
 
 /* ********************************************************
@@ -75,7 +63,7 @@ function fn_egov_updt(){
 	if(confirm("<spring:message code="common.delete.msg" />")){	
 		// Delete하기 위한 키값을 셋팅
 		document.egovFrm.mode.value = "delete";	
-		document.egovFrm.action = "<c:url value='/stock/info/saveMyStock.do'/>";
+		document.egovFrm.action = "<c:url value='/stock/info/saveMyStockHist.do'/>";
 		document.egovFrm.submit();
 	}	
 }	
@@ -83,7 +71,7 @@ function fn_egov_updt(){
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list() {
-	document.egovFrm.action = "<c:url value='/stock/info/selectMyStockList.do'/>";
+	document.egovFrm.action = "<c:url value='/stock/info/selectMyStockHistList.do'/>";
 	document.egovFrm.mode.value="list";
 	document.egovFrm.seq.value="";
 	document.egovFrm.submit();
@@ -100,7 +88,8 @@ function fn_egov_list() {
 <!-- 상단타이틀 -->
 <form name="egovFrm" method="post"> 
 <input type="hidden" name="mode" value="update">
-<input type="hidden" name="seq" value="${seq}">
+<input type="text" name="seq" value="${infoHistMap.seq}">
+<input type="text" name="pSeq" value="${infoHistMap.pSeq}">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>
@@ -119,16 +108,13 @@ function fn_egov_list() {
 			<td class="left">
    				<input type="hidden" name="code"	id="stock_code" value="<c:out value="${infoMap.stocksCode}"/>"/>
    				<input type="text" name="codeNm" id="searchKeyword" size="30" maxlength="100" style="width: auto;" readonly="readonly" value="<c:out value="${infoMap.stocksName}"/>"/>
-   				<%-- <a id="popupStocks" href="#none" target="_blank" title="종목 검색" style="selector-dummy:expression(this.hideFocus=false);">
-						<img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />" alt='' width="15" height="15" />(종목검색)
-					</a> --%>
 			</td>
 		</tr>
 		
 		<tr>
 			<th><label for="qy">수량 <span class="pilsu">*</span></label></th>
 			<td class="left">
-   				<input type="text" name="qy"	id="qy" class="cssright" size="10" maxlength="10" style="width:auto; text-align: right;" value="<c:out value="${infoMap.qy}"/>"/>
+   				<input type="text" name="qy"	id="qy" class="cssright" size="10" maxlength="10" style="width:auto; text-align: right;" value="<c:out value="${infoHistMap.qy}"/>"/>
 			</td>
 		</tr>
 		
@@ -136,59 +122,27 @@ function fn_egov_list() {
 			<th>구분 <span class="pilsu">*</span></th>
 			<td class="left">
 				<select name="gubun" id="gubun" title="구분">
-					<option value="BUY" <c:if test="${infoMap.gubun eq 'BUY'}">selected="selected"</c:if>>매수</option> 
-					<option value="SELL" <c:if test="${infoMap.gubun eq 'SELL'}">selected="selected"</c:if>>매도</option> 
+					<option value="BUY" <c:if test="${infoHistMap.gubun eq 'BUY'}">selected="selected"</c:if>>매수</option> 
+					<option value="SELL" <c:if test="${infoHistMap.gubun eq 'SELL'}">selected="selected"</c:if>>매도</option> 
 				</select>
 			</td>
 		</tr>
-		
 		<tr>
-			<th><label for="fee">수수료</label></th>
-			<td class="left">
-   				<input type="text" name="fee"	id="fee" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.fee}" pattern="#,###" />"/>원
-			</td>
-		</tr>
-		
-		<tr>
-			<th><label for="trftax">거래세/농특세</label></th>
+			<th><label for="unitPrice">단가 <span class="pilsu">*</span></label></th>
 			<td class="left">			
-   				<input type="text" name="trftax"	id="trftax" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.trftax}" pattern="#,###" />"/>원
-			</td>
-		</tr>
-		<tr>
-			<th><label for="incmtax">소득세/주민세</label></th>
-			<td class="left">			
-   				<input type="text" name="incmtax"	id="incmtax" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.incmtax}" pattern="#,###" />"/>원
-			</td>
-		</tr>
-		<tr>
-			<th><label for="unitPrice">매수가 <span class="pilsu">*</span></label></th>
-			<td class="left">			
-   				<input type="text" name="unitPrice"	id="unitPrice" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.unitPrice}" pattern="#,###" />"/>원
-			</td>
-		</tr>
-		<tr>
-			<th><label for="sellPrice">매도가 <span class="pilsu">*</span></label></th>
-			<td class="left">			
-   				<input type="text" name="sellPrice"	id="sellPrice" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoMap.sellPrice}" pattern="#,###" />"/>원
+   				<input type="text" name="unitPrice"	id="unitPrice" size="10" maxlength="10" class="cssright" style="width:auto;" value="<fmt:formatNumber value="${infoHistMap.unitPrice}" pattern="#,###" />"/>원
 			</td>
 		</tr>
 		<tr>
 			<th><label for="delngDe">거래일자 <span class="pilsu">*</span></label></th>
 			<td class="left">
-   				<input type="text" name="delngDe"	id="delngDe" size="10" maxlength="15" readonly="readonly" style="text-align:cneter; width: auto; margin-right:5px;" value="<c:out value="${infoMap.delngDe}"/>"/>
-			</td>
-		</tr>
-		<tr>
-			<th><label for="account">계좌</label></th>
-			<td class="left">			
-   				<input type="text" name="account"	id="account" size="10" maxlength="9" style="width:auto;" value="<c:out value="${infoMap.account}"/>"/>
+   				<input type="text" name="delngDe"	id="delngDe" size="10" maxlength="15" readonly="readonly" style="text-align:cneter; width: auto; margin-right:5px;" value="${infoHistMap.delngDe}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><label for="rm">비고</label></th>
 			<td class="nopd">
-				<textarea name="rm" title="비고" cols="300" rows="10" style="height:auto;"></textarea>   
+				<textarea name="rm" title="비고" cols="300" rows="10" style="height:auto;">${infoHistMap.rm}</textarea>   
 			</td>
 		</tr>
 		

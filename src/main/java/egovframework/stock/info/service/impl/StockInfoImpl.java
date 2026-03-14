@@ -50,5 +50,31 @@ public class StockInfoImpl extends EgovAbstractServiceImpl implements StockInfoS
 		return stockInfoDao.selectMyStockDetail(commandMap);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectMyStockHistList(Map<String, Object> commandMap) throws Exception {
+		return stockInfoDao.selectMyStockHistList(commandMap);
+	}
+
+	//거내 이력 상세 조회
+	@Override
+	public Map<String, Object> selectMyStockHistDetail(Map<String, Object> commandMap) throws Exception {
+		return stockInfoDao.selectMyStockHistDetail(commandMap);
+	}
+
+	@Override
+	public void insertMyStockHist(Map<String, Object> commandMap) throws Exception {
+		stockInfoDao.insertMyStockHist(commandMap);
+	}
+
+	@Override
+	public int updateMyStockHist(Map<String, Object> commandMap) throws Exception {
+		return stockInfoDao.updateMyStockHist(commandMap);
+	}
+
+	@Override
+	public int deleteMyStockHist(Map<String, Object> commandMap) throws Exception {
+		return stockInfoDao.deleteMyStockHist(commandMap);
+	}
+
 
 }
