@@ -87,7 +87,6 @@ public class StockInfoController {
 					int unitPrice = Integer.parseInt(StringUtil.nvl(map.get("unitPrice"),"0"));//매수
 					int sellPrice = Integer.parseInt(StringUtil.nvl(map.get("sellPrice"),"0"));//매도
 					int qy = Integer.parseInt(StringUtil.nvl(map.get("qy"),"0"));
-					System.out.println(qy+":"+unitPrice+":"+sellPrice);
 					if("SELL".equals(gubun)){
 						dyaNowPrice = (sellPrice*qy)-(unitPrice*qy);
 						dyaNowPecent = String.format("%.2f",(sellPrice-unitPrice)/(float)unitPrice*100);
@@ -95,7 +94,6 @@ public class StockInfoController {
 						dyaNowPrice = (nowPrice*qy)-(unitPrice*qy);
 						dyaNowPecent = String.format("%.2f",(nowPrice-unitPrice)/(float)unitPrice*100);
 					}
-					System.out.println(dyaNowPrice+":"+dyaNowPrice);
 				}
 				map.put("nowPrice", nowPrice);
 				map.put("dyaNowPrice", dyaNowPrice);

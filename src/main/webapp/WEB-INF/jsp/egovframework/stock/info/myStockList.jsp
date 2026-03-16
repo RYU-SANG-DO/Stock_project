@@ -265,7 +265,7 @@ function fncSelectHistList(p_seq){
 	<colgroup>
 		<col width="3%">
 		<col width="3%">
-		<col width="5%">
+		<%-- <col width="5%"> --%>
 		<col><!-- 종목 -->
 		<col width="5%"><!-- 수량 -->
 		<col width="8%">
@@ -275,17 +275,17 @@ function fncSelectHistList(p_seq){
 		<col width="5%">
 		<col width="10%">
 		<col width="5%">
+		<col width="4%">
+		<col width="4%">
 		<col width="5%">
-		<col width="5%">
-		<col width="5%">
-		<col width="5%">
-		<col width="5%">
+		<col width="4%">
+		<col width="4%">
 	</colgroup>
 	<thead>
 	<tr class="algin-center">
 		<th><input type="checkbox" name="checkAll" id="checkAll" class="check2" title="전체선택"/></th>
 		<th>순번</th>
-		<th>코드</th>
+		<!-- <th>코드</th> -->
 		<th>종목</th>
 		<th>수량</th>
 		<th>매수가</th>
@@ -305,7 +305,7 @@ function fncSelectHistList(p_seq){
 	<tbody class="ov">
 	<c:if test="${fn:length(list) == 0}">
 		<tr>
-			<td colspan="16"><spring:message code="common.nodata.msg" /></td>
+			<td colspan="15"><spring:message code="common.nodata.msg" /></td>
 		</tr>
 	</c:if>
 	<c:forEach var="item" items="${list}" varStatus="status">
@@ -320,7 +320,7 @@ function fncSelectHistList(p_seq){
 	<tr style="background-color: ${gubunColor};">
 		<td><input type="checkbox" name="checkField" class="chk" title="선택"/></td>
 		<td><c:out value="${item.rn}"/></td>
-		<td><c:out value="${item.code}"/></td>
+		<%-- <td><c:out value="${item.code}"/></td> --%>
 		<td>
 			<span class="link">
 				<a href="#none" onclick="stockOpenPopup('https://finance.naver.com/item/main.naver?code=${item.code}','${item.stocksName}','1000','600'); return false;" title="네이버 종합정보 이동"><c:out value="${item.stocksName}"/></a>
@@ -393,7 +393,6 @@ function fncSelectHistList(p_seq){
 	<c:if test="${dyaNowPriceTotal gt 0}"><c:set var="pColor" value="red"/></c:if>
 	<tr style="background-color: #cde1f3; font-weight: bold;">
 		<td>합계</td>
-		<td></td>
 		<td></td>
 		<td></td>
 		<td></td>
