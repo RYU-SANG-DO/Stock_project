@@ -15,7 +15,17 @@ import egovframework.insurance.service.InsuranceService;
 public class InsuranceImpl extends EgovAbstractServiceImpl implements InsuranceService {
 
 	@Resource(name = "InsuranceDAO")
-    private InsuranceDAO ㅑnsuranceDao;
+    private InsuranceDAO insuranceDao;
+
+	@Override
+	public int selectInsuranceListTotCnt(Map<String, Object> commandMap) throws Exception {
+		return insuranceDao.selectInsuranceListTotCnt(commandMap);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectInsuranceList(Map<String, Object> commandMap) throws Exception {
+		return insuranceDao.selectInsuranceList(commandMap);
+	}
 
 	
 

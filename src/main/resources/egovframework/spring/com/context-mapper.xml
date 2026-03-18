@@ -15,6 +15,7 @@
 				<value>classpath:/egovframework/mapper/com/**/*_${Globals.DbType}.xml</value>
 				<value>classpath:/egovframework/mapper/stock/**/*_${Globals.DbType}.xml</value>
 				<value>classpath:/egovframework/mapper/beauty/**/*_${Globals.DbType}.xml</value>
+				<value>classpath:/egovframework/mapper/insurance/**/*_${Globals.DbType}.xml</value>
 			</list>
 		</property>
 	</bean>

@@ -67,14 +67,14 @@ function fncSelectList(pageNo){
 
 		Loading();
 	    document.listForm.pageIndex.value = pageNo;
-	    document.listForm.action = "<c:url value='/beauty/paymanet/selectBeautyPaymanetList.do'/>";
+	    document.listForm.action = "<c:url value='/insurance/selectInsuranceList.do'/>";
 	    document.listForm.submit();
 }
 
 function linkPage(pageNo){
 	Loading();
     document.listForm.pageIndex.value = pageNo;
-    document.listForm.action = "<c:url value='/beauty/paymanet/selectBeautyPaymanetList.do'/>";
+    document.listForm.action = "<c:url value='/insurance/selectInsuranceList.do'/>";
     document.listForm.submit();
 }
 
@@ -153,45 +153,36 @@ function fnDetail(seq){
 		<!-- 검색영역11 -->
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />" style="padding: 10px;">
 			<ul style="margin-bottom: 0px;">
-				<li><div style="line-height:4px;">&nbsp;</div><div>년도 : </div></li>
+				<li><div style="line-height:4px;">&nbsp;</div><div>보험상태 : </div></li>
 				<li>
-					<select name="searchYear" id="searchYear" class="select" title="검색구분">						
-						<%-- <option value="" <c:if test="${empty searchYear}">selected="selected"</c:if>>선택</option> --%>
-						<c:forEach items="${yearList}" var="info" varStatus="status">
-							<option value="${info.pmYear}" <c:if test="${searchYear eq info.pmYear}">selected="selected"</c:if>>${info.pmYear}</option>
+					<select name="searchStats" id="searchStats" class="select" title="상태">						
+						<option value="" <c:if test="${empty searchStats}">selected="selected"</c:if>>선택</option>
+						<c:forEach items="${statsList}" var="info" varStatus="status">
+							<option value="${info.code}" <c:if test="${searchStats eq info.code}">selected="selected"</c:if>>${info.codeNm}</option>
 						</c:forEach>
 					</select>
 				</li>
-				<li><div style="line-height:4px;">&nbsp;</div><div>월 : </div></li>
+				<li><div style="line-height:4px;">&nbsp;</div><div>보험사 : </div></li>
 				<li>
-					<select name="searchMonth" id="searchMonth" class="select" title="검색구분">						
-						<option value="" <c:if test="${empty searchMonth}">selected="selected"</c:if>>선택</option>
-						<c:forEach var="m" begin="01" end="12" varStatus="status">
-							<option value="${m}" <c:if test="${searchMonth eq m}">selected="selected"</c:if>>${m}</option>
-						</c:forEach>
-					</select>
-				</li>
-				<li><div style="line-height:4px;">&nbsp;</div><div>결재타입 : </div></li>
-				<li>
-					<select name="searchPmType" id="searchPmType" class="select" title="결재타입">
-						<option value="" <c:if test="${empty searchPmType}">selected="selected"</c:if>>선택</option>
-							<c:forEach items="${pmtypeList}" var="info" varStatus="status">
-								<option value="${info.code}" <c:if test="${searchPmType eq info.code}">selected="selected"</c:if>>${info.codeNm}</option>
+					<select name="searchInscpy" id="searchInscpy" class="select" title="보험사">
+						<option value="" <c:if test="${empty searchInscpy}">selected="selected"</c:if>>선택</option>
+							<c:forEach items="${inscpyList}" var="info" varStatus="status">
+								<option value="${info.code}" <c:if test="${searchInscpy eq info.code}">selected="selected"</c:if>>${info.codeNm}</option>
 							</c:forEach>
 					</select>
 				</li>
-				<li><div style="line-height:4px;">&nbsp;</div><div>스타일 : </div></li>
+				<li><div style="line-height:4px;">&nbsp;</div><div>은행 : </div></li>
 				<li>
-					<select name="searchStyle" id="searchStyle" class="select" title="결재타입">
+					<select name="searchBank" id="searchBank" class="select" title="은행">
 						<option value="" <c:if test="${empty searchStyle}">selected="selected"</c:if>>선택</option>
-							<c:forEach items="${styleList}" var="info" varStatus="status">
-								<option value="${info.code}" <c:if test="${searchStyle eq info.code}">selected="selected"</c:if>>${info.codeNm}</option>
+							<c:forEach items="${bankList}" var="info" varStatus="status">
+								<option value="${info.code}" <c:if test="${searchBank eq info.code}">selected="selected"</c:if>>${info.codeNm}</option>
 							</c:forEach>
 					</select>
 				</li>
-				<li><div style="line-height:4px;">&nbsp;</div><div>검색일자 : </div></li>
+				<li><div style="line-height:4px;">&nbsp;</div><div>계약명 : </div></li>
 				<li>
-					<input class="s_input" name="searchDate" id="searchDate" type="text"  size="10" style="width: auto;" title="검색일자 <spring:message code="input.input" />" value='<c:out value="${searchDate}"/>'>
+					<input class="s_input" name="searchCttnm" id="searchCttnm" type="text"  size="20" style="width: auto;" title="계약명 <spring:message code="input.input" />" value='<c:out value="${searchCttnm}"/>'>
 				</li>
 				<%-- <li class="stype keyword" style="border: 0px solid #d2d2d2;">
 					<input class="s_input" name="keyword" id="keyword" type="text"  size="10" style="width: 150px;" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${keyword}"/>'>
@@ -224,9 +215,6 @@ function fnDetail(seq){
 		</div>
 	</form>
 	<!-- 목록영역 -->
-	<c:set var="unitPriceTotal" value="0"/><!-- 당일합계 -->
-	<c:set var="nowPriceTotal" value="0"/><!-- 현재합계 -->
-	<c:set var="dyaNowPriceTotal" value="0"/><!-- 합계 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
@@ -241,41 +229,33 @@ function fnDetail(seq){
 	<thead>
 	<tr class="algin-center">
 		<th>순번</th>
-		<th>스타일</th>
-		<th>결재일자</th>
-		<th>결재타입</th>
-		<th>결재금액</th>
-		<th>등록일자</th>
-		<th>수정</th>
+		<th>계약명</th>
+		<th>보험사</th>
+		<th>상태</th>
+		<th>계약일자</th>
+		<th>납입기간</th>
+		<th>보험료</th>
 	</tr>
 	</thead>
 	<tbody class="ov">
-	<c:if test="${fn:length(reserchList) == 0}">
+	<c:if test="${fn:length(list) == 0}">
 		<tr>
 			<td colspan="7"><spring:message code="common.nodata.msg" /></td>
 		</tr>
 	</c:if>
-	<c:forEach var="item" items="${reserchList}" varStatus="status">
+	<c:forEach var="item" items="${list}" varStatus="status">
 		<c:set var="pColor" value="#666"/>
 		<c:set var="indeColor" value="#666"/>
 	<tr>
 		<td><c:out value="${item.rn}"/></td>
 		<td>
-			<a href="#none" onclick="fnDetail('${item.seq}');"><c:out value="${item.styleTypeNm}"/></a>
+			<a href="#none" onclick="fnDetail('${item.insCpy}','${item.ctfcNum}');"><c:out value="${item.cttNm}"/></a>
 		</td>
-		<td><c:out value="${item.pmDate}"/></td>
-		<td><c:out value="${item.pmTypeNm}"/></td>
-		<td><fmt:formatNumber value="${item.pmPrice}" pattern="#,###" />원</td>
-		<td><c:out value="${item.regDate}"/></td>
-		<td>
-			<div class="button_box1">
-				<ul>
-					<li>
-						<input type="button" class="btn02" onClick="fnDetail('${item.seq}');" value="수정" title="수정 <spring:message code="input.button" />" />
-					</li>
-				</ul>
-			</div>
-		</td>
+		<td><c:out value="${item.insCpyNm}"/></td>
+		<td><c:out value="${item.statsNm}"/></td>
+		<td><c:out value="${item.cttStartDate}"/></td>
+		<td><c:out value="${item.payPeod}"/></td>
+		<td><fmt:formatNumber value="${item.insAmt}" pattern="#,###" />원</td>
 	</tr>
 	</c:forEach>
 	</tbody>

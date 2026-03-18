@@ -16,6 +16,10 @@ import java.util.Map;
  */
 public interface InsuranceService{
 
+	int selectInsuranceListTotCnt(Map<String, Object> commandMap) throws Exception;
+
+	List<Map<String, Object>> selectInsuranceList(Map<String, Object> commandMap) throws Exception;
+
 
 
 }

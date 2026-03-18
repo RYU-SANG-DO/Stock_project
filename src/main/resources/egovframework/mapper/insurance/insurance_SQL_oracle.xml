@@ -5,8 +5,46 @@
   ========= 		=================================================
   2026.03.17		보험 정보
 -->
-<mapper namespace="IinsuranceDAO">
+<mapper namespace="InsuranceDAO">
 
 	
-
+<select id="selectInsuranceList"  parameterType="java.util.HashMap" resultType="egovMap">
+		<![CDATA[
+		 SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT /*selectInsuranceList*/
+				A.INS_CPY
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='INSCPY' AND CODE=A.INS_CPY) AS INS_CPY_NM
+				,A.CTFC_NUM
+				,A.CTT_NM
+				,A.CTT_USER
+				,A.STATS
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='STATS' AND CODE=A.STATS) AS STATS_NM
+				,TO_CHAR(A.CTT_START_DATE,'YYYY-MM-DD') AS CTT_START_DATE
+				,A.PAY_PEOD
+				,TO_CHAR(A.CTT_END_DATE,'YYYY-MM-DD') AS CTT_END_DATE
+				,A.TNSF_DATE				
+				,A.INS_AMT
+				,A.BANK
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='BANK' AND CODE=A.BANK) AS BANK_NM
+				,TO_CHAR(A.TMNT_DATE,'YYYY-MM-DD') AS TMNT_DATE
+				,A.ETC
+				,A.MANAGER
+				,A.PHONE_NUM
+				,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
+			FROM INSURANCE_CONTRACT A
+			WHERE 1=1
+			ORDER BY A.CTT_START_DATE
+			 ) TB 
+			 )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+			]]> 
+	</select>
+	
+	<select id="selectInsuranceListTotCnt" parameterType="java.util.Map" resultType="int">
+		<![CDATA[
+		SELECT /*selectInsuranceListTotCnt*/
+				COUNT(A.INS_CPY) AS CNT
+			FROM INSURANCE_CONTRACT A
+			WHERE 1=1
+			]]>
+	</select>
 </mapper>

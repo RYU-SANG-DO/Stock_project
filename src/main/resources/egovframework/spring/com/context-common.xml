@@ -20,6 +20,7 @@
 				<value>classpath*:egovframework/message/com/**/*</value>
 				<value>classpath*:egovframework/message/stock/**/*</value>
 				<value>classpath*:egovframework/message/beauty/**/*</value>
+				<value>classpath*:egovframework/message/insurance/**/*</value>
 				<value>classpath:/org/egovframe/rte/fdl/idgnr/messages/idgnr</value>
 				<value>classpath:/org/egovframe/rte/fdl/property/messages/properties</value>
 				<value>classpath:/egovframework/egovProps/globals</value>
