@@ -97,4 +97,83 @@ public class InsuranceController {
         return "egovframework/insurance/insuranceList";
     }
     
+    /**
+   	 * My 보험 등록 , 수정 화면
+   	 * @return
+   	 * @throws Exception
+   	 */
+       @RequestMapping("/insurance/moveMyInsurance.do")
+       public String moveMyInsurance(@RequestParam Map<String, Object> reqParamMap, 
+       		HttpServletRequest request,
+       		ModelMap model) throws Exception {
+   		System.out.println("My 보험 등록/수정 화면 시작");
+   		String returnUrl="egovframework/insurance/insuranceUpdt";
+   		Map<String, Object> commandMap = StringUtil.mapToMap(request);
+   		commandMap.put("pageTitle", StringUtil.nvl(egovMessageSource.getMessage("insurance.com.title")));
+   		System.out.println(commandMap);
+   		String insCpy = StringUtil.nvl(commandMap.get("insCpy"),"");
+   		String ctfcNum = StringUtil.nvl(commandMap.get("ctfcNum"),"");
+   		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(insCpy) && "".equals(ctfcNum)?"insert":"update"));
+   		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+   		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+   		commandMap.put("move", move);
+   		System.out.println("move=>"+move);
+   		
+   		CmmnDetailCodeVO searchVO = new CmmnDetailCodeVO();
+		searchVO.setFirstIndex(0);
+		searchVO.setRecordCountPerPage(100);
+		searchVO.setSearchCondition("1");
+		searchVO.setClCode("INS");
+		searchVO.setSearchKeyword("STATS");//상태
+		List<CmmnDetailCodeVO> statsList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("statsList", statsList);
+		
+		searchVO.setSearchKeyword("INSCPY");//보험사
+		List<CmmnDetailCodeVO> inscpyList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("inscpyList", inscpyList);
+		
+		searchVO.setSearchKeyword("BANK");//은행
+		List<CmmnDetailCodeVO> bankList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("bankList", bankList);
+   		
+   		if("update".equals(move)){
+   			Map<String, Object> insuranceInfo = insuranceService.selectMyInsuranceDetail(commandMap);
+   			model.addAttribute("insuranceInfo",insuranceInfo);
+   		}
+   		
+   		System.out.println("returnUrl=>"+returnUrl);
+   		model.addAttribute("paramInfo",commandMap);
+   		model.addAllAttributes(commandMap);
+   		System.out.println("My 보험 등록/수정 화면 종료");
+   		return returnUrl;
+       }
+       
+       @RequestMapping("/insurance/saveInsurance.do")
+       public String saveBeautyPaymanet(
+       		@RequestParam Map<String, Object> reqParamMap, 
+       		HttpServletRequest request,
+       		ModelMap model) throws Exception {
+   		System.out.println("보험 수정/삭제 시작");
+   		Map<String, Object> commandMap = StringUtil.mapToMap(request);
+   		String seq = StringUtil.nvl(commandMap.get("seq"),"");
+   		System.out.println(commandMap);
+   		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(seq)?"insert":"update"));
+   		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
+   		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
+   		commandMap.put("today_ko", today_ko);
+   		 int cnt = 0;
+   		if("update".equals(move)){
+   			cnt =insuranceService.updateInsurance(commandMap);
+   		}else if("delete".equals(move)){
+   			cnt = insuranceService.deleteInsurance(commandMap);
+   		}else if("insert".equals(move)){
+   			cnt =insuranceService.insertInsurance(commandMap);
+   		}
+   		
+   		model.addAttribute("paramInfo",commandMap);
+   		model.addAllAttributes(commandMap);
+   		System.out.println("미용실 결제 내역 수정/삭제 종료");
+   		return "redirect:/insurance/selectInsuranceList.do";
+       }
+    
 }

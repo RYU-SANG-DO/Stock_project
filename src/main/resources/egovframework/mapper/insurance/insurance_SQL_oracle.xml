@@ -21,7 +21,6 @@
 				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='STATS' AND CODE=A.STATS) AS STATS_NM
 				,TO_CHAR(A.CTT_START_DATE,'YYYY-MM-DD') AS CTT_START_DATE
 				,A.PAY_PEOD
-				,TO_CHAR(A.CTT_END_DATE,'YYYY-MM-DD') AS CTT_END_DATE
 				,A.TNSF_DATE				
 				,A.INS_AMT
 				,A.BANK
@@ -30,6 +29,8 @@
 				,A.ETC
 				,A.MANAGER
 				,A.PHONE_NUM
+				,A.ATCH_FILE_ID				
+				,TO_CHAR(A.UPD_DATE,'YYYY-MM-DD') AS UPD_DATE
 				,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
 			FROM INSURANCE_CONTRACT A
 			WHERE 1=1
@@ -47,4 +48,110 @@
 			WHERE 1=1
 			]]>
 	</select>
+	
+	<select id="selectMyInsuranceDetail"  parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+			SELECT /*selectMyInsuranceDetail*/
+				 A.INS_CPY
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='INSCPY' AND CODE=A.INS_CPY) AS INS_CPY_NM
+				,A.CTFC_NUM
+				,A.CTT_NM
+				,A.CTT_USER
+				,A.STATS
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='STATS' AND CODE=A.STATS) AS STATS_NM
+				,TO_CHAR(A.CTT_START_DATE,'YYYY-MM-DD') AS CTT_START_DATE
+				,A.PAY_PEOD
+				,A.TNSF_DATE				
+				,A.INS_AMT
+				,A.BANK
+				,(SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT='Y' AND CODE_ID='BANK' AND CODE=A.BANK) AS BANK_NM
+				,TO_CHAR(A.TMNT_DATE,'YYYY-MM-DD') AS TMNT_DATE
+				,A.ETC
+				,A.MANAGER
+				,A.PHONE_NUM
+				,A.ATCH_FILE_ID
+				,TO_CHAR(A.UPD_DATE,'YYYY-MM-DD') AS UPD_DATE
+				,TO_CHAR(A.REG_DATE,'YYYY-MM-DD') AS REG_DATE
+			FROM INSURANCE_CONTRACT A
+			WHERE 1=1
+			AND A.INS_CPY = #{insCpy}
+			AND A.CTFC_NUM = #{ctfcNum}
+			]]> 
+	</select>
+	
+	<!-- 보험 등록 -->
+	<insert id="insertInsurance" parameterType="java.util.Map">
+		<![CDATA[/*insertInsurance*/
+			INSERT INTO INSURANCE_CONTRACT ( 
+				INS_CPY
+				,CTFC_NUM
+				,CTT_NM
+				,CTT_USER
+				,STATS
+				,CTT_START_DATE
+				,PAY_PEOD
+				,TNSF_DATE
+				,INS_AMT
+				,BANK
+				,TMNT_DATE
+				,ETC
+				,MANAGER
+				,PHONE_NUM
+				,ATCH_FILE_ID
+				,UPD_DATE
+				,REG_DATE
+			  ) VALUES ( 
+							 #{insCpy}
+							,#{ctfcNum}
+							,#{cttNm}
+							,#{cttUser}
+							,#{stats}
+							,#{cttStartDate}
+							,#{payPeod}
+							,#{tnsfDate}
+							,NVL(#{insAmt},'0')
+							,#{bank}
+							,#{tmntDate}
+							,NVL(#{etc},'')
+							,#{manager}
+							,#{phoneNum}
+							,#{atchFileId}
+							,SYSDATE
+							,SYSDATE 
+							  )			
+		]]>
+	</insert>	
+	
+	<!-- 보험 수정 -->
+	<update id="updateInsurance" parameterType="java.util.Map">
+		<![CDATA[/*updateInsurance*/
+			UPDATE INSURANCE_CONTRACT
+			SET CTT_NM		= #{cttNm}
+				,CTT_USER		= #{cttUser}
+				,STATS			= #{stats}
+				,CTT_START_DATE = #{cttStartDate}
+				,PAY_PEOD		= #{payPeod}
+				,TNSF_DATE	= #{tnsfDate}
+				,INS_AMT		= #{insAmt}
+				,BANK				= #{bank}
+				,TMNT_DATE	= #{tmntDate}
+				,ETC				= #{etc}
+				,MANAGER		= #{manager}
+				,PHONE_NUM	= #{phoneNum}
+				,ATCH_FILE_ID	= #{atchFileId}
+				,UPD_DATE		= SYSDATE
+			WHERE INS_CPY = #{insCpy}
+			AND CTFC_NUM = #{ctfcNum}
+		]]>
+	</update>
+	
+	<!-- 보험 삭제 -->
+	<delete id="deleteInsurance" parameterType="java.util.Map">
+		<![CDATA[/*deleteInsurance*/
+			DELETE FROM INSURANCE_CONTRACT A
+			WHERE A.INS_CPY = #{insCpy}
+			AND A.CTFC_NUM = #{ctfcNum}
+		]]>
+	</delete>
+	
 </mapper>

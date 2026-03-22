@@ -20,6 +20,14 @@ public interface InsuranceService{
 
 	List<Map<String, Object>> selectInsuranceList(Map<String, Object> commandMap) throws Exception;
 
+	Map<String, Object> selectMyInsuranceDetail(Map<String, Object> commandMap) throws Exception;
+
+	int insertInsurance(Map<String, Object> commandMap) throws Exception;
+
+	int updateInsurance(Map<String, Object> commandMap) throws Exception;
+
+	int deleteInsurance(Map<String, Object> commandMap) throws Exception;
+
 
 
 }

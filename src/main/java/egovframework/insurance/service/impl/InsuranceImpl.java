@@ -27,6 +27,26 @@ public class InsuranceImpl extends EgovAbstractServiceImpl implements InsuranceS
 		return insuranceDao.selectInsuranceList(commandMap);
 	}
 
+	@Override
+	public Map<String, Object> selectMyInsuranceDetail(Map<String, Object> commandMap) throws Exception {
+		return insuranceDao.selectMyInsuranceDetail(commandMap);
+	}
+
+	@Override
+	public int insertInsurance(Map<String, Object> commandMap) throws Exception {
+		return insuranceDao.insertInsurance(commandMap);
+	}
+
+	@Override
+	public int updateInsurance(Map<String, Object> commandMap) throws Exception {
+		return insuranceDao.updateInsurance(commandMap);
+	}
+
+	@Override
+	public int deleteInsurance(Map<String, Object> commandMap) throws Exception {
+		return insuranceDao.deleteInsurance(commandMap);
+	}
+
 	
 
 }

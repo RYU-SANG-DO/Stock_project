@@ -118,14 +118,15 @@ function excelDown(gubun){
 
 function fnInsert(){
 	$("#mode").val("insert");
-	document.listForm.action = "<c:url value='/beauty/paymanet/moveBeautyPaymanet.do'/>";
+	document.listForm.action = "<c:url value='/insurance/moveMyInsurance.do'/>";
     document.listForm.submit();
 }
 
-function fnDetail(seq){
-	$("#seq").val(seq);
+function fnDetail(p_insCpy , p_ctfcNum){
+	$("#insCpy").val(p_insCpy);
+	$("#ctfcNum").val(p_ctfcNum);
 	$("#mode").val("update");
-	document.listForm.action = "<c:url value='/beauty/paymanet/moveBeautyPaymanet.do'/>";
+	document.listForm.action = "<c:url value='/insurance/moveMyInsurance.do'/>";
     document.listForm.submit();
 }
 </script>
@@ -147,7 +148,8 @@ function fnDetail(seq){
 	
 	<form name="listForm" method="post">
 		<input type="hidden" name="pageIndex"	id="pageIndex"/>
-		<input type="hidden" name="seq"	id="seq" />
+		<input type="hidden" name="insCpy"	id="insCpy" />
+		<input type="hidden" name="ctfcNum"	id="ctfcNum" />
 		<input type="hidden" name="mode"	id="mode" />
 		
 		<!-- 검색영역11 -->
