@@ -247,33 +247,27 @@ input[type="number"] {
    				<input type="text" name="manager" id="manager" size="10" maxlength="15" style="width: auto;" value="<c:out value="${insuranceInfo.manager}"/>"/>
 			</td>
 		</tr>
-		<tr>
-			<th><label for="atchFileId">첨부파일</label></th>
-			<td class="left">
-   				<input type="text" name="atchFileId" id="atchFileId" size="10" maxlength="15" style="width: auto;" value="<c:out value="${insuranceInfo.atchFileId}"/>"/>
-   				<input type = "file" name="file" size="40" title="<spring:message code='title.attachedFileSelect'/>">
-			</td>
-		</tr>
-		<tr>
-			<th>첨부파일</th>
-			<td class="nopd">
-				<c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
-					<c:param name="param_atchFileId" value="${egovc:encrypt(insuranceInfo.atchFileId)}" />
-				</c:import>
-			</td>
-		</tr>
+		<c:set var="title"><spring:message code="comCopBbs.articleVO.updt.atchFile"/></c:set>
+		<c:if test="${not empty insuranceInfo.atchFileId}">
+			<tr>
+				<th>${title}</th>
+				<td class="nopd">
+					<c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
+						<c:param name="atchFileId" value="${egovc:encrypt(insuranceInfo.atchFileId)}" />
+					</c:import>
+				</td>
+			</tr>
+		</c:if>
 		<!-- 첨부파일 추가 시작 -->
 		<c:set var="title"><spring:message code="comCopBbs.articleVO.updt.atchFileAdd"/></c:set>
 		<tr>
 			<th><label for="file_1">${title}</label> </th>
 			<td class="nopd" colspan="3">
-				<input name="file_1" id="egovComFileUploader" type="file" title="<spring:message code="comCopBbs.articleVO.updt.atchFile"/>" multiple/><!-- 첨부파일 -->
+				<input type="file" name="file_1" id="egovComFileUploader" title="<spring:message code="comCopBbs.articleVO.updt.atchFile"/>" multiple/><!-- 첨부파일 -->
 			    <div id="egovComFileList"></div>
 			</td>
 		</tr>
 		<!-- 첨부파일 추가 끝 -->
-		
-		
 		<tr>
 			<th><label for="etc">비고</label></th>
 			<td class="nopd">
@@ -307,5 +301,8 @@ $(function(){
     if (quill && document.getElementById('etc')) {
         quill.root.innerHTML = document.getElementById('etc').value || '';
     }
+    
+    var multi_selector = new MultiSelector( document.getElementById( 'egovComFileList' ), 10 );
+    multi_selector.addElement( document.getElementById( 'egovComFileUploader' ) );
 });
 </script>

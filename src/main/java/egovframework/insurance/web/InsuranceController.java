@@ -15,11 +15,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.beauty.service.BeautyVO;
 import egovframework.beauty.service.BeautyService;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.EgovFileMngUtil;
+import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.web.PagingManageController;
 import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
 import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
@@ -32,6 +37,12 @@ public class InsuranceController {
 
 	@Autowired
 	private InsuranceService insuranceService;
+	
+	@Resource(name = "EgovFileMngService")
+    private EgovFileMngService fileMngService;
+
+    @Resource(name = "EgovFileMngUtil")
+    private EgovFileMngUtil fileUtil;
 
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
@@ -150,23 +161,45 @@ public class InsuranceController {
        
        @RequestMapping("/insurance/saveInsurance.do")
        public String saveBeautyPaymanet(
+    		   final MultipartHttpServletRequest multiRequest, 
        		@RequestParam Map<String, Object> reqParamMap, 
-       		HttpServletRequest request,
        		ModelMap model) throws Exception {
    		System.out.println("보험 수정/삭제 시작");
-   		Map<String, Object> commandMap = StringUtil.mapToMap(request);
-   		String seq = StringUtil.nvl(commandMap.get("seq"),"");
+   		Map<String, Object> commandMap = StringUtil.mapToMap(multiRequest);
+   		String atchFileId = StringUtil.nvl(commandMap.get("atchFileId"),"");
+   		String insCpy = StringUtil.nvl(commandMap.get("insCpy"),"");
+   		String ctfcNum = StringUtil.nvl(commandMap.get("ctfcNum"),"");
    		System.out.println(commandMap);
-   		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(seq)?"insert":"update"));
-   		String today = ComDateUtil.getToday_v01("yyyyMMddHHmm");
-   		String today_ko = ComDateUtil.getToday_v01("yyyy년 MM월 dd일 HH시 mm분 ss초");
-   		commandMap.put("today_ko", today_ko);
-   		 int cnt = 0;
+   		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(insCpy) && "".equals(ctfcNum)?"insert":"update"));
+   		
+   		int cnt = 0;
    		if("update".equals(move)){
+   			final List<MultipartFile> files = multiRequest.getFiles("file_1");
+   		 if (!files.isEmpty()) {
+ 			if (atchFileId == null || "".equals(atchFileId)) {
+ 			    List<FileVO> result = fileUtil.parseFileInf(files, "INS_", 0, atchFileId, "");
+ 			    atchFileId = fileMngService.insertFileInfs(result);
+ 			   commandMap.put("atchFileId", atchFileId);
+ 			} else {
+ 			    FileVO fvo = new FileVO();
+ 			    fvo.setAtchFileId(atchFileId);
+ 			    cnt = fileMngService.getMaxFileSN(fvo);
+ 			    List<FileVO> _result = fileUtil.parseFileInf(files, "INS_", cnt, atchFileId, "");
+ 			    fileMngService.updateFileInfs(_result);
+ 			}
+ 	    }
    			cnt =insuranceService.updateInsurance(commandMap);
    		}else if("delete".equals(move)){
    			cnt = insuranceService.deleteInsurance(commandMap);
    		}else if("insert".equals(move)){
+   			List<FileVO> result = null;
+   		    atchFileId = "";
+   		    
+   		    final List<MultipartFile> files = multiRequest.getFiles("file_1");
+   		    if (!files.isEmpty()) {
+   		    	result = fileUtil.parseFileInf(files, "INS_", 0, "", "");
+   		    	atchFileId = fileMngService.insertFileInfs(result);
+   		    }
    			cnt =insuranceService.insertInsurance(commandMap);
    		}
    		
