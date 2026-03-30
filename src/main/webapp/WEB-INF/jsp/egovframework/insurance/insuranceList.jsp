@@ -226,6 +226,7 @@ function fnDetail(p_insCpy , p_ctfcNum){
 		<col>
 		<col>
 		<col>
+		<col>
 		<col width="5%">
 	</colgroup>
 	<thead>
@@ -234,15 +235,16 @@ function fnDetail(p_insCpy , p_ctfcNum){
 		<th>계약명</th>
 		<th>보험사</th>
 		<th>상태</th>
-		<th>계약일자</th>
 		<th>납입기간</th>
+		<th>계약일자</th>
+		<th>종료일자</th>
 		<th>보험료</th>
 	</tr>
 	</thead>
 	<tbody class="ov">
 	<c:if test="${fn:length(list) == 0}">
 		<tr>
-			<td colspan="7"><spring:message code="common.nodata.msg" /></td>
+			<td colspan="8"><spring:message code="common.nodata.msg" /></td>
 		</tr>
 	</c:if>
 	<c:forEach var="item" items="${list}" varStatus="status">
@@ -255,8 +257,9 @@ function fnDetail(p_insCpy , p_ctfcNum){
 		</td>
 		<td><c:out value="${item.insCpyNm}"/></td>
 		<td><c:out value="${item.statsNm}"/></td>
-		<td><c:out value="${item.cttStartDate}"/></td>
 		<td><c:out value="${item.payPeod}"/></td>
+		<td><c:out value="${item.cttStartDate}"/></td>
+		<td><c:out value="${item.cttEndDate}"/></td>
 		<td><fmt:formatNumber value="${item.insAmt}" pattern="#,###" />원</td>
 	</tr>
 	</c:forEach>

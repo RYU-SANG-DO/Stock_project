@@ -19,6 +19,8 @@
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <jsp:include page="/WEB-INF/jsp/egovframework/stock/com/sotckTop.jsp" flush="true" />
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/utl/EgovCmmUtl.js'/>" ></script>
 <script type="text/javascript">
 $(function(){
 	 $.datepicker.setDefaults({
@@ -121,7 +123,7 @@ function fn_egov_update(){
 	if(confirm("<spring:message code="common.delete.msg" />")){	
 		// Delete하기 위한 키값을 셋팅
 		document.egovFrm.mode.value = "delete";	
-		document.egovFrm.action = "<c:url value='/beauty/paymanet/saveBeautyPaymanet.do'/>";
+		document.egovFrm.action = "<c:url value='/insurance/saveInsurance.do'/>";
 		document.egovFrm.submit();
 	}	
 }	
@@ -129,7 +131,7 @@ function fn_egov_update(){
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list() {
-	document.egovFrm.action = "<c:url value='/beauty/paymanet/selectBeautyPaymanetList.do'/>";
+	document.egovFrm.action = "<c:url value='/insurance/selectInsuranceList.do'/>";
 	document.egovFrm.mode.value="list";
 	document.egovFrm.submit();
 }
@@ -148,7 +150,7 @@ input[type="number"] {
 <body>
 
 <!-- 상단타이틀 -->
-<form name="egovFrm" method="post"> 
+<form name="egovFrm" method="post" enctype="multipart/form-data"> 
 <input type="text" name="mode" value="${move}">
 
 <div class="wTableFrm">
@@ -247,13 +249,20 @@ input[type="number"] {
    				<input type="text" name="manager" id="manager" size="10" maxlength="15" style="width: auto;" value="<c:out value="${insuranceInfo.manager}"/>"/>
 			</td>
 		</tr>
+		<tr>
+			<th><label for="phoneNum">전화번호</label></th>
+			<td class="left">
+   				<input type="text" name="phoneNum" id="phoneNum" size="25" maxlength="15" style="text-align:cneter; width: auto;" value="<c:out value="${insuranceInfo.phoneNum}"/>"/>
+			</td>
+		</tr>
 		<c:set var="title"><spring:message code="comCopBbs.articleVO.updt.atchFile"/></c:set>
 		<c:if test="${not empty insuranceInfo.atchFileId}">
 			<tr>
 				<th>${title}</th>
 				<td class="nopd">
 					<c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
-						<c:param name="atchFileId" value="${egovc:encrypt(insuranceInfo.atchFileId)}" />
+						<c:param name="pageIndex" value="1" />
+						<c:param name="param_atchFileId" value="FILE_000000000000001" />
 					</c:import>
 				</td>
 			</tr>

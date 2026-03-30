@@ -23,6 +23,7 @@
     <security:http pattern="/images/**" security="none"/>
  	<security:http pattern="/js/**" security="none"/>
  	<security:http pattern="/resource/**" security="none"/>
+ 	<security:http pattern="/cmm/fms/selectFileInfsForUpdate.do" security="none"/>
  	<security:http pattern="\A/WEB-INF/jsp/.*\Z" request-matcher="regex" security="none"/>
 
     <egov-security:config id="securityConfig"
@@ -88,6 +89,7 @@
 	/>
 
 	<egov-security:initializer id="initializer" supportMethod="true" supportPointcut="false" />
+	
 
     <!-- URL에 세미콜론(semicolon)허용 여부(기본값/false) -->
 	<!-- 

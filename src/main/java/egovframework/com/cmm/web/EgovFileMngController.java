@@ -12,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,6 +57,12 @@ public class EgovFileMngController {
 	@Resource(name = "egovEnvCryptoService")
 	public void setEgovEnvCryptoService(EgovEnvCryptoService cryptoService) {
 		this.cryptoService = cryptoService;
+	}
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+	    // 빈 문자열을 null로 변환하거나, int 변환 시 에러를 방지함
+	    binder.registerCustomEditor(int.class, new org.springframework.beans.propertyeditors.CustomNumberEditor(Integer.class, true));
 	}
 	
 	/**
@@ -111,8 +120,12 @@ public class EgovFileMngController {
 			@RequestParam Map<String, Object> commandMap,
 			// SessionVO sessionVO,
 			HttpServletRequest request,
+			BindingResult bindingResult,
 			ModelMap model) throws Exception {
-
+System.out.println("selectFileInfsForUpdate start");
+		if (bindingResult.hasFieldErrors("pageIndex")) {
+		    fileVO.setPageIndex(1);
+		}
 		String param_atchFileId = (String) commandMap.get("param_atchFileId");
 		String decodedAtchFileId = "";
 		

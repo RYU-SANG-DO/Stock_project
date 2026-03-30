@@ -24,6 +24,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.web.PagingManageController;
 import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
@@ -150,6 +151,11 @@ public class InsuranceController {
    		if("update".equals(move)){
    			Map<String, Object> insuranceInfo = insuranceService.selectMyInsuranceDetail(commandMap);
    			model.addAttribute("insuranceInfo",insuranceInfo);
+   			String atchFileId = StringUtil.nvl(insuranceInfo.get("atchFileId"),"");
+   			if("".equals(atchFileId)) {
+   				FileVO fileVO = new FileVO();
+   				
+   			}
    		}
    		
    		System.out.println("returnUrl=>"+returnUrl);
@@ -171,20 +177,20 @@ public class InsuranceController {
    		String ctfcNum = StringUtil.nvl(commandMap.get("ctfcNum"),"");
    		System.out.println(commandMap);
    		String move = StringUtil.nvl(commandMap.get("mode"), ("".equals(insCpy) && "".equals(ctfcNum)?"insert":"update"));
-   		
+   		String filePath = EgovProperties.getProperty("Globals.fileStorePath")+"/upload/insurance/";
    		int cnt = 0;
    		if("update".equals(move)){
    			final List<MultipartFile> files = multiRequest.getFiles("file_1");
    		 if (!files.isEmpty()) {
  			if (atchFileId == null || "".equals(atchFileId)) {
- 			    List<FileVO> result = fileUtil.parseFileInf(files, "INS_", 0, atchFileId, "");
+ 			    List<FileVO> result = fileUtil.parseFileInf(files, "INS_", 0, atchFileId, filePath);
  			    atchFileId = fileMngService.insertFileInfs(result);
  			   commandMap.put("atchFileId", atchFileId);
  			} else {
  			    FileVO fvo = new FileVO();
  			    fvo.setAtchFileId(atchFileId);
  			    cnt = fileMngService.getMaxFileSN(fvo);
- 			    List<FileVO> _result = fileUtil.parseFileInf(files, "INS_", cnt, atchFileId, "");
+ 			    List<FileVO> _result = fileUtil.parseFileInf(files, "INS_", cnt, atchFileId, filePath);
  			    fileMngService.updateFileInfs(_result);
  			}
  	    }
@@ -197,7 +203,7 @@ public class InsuranceController {
    		    
    		    final List<MultipartFile> files = multiRequest.getFiles("file_1");
    		    if (!files.isEmpty()) {
-   		    	result = fileUtil.parseFileInf(files, "INS_", 0, "", "");
+   		    	result = fileUtil.parseFileInf(files, "INS_", 0, "", filePath);
    		    	atchFileId = fileMngService.insertFileInfs(result);
    		    }
    			cnt =insuranceService.insertInsurance(commandMap);
