@@ -261,8 +261,7 @@ input[type="number"] {
 				<th>${title}</th>
 				<td class="nopd">
 					<c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
-						<c:param name="pageIndex" value="1" />
-						<c:param name="param_atchFileId" value="FILE_000000000000001" />
+						<c:param name="param_atchFileId" value="${egovc:encrypt(insuranceInfo.atchFileId)}" />
 					</c:import>
 				</td>
 			</tr>
